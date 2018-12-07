@@ -69,7 +69,7 @@ public class GameScreen {
 		
 		
 	}
-	
+	// note that mouse coordinates are measured from top left of screen and sprites from bottom left
 	public Integer getMouseCoordinatesX() {
 		return Gdx.input.getX();
 	}
