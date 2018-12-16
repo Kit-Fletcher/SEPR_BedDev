@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 //TODO some of these methods should be moved to character as they will be shared by any character and can be inherited
-public class Zombies extends Character{
+public class Zombies extends Characters{
 	private static int[] hitBox ={384,705,160,799};
 	
 	public Zombies() {

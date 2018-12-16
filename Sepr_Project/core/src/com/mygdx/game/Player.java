@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Player extends Character {
+public class Player extends Characters {
 	private static int[] hitBox ={320,640,162,832};
 		
 	public Player(){		
