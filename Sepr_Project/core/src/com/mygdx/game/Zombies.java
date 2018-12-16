@@ -1,10 +1,15 @@
 package com.mygdx.game;
 
-
-public class Zombies extends Characters{
+//TODO some of these methods should be moved to character as they will be shared by any character and can be inherited
+public class Zombies extends Character{
+	private static int[] hitBox ={384,705,160,799};
 	
+	public Zombies() {
+		super(5f,hitBox, "Zombie1.png");
+	}
 	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 
 	public Zombies(String id, int attackRadius, int health, int damage) {
+		super(5f, hitBox, "Zombie1.png");
 		setId(id);
 		setAttackRadius(attackRadius);
 		setHealth(health);
