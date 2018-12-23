@@ -12,31 +12,27 @@ public class Zombies extends Characters{
 		curScreen = screen;
 	}
 	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 
-	public Zombies(String id, int attackRadius, int health, int damage) {
+	public Zombies(String id, int attackRadius, int health, int damage, Sprite screen) {
 		super(5f, hitBox, "Zombie1.png");
 		setId(id);
 		setAttackRadius(attackRadius);
 		setHealth(health);
 		setDamage(damage);
+		curScreen = screen;
 	}
 	
 	
 	private String id;
 	private int attackRadius;
-	private int health;
-	//Used for calculating health after receiving damage.
-	private int previousHealth;
-	private int damage;
-	//Zombies stats increase depending on the difficulty of the game.
+	
 	public boolean isHard = false;
 	public boolean isDead;
 	//Discuss whether Boss should be considered as Zombie or as a new class.
 	public boolean isBoss = false;
 	//This multiplier can be changed if needed for better game balance.
 	public float hardModeMultiplier = 1.5f;
-	//Used to calculate player damage
-	private Player player;
-	
+	private int rand = 0;
+	private int randDir = 0;
 
 	public boolean isHard() {
 			return isHard;
@@ -75,9 +71,7 @@ public class Zombies extends Characters{
 	    }   
 	}
 	
-	public int getDamage() {
-			return damage;
-	}
+
 	
 	public void setDamage(int damage) {
 			if (isHard) {
@@ -87,23 +81,33 @@ public class Zombies extends Characters{
 			}
 	}
 	
-	public void receiveDamage() {
+	public void receiveDamage(Player player) {
 			previousHealth = this.health;
 			//TODO have getDamage() in Player class
 			this.health -= player.getDamage();
 			isDead();
 	}
 	
-	//Set as dead if health falls to 0 or below 0
-	//TODO remove zombie sprite if isDead
-	public boolean isDead() {
-			if (this.health <= 0) {
-				return true;
-			} else {
-				return false;
-			}
-	}
+	
 	//TODO Add random movements.
+	public void getMovement() {
+		if(rand ==0) {
+			rand = (int)(Math.round((Math.random()*60 + 10)));
+			randDir = (int)(Math.round((Math.random() *8 + 1)));
+		}else {
+			rand -= 1;
+			if(randDir == 1) {
+				sprite.translateX(-speed);
+			}else if(randDir == 2){
+				sprite.translateX(speed);
+			}else if(randDir == 3) {
+				sprite.translateY(-speed);
+			}else if (randDir == 4){
+				sprite.translateY(speed);
+			}
+			checkBounds(curScreen);
+		}
+	}
 	
 	
 }
