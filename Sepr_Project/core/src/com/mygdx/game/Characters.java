@@ -53,6 +53,23 @@ public class Characters {
 		int height = Math.round((hitBoxDim[3]- hitBoxDim[2])*scale);
 		return height;
 	}
+	public void removeSprite() {
+		batch.begin();
+		sprite.setAlpha(0f);
+		batch.end();
+	}
+	
+	//Set as dead if health falls to 0 or below 0
+	public boolean isDead() {
+		if (this.health <= 0) {
+			sprite.rotate90(false);
+			removeSprite();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	//Makes sure sprite is within the current screen
 	public void checkBounds(Sprite screen) {
 		if(sprite.getX() + hitBoxDim[0]*scale < screen.getX()) {
