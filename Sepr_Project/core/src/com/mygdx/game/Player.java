@@ -65,4 +65,12 @@ public class Player extends Characters {
 		 return false;
 
 	}
+	
+	public void receiveDamage(Zombies zombie) {
+		previousHealth = this.health;
+		//TODO have getDamage() in Player class
+		this.health -= zombie.getDamage();
+		isDead();
+	}
+
 }
