@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-//TODO some of these methods should be moved to character as they will be shared by any character and can be inherited
 public class Zombies extends Characters{
 	private static int[] hitBox ={384,705,160,799};
 	private Sprite curScreen;
@@ -10,6 +9,7 @@ public class Zombies extends Characters{
 	public Zombies(Sprite screen) {
 		super(1f,hitBox, "Zombie1.png");
 		curScreen = screen;
+		health = 10;
 	}
 	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 
 	public Zombies(String id, int attackRadius, int health, int damage, Sprite screen) {
@@ -83,13 +83,12 @@ public class Zombies extends Characters{
 	
 	public void receiveDamage(Player player) {
 			previousHealth = this.health;
-			//TODO have getDamage() in Player class
 			this.health -= player.getDamage();
 			isDead();
 	}
 	
 	
-	//TODO Add random movements.
+	//TODO Add running at player.
 	public void getMovement() {
 		if(rand ==0) {
 			rand = (int)(Math.round((Math.random()*60 + 10)));

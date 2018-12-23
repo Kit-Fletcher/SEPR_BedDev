@@ -10,11 +10,13 @@ public class Player extends Characters {
 		
 	public Player(){		
 		super(5f,hitBox, "MaleFresher.png");
+		damage = 100;
 		
 	}
 	// to be used for different characters
 	public Player(float speed, int hitBoxX, int hitBoxY, String image) {
 		super(speed, hitBox, image);
+		damage = 100;
 	}
 	
 	
@@ -54,9 +56,12 @@ public class Player extends Characters {
 	
 	public void receiveDamage(Zombies zombie) {
 		previousHealth = this.health;
-		//TODO have getDamage() in Player class
 		this.health -= zombie.getDamage();
 		isDead();
+	}
+	
+	public int getDamage() {
+		return damage;
 	}
 
 }
