@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import java.awt.Point;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,6 +12,11 @@ public class Characters {
 	protected Texture img;
 	protected Float speed;
 	protected float scale = 1f/10f;
+	protected int damage;
+	protected int health;
+	//Used for calculating health after receiving damage.
+	protected int previousHealth;
+	
 	
 	/**
 	 * @param startSpeed a float number which represents how many pixels the sprite will move each render cycle
@@ -53,6 +57,9 @@ public class Characters {
 		int height = Math.round((hitBoxDim[3]- hitBoxDim[2])*scale);
 		return height;
 	}
+	public int getDamage() {
+		return damage;
+	}
 	public void removeSprite() {
 		batch.begin();
 		sprite.setAlpha(0f);
@@ -86,4 +93,6 @@ public class Characters {
          }
 		
 	}
+	
 }
+
