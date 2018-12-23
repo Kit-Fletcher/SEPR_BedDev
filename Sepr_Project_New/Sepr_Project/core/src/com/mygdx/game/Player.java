@@ -66,7 +66,7 @@ public class Player extends Sprite {
 		if (isArmed) {
 
 			// code to show armor
-			// should be added as a animation
+			// should be added as animation
 		}
 
 	}
