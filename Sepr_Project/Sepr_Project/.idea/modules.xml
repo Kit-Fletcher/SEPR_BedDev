@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Sepr_Project.iml" filepath="$PROJECT_DIR$/Sepr_Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Sepr_Project.core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.test.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/Sepr_Project.desktop.test.iml" />
+    </modules>
+  </component>
+</project>
