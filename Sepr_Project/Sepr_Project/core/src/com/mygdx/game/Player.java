@@ -70,11 +70,15 @@ public class Player extends Sprite {
 		}
 
 	}
-
+	
+	public int getDamage() {
+		return damage;
+	}
+	
 	public int getHealth() {
 		return health;
 	}
-
+	
 	public void setHealth(final int health) {
 		this.health = health;
 	}
