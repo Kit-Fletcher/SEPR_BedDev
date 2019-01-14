@@ -20,12 +20,12 @@ public class PowerUps extends Item {
 
 	public void applyEffect(Player currentPlayer) {
 
-		if (this.getType() == "HEALTH_REGEN") {
-			currentPlayer.resetHealth();
-		} else if (this.getType() == "DECREASE_DAMAGE") {
+		if (this.getType() == "increaseHealth") {
+			currentPlayer.setHealth(currentPlayer.getHelth + 20);
+		} else if (this.getType() == "decreaseDamage") {
 			currentPlayer.setDamage(currentPlayer.getDamage() - 2);
-		} else if (this.getType() == "INCREASE_SPEED") {
-			currentPlayer.setSpeed(10);
+		} else if (this.getType() == "increaseSpeed") {
+			currentPlayer.setSpeed(currentPlayer.getSpeed() * 2);
 		} else {
 
 			System.out.println("Power up type does not match any known type");
