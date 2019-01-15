@@ -1,14 +1,17 @@
 package com.mygdx.game;
 
+import java.awt.Point;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+
+
 
 public class Movement {
-	public static HashMap<String, Integer> controls;
-	
+	private static HashMap<String, Integer> controls;
+	private int rand =0;
+	private int randDir = (int)Math.round((Math.random() *8 + 1));
 	public Movement() {
 		controls = new HashMap<String, Integer>();
 		controls.put("UP", Input.Keys.W);
@@ -33,41 +36,77 @@ public class Movement {
 	/**
 	 * Checks movement keys for inputs and updates the character sprite
 	 * Makes sure sprite doesn't go outside of the current screen
-	 * @param character The character sprite
-	 * @param screen Current screens sprite
+	 * @param character The players Player class
 	 * @return character updated with new position
 	 */
-	public Sprite getMovement(Sprite character, Sprite screen) {
+	public Point getPlayerMovement(Player character) {
 	    
-		if(Gdx.input.isKeyPressed(controls.get("LEFT"))){
-			
-            character.translateX(-5f);
-            if(character.getX() < screen.getX()) {
-            	character.setPosition(screen.getX(), character.getY());
-            }
+		if(Gdx.input.isKeyPressed(controls.get("LEFT"))) {
+            character.translateX(-character.getSpeed());      
         }
         if(Gdx.input.isKeyPressed(controls.get("RIGHT"))){
-        	character.translateX(5f);
-            if((character.getX() + (character.getWidth() * character.getScaleX())) > (screen.getX()+screen.getWidth())) {
-            	character.setPosition(screen.getX()+screen.getWidth()- (character.getWidth() * character.getScaleX()), character.getY());
-            }
+        	character.translateX(character.getSpeed());    
         }
         if(Gdx.input.isKeyPressed(controls.get("UP"))){
-        	character.translateY(5f);
-            if(character.getY() + (character.getHeight() * character.getScaleY()) > (screen.getY() + screen.getHeight())) {
-                character.setPosition(character.getX(), (screen.getY() + screen.getHeight()- (character.getHeight() * character.getScaleY())));	
-            }
+        	character.translateY(character.getSpeed());    
         }
         if(Gdx.input.isKeyPressed(controls.get("DOWN"))){
-             character.translateY(-5f);
-             if(character.getY() < screen.getY()) {
-               	character.setPosition(character.getX(), screen.getY());
-             }
-               
+            character.translateY(-character.getSpeed());       
         }
-		return character;
+        character.checkBounds();
+        Point xy = new Point(Math.round(character.getX()), Math.round(character.getY()));
+        return xy;
+	}
+
+	public Point getZombieMovement(Zombies zombie, Player character) {
 		
-		
+
+		int difX = (int)Math.round(character.getCoord().getX() - zombie.getCoord().getX());
+		int difY = (int)Math.round(character.getCoord().getY() - zombie.getCoord().getY());
+		if(((Math.abs(difX)<zombie.getAttackRadius())) && (Math.abs(difY)<zombie.getAttackRadius()) ) {
+			if(Math.abs(difX)<=zombie.getSpeed() && Math.abs(difY)<=zombie.getSpeed()) {
+				
+			}else if(Math.abs(difX)<=zombie.getSpeed()) {
+				zombie.translateY(zombie.getSpeed()* (difY/Math.abs(difY)));
+			}else if( Math.abs(difY)<=zombie.getSpeed()) {
+				zombie.translateX(zombie.getSpeed()* (difX/Math.abs(difX)));
+			}else {
+				zombie.translateX(zombie.getSpeed()* (difX/Math.abs(difX)));
+				zombie.translateY(zombie.getSpeed()* (difY/Math.abs(difY)));
+			}
+			
+		}else {
+			if(rand ==0) {
+				rand = (int)(Math.round((Math.random()*60 + 10)));
+				randDir = (int)(Math.round((Math.random() *8 + 1)));
+			}else {
+				rand -= 1;
+				if(randDir == 1) {
+					zombie.translateX(-zombie.getSpeed());
+				}else if(randDir == 2){
+					zombie.translateX(zombie.getSpeed());
+				}else if(randDir == 3) {
+					zombie.translateY(-zombie.getSpeed());
+				}else if (randDir == 4){
+					zombie.translateY(zombie.getSpeed());
+				}else if (randDir == 5){
+					zombie.translateY(zombie.getSpeed()/2);
+					zombie.translateX(zombie.getSpeed()/2);
+				}else if (randDir == 6){
+					zombie.translateY(zombie.getSpeed()/2);
+					zombie.translateX(-zombie.getSpeed()/2);
+				}else if (randDir == 7){
+					zombie.translateY(-zombie.getSpeed()/2);
+					zombie.translateX(zombie.getSpeed()/2);
+				}else if (randDir == 8){
+					zombie.translateY(-zombie.getSpeed()/2);
+					zombie.translateX(-zombie.getSpeed()/2);
+				}
+			}
+		}
+		zombie.checkBounds();
+		Point xy = new Point(Math.round(zombie.getX()), Math.round(zombie.getY()));
+        return xy;
 	}
 	// note that mouse coordinates are measured from top left of screen and sprites from bottom left
 	public Integer getMouseCoordinatesX() {
@@ -78,7 +117,15 @@ public class Movement {
 		return Gdx.input.getY();
 	}
 	
+	public boolean getMouseClick() {
+		 if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+			 return true;
+		 }
+		 return false;
+	}
 	
-	
+	public HashMap<String, Integer> getcontrols(){
+		return controls;
+	}
 
 }
