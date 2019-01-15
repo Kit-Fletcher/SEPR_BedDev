@@ -1,37 +1,51 @@
 package com.mygdx.game;
 
+import java.awt.Point;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 //TODO some of these methods should be moved to character as they will be shared by any character and can be inherited
 public class Zombies extends Characters{
-	private static int[] hitBox ={384,705,160,799};
+	//private static int[] hitBox ={384,705,160,799};
 	
-	public Zombies() {
-		super(5f,hitBox, "Zombie1.png");
+	public Zombies(final Texture img) {
+		super(img);
+		initialize();
 	}
-	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 
-	public Zombies(String id, int attackRadius, int health, int damage) {
-		super(5f, hitBox, "Zombie1.png");
-		setId(id);
-		setAttackRadius(attackRadius);
-		setHealth(health);
-		setDamage(damage);
+	public Zombies(final Sprite sprite, String type, final int id, final int attackRadius,final float multiplier) {
+		super(sprite,type);
+		this.setId(id);
+		this.hardMod = multiplier;
+		this.setAttackRadius(Math.round(attackRadius * hardMod));
+		initialize();
 	}
 	
+	protected void initialize() {
+		super.initialize();
+		if (type == "Boss") {
+			this.damage = Math.round(20 *this.hardMod);
+			this.health = Math.round(100 * this.hardMod);
+		}else {
+			this.damage = Math.round(10 *this.hardMod);
+			this.health = Math.round(15 * this.hardMod);
+			this.hitBoxDim = new int[] {37,69,16,78};
+					
+		}
+		this.setAttackRadius(100);
+		this.setPosition(200, 200);
+	}
+	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 	
 	
-	private String id;
+	private int id;
 	private int attackRadius;
-	private int health;
+	
 	//Used for calculating health after receiving damage.
-	private int previousHealth;
-	private int damage;
 	//Zombies stats increase depending on the difficulty of the game.
-	public boolean isHard = false;
-	public boolean isDead;
-	//Discuss whether Boss should be considered as Zombie or as a new class.
-	public boolean isBoss = false;
-	//This multiplier can be changed if needed for better game balance.
-	public float hardModeMultiplier = 1.5f;
-	//Used to calculate player damage
-	private Player player;
+	private boolean isHard = false;
+	
+	private float hardMod = 1;
 	
 
 	public boolean isHard() {
@@ -39,11 +53,11 @@ public class Zombies extends Characters{
 	}
 
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(int id) {
 			this.id = id;
 	}
 	
@@ -52,55 +66,43 @@ public class Zombies extends Characters{
 	}
 	
 	public void setAttackRadius(int attackRadius) {
-			if (isHard) {
-				this.attackRadius = Math.round(attackRadius*hardModeMultiplier);
-			} else {
-				this.attackRadius = attackRadius;
-			}
+			this.attackRadius = attackRadius;
+			
 	}
 	
-	public int getHealth() {
-			return health;
-	}
+
 	
-	public void setHealth(int health) {
-	    	if (isHard) {
-	    		this.health = Math.round(health*hardModeMultiplier);
-	    	} else {
-	    		this.health = health;
-	    }   
-	}
-	
-	public int getDamage() {
-			return damage;
-	}
-	
+	@Override
 	public void setDamage(int damage) {
-			if (isHard) {
-				this.damage = Math.round(damage*hardModeMultiplier);
-			} else {
-				this.damage = damage;
-			}
+			super.setDamage(Math.round(damage*hardMod));
 	}
 	
-	public void receiveDamage() {
-			previousHealth = this.health;
-			//TODO have getDamage() in Player class
-			this.health -= player.getDamage();
-			isDead();
+	public void getMovement(Player character) {
+		Point xy= new Point(mov.getZombieMovement(this,character)); 
+		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
+	}
+	public Player attack(Player chr) {
+		boolean mouse = mov.getMouseClick();
+		if(closeZombie(chr)) {
+			chr.injured(this.getDamage());
+			
+		}
+		//TODO Make Player bounce back and go in and out of invisibility if injured
+		return chr;
 	}
 	
-	//Set as dead if health falls to 0 or below 0
-	//TODO remove zombie sprite if isDead
-	public boolean isDead() {
-			if (this.health <= 0) {
-				return true;
-			} else {
-				return false;
-			}
+	private boolean closeZombie(Player chr) {
+		Point chrXY = new Point(chr.getCoord());
+		Point zomXY = new Point(this.getCoord());
+		int rng = this.getRange();
+		int difX = (int)(chrXY.getX() - zomXY.getX());
+		int difY = (int)(chrXY.getY() - zomXY.getY());
+		int offsetX = (int)(-this.getHitBoxWidth()- chr.getHitBoxWidth())/2;
+		int offsetY = (int)(-this.getHitBoxHeight()- chr.getHitBoxHeight())/2;
+		if((Math.abs(difX) + offsetX)< rng && Math.abs(difY) +offsetY<rng) {
+			return true;
+		}
+		return false;	
 	}
-	//TODO Add random movements.
-	
-	
 }
 
