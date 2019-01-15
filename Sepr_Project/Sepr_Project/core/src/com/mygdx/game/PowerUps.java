@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /*
@@ -9,12 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class PowerUps extends Item {
 
-	public PowerUps(Sprite sprite, String type) {
-		super(sprite, type);
+	public PowerUps(Sprite sprite, int id, String type) {
+		super(sprite, id, type);
 	}
-	
+
 	/*
 	 * Applies the effect based on the PowerUp type.
+	 * 
 	 * @param Player
 	 */
 
