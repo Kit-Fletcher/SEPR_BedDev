@@ -1,67 +1,63 @@
 package com.mygdx.game;
 
+import java.awt.Point;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Player extends Sprite {
-
+public class Player extends Characters {
 	private final Weapon weapon;
-
-	private final String type;
-
-	private int health;
-
-	private boolean isPlayerAlive;
-
+	
 	private boolean isArmed;
-
-	private int damage = 10;
-
-	private final int PLAYER_WIDTH = 100;
-	private final int PLAYER_HEIGHT = 100;
-
+	private boolean orientationUp; //If mouse is above = True
+	
+	
+	public Player(final Texture img) {
+		super(img);
+		this.weapon = null;
+		initialize();
+		
+	}
+	
 	public Player(final Sprite sprite, String type, final Weapon weapon) {
-		super(sprite);
+		super(sprite,type);
 		this.weapon = weapon;
-		this.type = type;// Fresher or Gresher.
-
-		if (type == "Gresher") {
-			this.damage = 20;
-		}
-
+		
 		initialize();
 	}
 
-	/*
+	/**
 	 * set default value of player attributes
 	 */
-	private void initialize() {
-
-		this.health = 100;
-		this.isPlayerAlive = true;
-		this.isArmed = true;
-		this.setSize(PLAYER_WIDTH, PLAYER_HEIGHT);
-		this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-	}
-
 	@Override
-	public void draw(final Batch batch) {
-		update(Gdx.graphics.getDeltaTime());
-		super.draw(batch);
-	}
+	protected void initialize() {
+		super.initialize();
+		this.hitBoxDim = new int[] {31,62,16,81};
+		this.speed = 5;
+		this.health = 100;
+		this.damage = 10;
+		this.dmgMod = 1f;
+		this.spdMod = 1f;
+		if (type == "Gresher") {
+			this.dmgMod = 2f;
+			this.spdMod = 1.5f;
+			this.injMod = 2f;
+		}
+		
+		}
 
-	/*
+
+	/**
 	 * update player status and response to events react on collision add velocity/
 	 * gravity type value update animation i,e damage animation, weapon animation
 	 * trigger
 	 * 
 	 */
-
+	@Override 
 	public void update(final float delta) {
-
-		if (getHealth() == 0)
-			isPlayerAlive = false;
+		super.update(Gdx.graphics.getDeltaTime());
+		
 
 		if (isArmed) {
 
@@ -69,26 +65,17 @@ public class Player extends Sprite {
 			// should be added as animation
 		}
 
-	}
+	}	
 	
-	public int getDamage() {
-		return damage;
-	}
-	
-	public int getHealth() {
-		return health;
-	}
-	
-	public void setHealth(final int health) {
-		this.health = health;
-	}
+	public void injured(int x) {
 
-	public boolean isPlayerAlive() {
-		return isPlayerAlive;
-	}
+		if (type == "Gresher") {
 
-	public void setPlayerAlive(final boolean playerAlive) {
-		isPlayerAlive = playerAlive;
+			x = (int)(x* this.injMod);
+
+		}
+
+		super.injured(x);
 	}
 
 	public boolean isArmed() {
@@ -98,31 +85,92 @@ public class Player extends Sprite {
 	public void setArmed(final boolean armed) {
 		isArmed = armed;
 	}
-
-	public void injured(int x) {
-
-		final int currentHealth = getHealth();
-		if (type == "Gresher") {
-
-			x = x * 2;
-
-		}
-
-		if (currentHealth - x >= 0) {
-
-			setHealth(currentHealth - x);
+	
+	@Override
+	public int getDamage() {
+		if(this.weapon ==null){
+			return (int)(super.getDamage()*this.dmgMod);
+		}else {
+			return (int)(this.weapon.getDamage()*this.dmgMod);
 		}
 	}
-
-	public void injured() {
-
-		final int currentHealth = getHealth();
-
-		if (currentHealth - damage >= 0) {
-
-			setHealth(currentHealth - damage);
-		}
-
+	
+	@Override
+	public void dies() {
+		this.rotate(90);
 	}
-
+	
+	/**
+	 * Moves the sprite around the screen based on user inputs
+	 */
+	public void getMovement() {
+		Point xy= new Point(mov.getPlayerMovement(this)); 
+		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
+		if(Gdx.graphics.getHeight()- mov.getMouseCoordinatesY()> this.getCoord().getY()) {
+			orientationUp = true;
+		}else {
+			orientationUp = false;
+		}
+		//TODO change sprite to looking away if orientationUp is true - cosmetic
+	}
+	
+	public boolean getOrientationUp() {
+		return orientationUp;
+	}
+	
+	/**
+	 * poll as much as movement to check if attacking possible cooldown after attacks though
+	 * Also this enters a for loop so maybe have it threaded depending how long loop takes.
+	 * @param zombies 
+	 */
+	//
+	public Zombies[] attack(Zombies[] zombies) {
+		boolean mouse = mov.getMouseClick();
+		if(mouse) {
+			for(Zombies zombie: zombies) {
+				if(closeZombie(zombie)) {
+					zombie.injured(this.getDamage());;
+				}
+			}
+		}
+		//TODO Make zombie bounce back and go in and out of invisibility if injured
+		return zombies;
+	}
+	
+	private boolean closeZombie(Zombies zombie) {
+		Point zomXY = new Point(zombie.getCoord());
+		Point chrXY = new Point(this.getCoord());
+		int rng = this.getRange();
+		int difX = (int)(chrXY.getX() - zomXY.getX());
+		int difY = (int)(chrXY.getY() - zomXY.getY());
+		int offsetX = (int)(-this.getHitBoxWidth()- zombie.getHitBoxWidth())/2;
+		int offsetY = (int)(-this.getHitBoxHeight()- zombie.getHitBoxHeight())/2;
+		if(this.getOrientationUp() && difY<0) {
+			if((Math.abs(difX) + offsetX)< rng && Math.abs(difY) +offsetY<rng) {
+				return true;
+			}
+			
+		}else if(this.getOrientationUp() == false && difY>=0 ) {
+			if(Math.abs(difX) + offsetX< rng && difY +offsetY<rng) {
+				return true;
+		}
+		}
+		return false;
+		
+		
+	}
+	
+	public int getRange() {
+		if (this.weapon == null) {
+			return range;
+		}else {
+			return this.weapon.getRange();
+		}
+	}
+	
+	@Override
+	public int getSpeed() {
+		return (int)(this.speed * spdMod);
+	}
+	
 }
