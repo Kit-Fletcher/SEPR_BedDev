@@ -16,12 +16,12 @@ public class PowerUps extends Item {
 	/*
 	 * Applies the effect based on the PowerUp type.
 	 * @param Player
-	 * /
+	 */
 
 	public void applyEffect(Player currentPlayer) {
 
 		if (this.getType() == "increaseHealth") {
-			currentPlayer.setHealth(currentPlayer.getHelth + 20);
+			currentPlayer.setHealth(currentPlayer.getHealth() + 20);
 		} else if (this.getType() == "decreaseDamage") {
 			currentPlayer.setDamage(currentPlayer.getDamage() - 2);
 		} else if (this.getType() == "increaseSpeed") {
