@@ -58,7 +58,7 @@ public class Characters extends Sprite {
 		super(sprite);
 		
 		this.type = type;// Fresher or Gresher/ boss or pawn
-
+		mov = new Movement();
 
 		initialize();
 	}
@@ -67,7 +67,7 @@ public class Characters extends Sprite {
 		this.health = 20;
 		this.isAlive = true;
 		this.setSize(WIDTH,HEIGHT);
-		this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		//this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 	}
 	
 	@Override

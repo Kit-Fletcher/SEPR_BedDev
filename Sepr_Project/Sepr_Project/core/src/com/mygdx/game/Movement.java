@@ -71,8 +71,8 @@ public class Movement {
 			}else if( Math.abs(difY)<=zombie.getSpeed()) {
 				zombie.translateX(zombie.getSpeed()* (difX/Math.abs(difX)));
 			}else {
-				zombie.translateX(zombie.getSpeed()* (difX/Math.abs(difX)));
-				zombie.translateY(zombie.getSpeed()* (difY/Math.abs(difY)));
+				zombie.translateX((zombie.getSpeed()/2)* (difX/Math.abs(difX)));
+				zombie.translateY((zombie.getSpeed()/2)* (difY/Math.abs(difY)));
 			}
 			
 		}else {

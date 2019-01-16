@@ -19,6 +19,7 @@ public class Zombies extends Characters{
 		this.setId(id);
 		this.hardMod = multiplier;
 		this.setAttackRadius(Math.round(attackRadius * hardMod));
+		this.setAttackRadius(attackRadius);
 		initialize();
 	}
 	
@@ -33,8 +34,7 @@ public class Zombies extends Characters{
 			this.hitBoxDim = new int[] {37,69,16,78};
 					
 		}
-		this.setAttackRadius(100);
-		this.setPosition(200, 200);
+		this.setPosition(Math.round((Math.random()*Gdx.graphics.getWidth()+1)), Math.round(Math.random()*Gdx.graphics.getHeight()-1));
 	}
 	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 	
 	
