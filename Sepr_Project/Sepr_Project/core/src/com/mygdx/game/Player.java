@@ -136,7 +136,11 @@ public class Player extends Characters {
 		//TODO Make zombie bounce back and go in and out of invisibility if injured
 		return zombies;
 	}
-	
+	/**
+	 * Checks whether a zombie is in range
+	 * @param zombie
+	 * @return true if its within range
+	 */
 	private boolean closeZombie(Zombies zombie) {
 		Point zomXY = new Point(zombie.getCoord());
 		Point chrXY = new Point(this.getCoord());
@@ -154,6 +158,29 @@ public class Player extends Characters {
 			if(Math.abs(difX) + offsetX< rng && difY +offsetY<rng) {
 				return true;
 		}
+		}
+		return false;
+		
+		
+	}
+	
+	/**
+	 * Checks if the character is touching a building
+	 * @param building sprite of the building to be touched
+	 * @return true if touching else false
+	 */
+	private boolean touchBuilding(Sprite building) {
+		Point zomXY = new Point((int)(building.getX() + building.getWidth()/2),(int)(building.getY()+building.getHeight()/2));
+		Point chrXY = new Point(this.getCoord());
+		int rng = this.getRange();
+		int difX = (int)(chrXY.getX() - zomXY.getX());
+		int difY = (int)(chrXY.getY() - zomXY.getY());
+		int offsetX = (int)(-this.getHitBoxWidth()- building.getWidth())/2;
+		int offsetY = (int)(-this.getHitBoxHeight()- (int)building.getHeight())/2;
+		
+		if((Math.abs(difX) + offsetX)< 0 && Math.abs(difY +offsetY)<0) {
+		return true;
+		
 		}
 		return false;
 		
