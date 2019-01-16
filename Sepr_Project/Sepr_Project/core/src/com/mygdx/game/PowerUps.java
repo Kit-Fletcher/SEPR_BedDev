@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /*
@@ -9,19 +7,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class PowerUps extends Item {
 
-	public PowerUps(Sprite sprite, String type) {
-		super(sprite, type);
+	public PowerUps(Sprite sprite, int id, String type) {
+		super(sprite, id, type);
 	}
-	
+
 	/*
 	 * Applies the effect based on the PowerUp type.
+	 * 
 	 * @param Player
-	 * /
+	 */
 
 	public void applyEffect(Player currentPlayer) {
 
 		if (this.getType() == "increaseHealth") {
-			currentPlayer.setHealth(currentPlayer.getHelth + 20);
+			currentPlayer.setHealth(currentPlayer.getHealth() + 20);
 		} else if (this.getType() == "decreaseDamage") {
 			currentPlayer.setDamage(currentPlayer.getDamage() - 2);
 		} else if (this.getType() == "increaseSpeed") {

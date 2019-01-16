@@ -171,6 +171,10 @@ public class Characters extends Sprite {
 		return this.speed;
 	}
 	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
 	public int getRange() {
 		return this.range;
 	}
