@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,6 +31,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.Helper;
 import com.mygdx.uiutils.FontController;
 
+/*
+GameScreen: pass the power ups icons to game screen.
+ */
 public class GameScreen implements Screen {
 
 	private int screenWidth;
@@ -80,15 +84,21 @@ public class GameScreen implements Screen {
 	private float volume;
 	private TextureRegionDrawable health;
 	private TextureRegionDrawable powerUp;
-	
-	private Sprite chrSpr;
-	private Player chr;
+
+	// player parameters
+	private Sprite playerSpr;
+	private Player player;
 	private Zombies zmb;
 	private Texture img;
 	private List<Zombies> zombies;
 	private Sprite zmbSpr;
-	
-	
+	// player life
+	private ImageButton health1;
+	private ImageButton health2;
+	private ImageButton health3;
+	private ImageButton health4;
+	private ImageButton health5;
+	private ImageButton health6;
 
 	public GameScreen(final MainScreen game) {
 		this.game = game;
@@ -108,16 +118,27 @@ public class GameScreen implements Screen {
 		addUiStyles();
 		createBottomHUD();
 		createTopHUD();
+
+		// add player to screen
 		this.img = new Texture("MaleFresher.png");
-		this.chrSpr = new Sprite(this.img);
-		this.chr = new Player(this.chrSpr, "Gresher", null);
+		this.playerSpr = new Sprite(this.img);
+		this.player = new Player(this.playerSpr, "Gresher", null);
 		this.img = new Texture("Zombie1.png");
 		this.zmbSpr = new Sprite(this.img);
-		this.zmb = new Zombies(this.zmbSpr,"none",1,100,1 );
+		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
 		this.zombies = new ArrayList<Zombies>();
 		this.zombies.add(this.zmb);
-		
-		
+
+	}
+
+	private void addPlayer() {
+
+		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
+
+		Sprite playerSprite = new Sprite();
+		playerSprite.setRegion(playerTextureRegion);
+
+		player = new Player(playerSprite, "Fresher");
 
 	}
 
@@ -206,7 +227,8 @@ public class GameScreen implements Screen {
 				if (actor == pauseButton) {
 					System.out.println("pauseButton  is clicked");
 					if (!isPause)
-						pauseGame();
+						System.out.println("pauseGame()");
+					pauseGame();
 
 				}
 
@@ -252,12 +274,12 @@ public class GameScreen implements Screen {
 		Label currentObjectiveName = new Label("Explore", hudLabelStyle);
 		currentObjectiveName.setWrap(true);
 
-		ImageButton health1 = new ImageButton(health, health);
-		ImageButton health2 = new ImageButton(health, health);
-		ImageButton health3 = new ImageButton(health, health);
-		ImageButton health4 = new ImageButton(health, health);
-		ImageButton health5 = new ImageButton(health, health);
-		ImageButton health6 = new ImageButton(health, health);
+		health1 = new ImageButton(health, health);
+		health2 = new ImageButton(health, health);
+		health3 = new ImageButton(health, health);
+		health4 = new ImageButton(health, health);
+		health5 = new ImageButton(health, health);
+		health6 = new ImageButton(health, health);
 
 		ImageButton powerUp1 = new ImageButton(powerUp, powerUp);
 		ImageButton powerUp2 = new ImageButton(powerUp, powerUp);
@@ -326,28 +348,6 @@ public class GameScreen implements Screen {
 				.padBottom(2);
 		currentObjectiveTable.add(objectiveTextCell).size(Gdx.graphics.getWidth() / 5, screenHeight / 5).pad(2);
 
-		// Add a listener to the button. ChangeListener is fired when the button's
-		// checked state changes, eg when clicked,
-		// Button#setChecked() is called, via a key press, etc. If the event.cancel() is
-		// called, the checked state will be reverted.
-		// ClickListener could have been used, but would only fire when clicked. Also,
-		// canceling a ClickListener event won't
-		// revert the checked state.
-
-		rootTable.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Clicked! Is checked: UI ");
-				// textButton.setText("Command");
-				// g.setScreen( new GameScreen());
-				// buttonFlag = true;
-				if (actor == playerAvatarImageButton) {
-					Helper.println("Player avatar touched ");
-				}
-
-			}
-		});
-
 		stage.addActor(rootTable);
 
 	}
@@ -364,17 +364,17 @@ public class GameScreen implements Screen {
 
 		// tell the camera to update its matrices.
 		camera.update();
-		chr.getMovement();
-		chr.attack(zombies);
-		
-		for(Zombies zombie : zombies) {
+		player.getMovement();
+		player.attack(zombies);
+
+		for (Zombies zombie : zombies) {
 			if (zombie.isAlive) {
-				zombie.getMovement(chr);
-				zombie.attack(chr);
+				zombie.getMovement(player);
+				zombie.attack(player);
 			}
 		}
-		for(int i=0; i< zombies.size(); i++) {
-			if(zombies.get(i).isAlive() == false) {
+		for (int i = 0; i < zombies.size(); i++) {
+			if (zombies.get(i).isAlive() == false) {
 				zombies.remove(i);
 			}
 		}
@@ -384,13 +384,12 @@ public class GameScreen implements Screen {
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		chr.draw(game.batch);
-		for(Zombies zombie : zombies) {
+		player.draw(game.batch);
+		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
 		}
-		
+
 		game.batch.end();
-		
 
 		/*
 		 * // process user input if (Gdx.input.isTouched()) { Vector3 touchPos = new
@@ -410,74 +409,67 @@ public class GameScreen implements Screen {
 			System.out.println(e);
 		}
 
-		// WILL WORK ONCE A PLAYER IS CREATED
-		// if(player.getHealth() < 100 && player.getHealth() > 80){
-		//
-		// health1.setVisible(true);
-		// health2.setVisible(true);
-		// health3.setVisible(true);
-		// health4.setVisible(true);
-		// health5.setVisible(true);
-		// health6.setVisible(false);
-		// }else if(player.getHealth() < 80 && player.getHealth() > 60){
-		//
-		// health1.setVisible(true);
-		// health2.setVisible(true);
-		// health3.setVisible(true);
-		// health4.setVisible(true);
-		// health5.setVisible(false);
-		// health6.setVisible(false);
-		// }else if(player.getHealth() < 60 && player.getHealth() > 40){
-		//
-		// health1.setVisible(true);
-		// health2.setVisible(true);
-		// health3.setVisible(true);
-		// health4.setVisible(false);
-		// health5.setVisible(false);
-		// health6.setVisible(false);
-		// }else if(player.getHealth() < 40 && player.getHealth() > 20){
-		//
-		// health1.setVisible(true);
-		// health2.setVisible(true);
-		// health3.setVisible(false);
-		// health4.setVisible(false);
-		// health5.setVisible(false);
-		// health6.setVisible(false);
-		// }else if(player.getHealth() < 20 && player.getHealth() >= 10){
-		//
-		// health1.setVisible(true);
-		// health2.setVisible(false);
-		// health3.setVisible(false);
-		// health4.setVisible(false);
-		// health5.setVisible(false);
-		// health6.setVisible(false);
-		// }else if(player.getHealth() < 10 && player.getHealth() >= 0){
-		//
-		// health1.setVisible(false);
-		// health2.setVisible(false);
-		// health3.setVisible(false);
-		// health4.setVisible(false);
-		// health5.setVisible(false);
-		// health6.setVisible(false);
-		// }
+		// WILL WORK ONCE A player IS CREATED
+		if (player.getHealth() < 100 && player.getHealth() > 80) {
+
+			health1.setVisible(true);
+			health2.setVisible(true);
+			health3.setVisible(true);
+			health4.setVisible(true);
+			health5.setVisible(true);
+			health6.setVisible(false);
+		} else if (player.getHealth() < 80 && player.getHealth() > 60) {
+
+			health1.setVisible(true);
+			health2.setVisible(true);
+			health3.setVisible(true);
+			health4.setVisible(true);
+			health5.setVisible(false);
+			health6.setVisible(false);
+		} else if (player.getHealth() < 60 && player.getHealth() > 40) {
+
+			health1.setVisible(true);
+			health2.setVisible(true);
+			health3.setVisible(true);
+			health4.setVisible(false);
+			health5.setVisible(false);
+			health6.setVisible(false);
+		} else if (player.getHealth() < 40 && player.getHealth() > 20) {
+
+			health1.setVisible(true);
+			health2.setVisible(true);
+			health3.setVisible(false);
+			health4.setVisible(false);
+			health5.setVisible(false);
+			health6.setVisible(false);
+		} else if (player.getHealth() < 20 && player.getHealth() >= 10) {
+
+			health1.setVisible(true);
+			health2.setVisible(false);
+			health3.setVisible(false);
+			health4.setVisible(false);
+			health5.setVisible(false);
+			health6.setVisible(false);
+		} else if (player.getHealth() < 10 && player.getHealth() >= 0) {
+
+			health1.setVisible(false);
+			health2.setVisible(false);
+			health3.setVisible(false);
+			health4.setVisible(false);
+			health5.setVisible(false);
+			health6.setVisible(false);
+		}
 
 		// Test purpose
 
 		/*
 		 * check player damage by pressing d
 		 */
-		// if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
-		//
-		// Helper.println("Damage done by 10");
-		//
-		// player.injured(10);
-		//
-		// if(!player.isPlayerAlive()){
-		//
-		// Helper.println("Player is dead");
-		// }
-		//
-		// }
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+
+			player.setHealth(player.getHealth() - 10);
+			Helper.println(" current health" + player.getHealth());
+		}
 
 	}
 
