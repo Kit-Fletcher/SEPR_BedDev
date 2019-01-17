@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.awt.Point;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,7 +35,7 @@ public class Player extends Characters {
 	protected void initialize() {
 		super.initialize();
 		this.hitBoxDim = new int[] {31,62,16,81};
-		this.speed = 5;
+		this.speed = 2;
 		this.health = 100;
 		this.damage = 10;
 		this.dmgMod = 1f;
@@ -42,7 +43,7 @@ public class Player extends Characters {
 		if (type == "Gresher") {
 			this.dmgMod = 2f;
 			this.spdMod = 1.5f;
-			this.injMod = 2f;
+			this.injMod = 1f;
 		}
 		
 		}
@@ -104,6 +105,7 @@ public class Player extends Characters {
 	 * Moves the sprite around the screen based on user inputs
 	 */
 	public void getMovement() {
+		
 		Point xy= new Point(mov.getPlayerMovement(this)); 
 		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
 		if(Gdx.graphics.getHeight()- mov.getMouseCoordinatesY()> this.getCoord().getY()) {
@@ -124,7 +126,7 @@ public class Player extends Characters {
 	 * @param zombies 
 	 */
 	//
-	public Zombies[] attack(Zombies[] zombies) {
+	public List<Zombies> attack(List<Zombies> zombies) {
 		boolean mouse = mov.getMouseClick();
 		if(mouse) {
 			for(Zombies zombie: zombies) {

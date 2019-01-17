@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -8,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -76,6 +80,15 @@ public class GameScreen implements Screen {
 	private float volume;
 	private TextureRegionDrawable health;
 	private TextureRegionDrawable powerUp;
+	
+	private Sprite chrSpr;
+	private Player chr;
+	private Zombies zmb;
+	private Texture img;
+	private List<Zombies> zombies;
+	private Sprite zmbSpr;
+	
+	
 
 	public GameScreen(final MainScreen game) {
 		this.game = game;
@@ -95,6 +108,16 @@ public class GameScreen implements Screen {
 		addUiStyles();
 		createBottomHUD();
 		createTopHUD();
+		this.img = new Texture("MaleFresher.png");
+		this.chrSpr = new Sprite(this.img);
+		this.chr = new Player(this.chrSpr, "Gresher", null);
+		this.img = new Texture("Zombie1.png");
+		this.zmbSpr = new Sprite(this.img);
+		this.zmb = new Zombies(this.zmbSpr,"none",1,100,1 );
+		this.zombies = new ArrayList<Zombies>();
+		this.zombies.add(this.zmb);
+		
+		
 
 	}
 
@@ -341,14 +364,33 @@ public class GameScreen implements Screen {
 
 		// tell the camera to update its matrices.
 		camera.update();
-
+		chr.getMovement();
+		chr.attack(zombies);
+		
+		for(Zombies zombie : zombies) {
+			if (zombie.isAlive) {
+				zombie.getMovement(chr);
+				zombie.attack(chr);
+			}
+		}
+		for(int i=0; i< zombies.size(); i++) {
+			if(zombies.get(i).isAlive() == false) {
+				zombies.remove(i);
+			}
+		}
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		chr.draw(game.batch);
+		for(Zombies zombie : zombies) {
+			zombie.draw(game.batch);
+		}
+		
 		game.batch.end();
+		
 
 		/*
 		 * // process user input if (Gdx.input.isTouched()) { Vector3 touchPos = new
