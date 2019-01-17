@@ -28,11 +28,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mygdx.Helper;
 import com.mygdx.uiutils.FontController;
 
 /*
-GameScreen: pass the power ups icons to game screen.
+GameScreen:
  */
 public class GameScreen implements Screen {
 
@@ -131,24 +130,9 @@ public class GameScreen implements Screen {
 
 	}
 
-	private void addPlayer() {
-
-		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-
-		Sprite playerSprite = new Sprite();
-		playerSprite.setRegion(playerTextureRegion);
-
-		player = new Player(playerSprite, "Fresher");
-
-	}
 
 	private void addUiStyles() {
-
-		// A skin can be loaded via JSON or defined programmatically, either is fine.
-		// Using a skin is optional but strongly
-		// recommended solely for the convenience of getting a texture, region, etc as a
-		// drawable, tinted drawable, etc.
-
+		
 		Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.WHITE);
 		pixmap.fill();
@@ -167,36 +151,28 @@ public class GameScreen implements Screen {
 		bfont.getData().setScale(.25f, .25f);
 		skin.add("default", bfont);
 
-		// Configure a TextButtonStyle and name it "default". Skin resources are stored
-		// by type, so this doesn't overwrite the font.
+		
+		
 		textButtonStyle = new TextButton.TextButtonStyle();
 		textButtonStyle.up = skin.newDrawable("clear", Color.GOLD);
 		textButtonStyle.down = skin.newDrawable("clear", Color.GOLDENROD);
-		// textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		// textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
 		textButtonStyle.font = skin.getFont("default");
 
 		imageButtonStyle = new ImageButton.ImageButtonStyle();
 		imageButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
 		imageButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-		// imageButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		// imageButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
 		imageButtonStylem = new ImageButton.ImageButtonStyle();
 		TextureRegion minimap = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-		imageButtonStylem.up = new TextureRegionDrawable(minimap);// skin.newDrawable("white", Color.DARK_GRAY);
-		// imageButtonStylem.down = skin.newDrawable("white", Color.DARK_GRAY);
-		// imageButtonStylem.checked = skin.newDrawable("white", Color.BLUE);
-		// imageButtonStylem.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		imageButtonStylem.up = new TextureRegionDrawable(minimap);
 
 		hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
 	}
 
 	private void createTopHUD() {
 
-		final Label timerLabel = new Label("Time: ", hudLabelStyle);
-		Label timerTextLabel = new Label("00 ", hudLabelStyle);
+
 		final TextButton pauseButton = new TextButton("Pause", textButtonStyle);
 		final TextButton inventoryButton = new TextButton("Inventory", textButtonStyle);
 
@@ -205,8 +181,6 @@ public class GameScreen implements Screen {
 		// rootTableOverlay.setDebug(true);
 
 		Table topControllCell = new Table();
-		topControllCell.add(timerLabel).expandX().left();
-		topControllCell.add(timerTextLabel).expandX();
 		topControllCell.row();
 		topControllCell.add(pauseButton).size(topRightHudButtonWidth, topRightHudButtonheight).expand().pad(2).left();
 		topControllCell.row();
@@ -233,7 +207,6 @@ public class GameScreen implements Screen {
 				}
 
 				if (actor == inventoryButton) {
-					System.out.println("inventoryButton  is clicked");
 					game.setScreen(new Inventory(game));
 				}
 			}
@@ -391,16 +364,6 @@ public class GameScreen implements Screen {
 
 		game.batch.end();
 
-		/*
-		 * // process user input if (Gdx.input.isTouched()) { Vector3 touchPos = new
-		 * Vector3(); touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		 * camera.unproject(touchPos); shipRectangle.x = touchPos.x - 64 / 2; }
-		 */
-
-		/*
-		 * to get user input in desktop
-		 */
-		// if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
@@ -409,7 +372,7 @@ public class GameScreen implements Screen {
 			System.out.println(e);
 		}
 
-		// WILL WORK ONCE A player IS CREATED
+		
 		if (player.getHealth() < 100 && player.getHealth() > 80) {
 
 			health1.setVisible(true);
@@ -460,16 +423,6 @@ public class GameScreen implements Screen {
 			health6.setVisible(false);
 		}
 
-		// Test purpose
-
-		/*
-		 * check player damage by pressing d
-		 */
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-
-			player.setHealth(player.getHealth() - 10);
-			Helper.println(" current health" + player.getHealth());
-		}
 
 	}
 
@@ -507,11 +460,8 @@ public class GameScreen implements Screen {
 
 		Pixmap pixmapBckg = new Pixmap(100, 8, Pixmap.Format.RGBA8888);
 		pixmapBckg.setColor(Color.GOLD);
-		// pixmapBckg.setColor(0,0,0,1f);
 		pixmapBckg.fill();
-
-		// new Texture(Gdx.files.internal("metor.png"))
-
+		
 		TextureRegion textureRegionOverlay = new TextureRegion(new Texture(pixmapBckg));
 
 		isPause = true;
@@ -572,12 +522,7 @@ public class GameScreen implements Screen {
 		pauseGroup.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Clicked! Is checked: Pause ");
-				// textButton.setText("Command");
-				// g.setScreen( new GameScreen());
-				// buttonFlag = true;
 				if (actor == backButton) {
-					Helper.println("Pause screen touched ");
 					resumeGame();
 				}
 
@@ -625,5 +570,4 @@ public class GameScreen implements Screen {
 			pauseGroup.remove();
 		}
 	}
-
 }

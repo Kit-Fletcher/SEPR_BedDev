@@ -44,7 +44,7 @@ public class Inventory implements Screen {
 	final Pixmap pixmap2;
 
 	/*
-	 * Item needs to be added with unique id as items are saved using a Hashmap
+	 * Item needs to be added with unique id, as items are saved using a Hashmap
 	 * 
 	 */
 
@@ -108,15 +108,6 @@ public class Inventory implements Screen {
 			System.out.println(e);
 		}
 
-		// if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-		// game.setScreen(new GameScreen(game));
-		// dispose();
-		// }
-		//
-		// if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-		// Item item = new Item(new Sprite(texture1), "type1");
-		// addItem(item);
-		// }
 
 	}
 
