@@ -1,17 +1,22 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
+import java.io.Console;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-/*
-MainScreen is the entry point, this extends Game
-This allows the application to easily have multiple screens.
- */
-
-public class MainScreen extends Game {
+public class MainScreen implements Screen {
 	
+	  SpriteBatch batch;
+	
+	  Main game;
 
 	  Texture background;
 
@@ -21,7 +26,7 @@ public class MainScreen extends Game {
 	  Texture loadButtonInActive;
 	  Texture quitButtonActive;
 	  Texture quitButtonInActive;
-
+	  
 	  //standard values assuming a 21:9 ratio of
 	  //the button sizes
 	  private static final int btnWidth = 210;
@@ -34,16 +39,9 @@ public class MainScreen extends Game {
 	  private static final int quitX = 100;
 	  private static final int quitY = 300;
 
-	  SpriteBatch batch;
-
-	    public void create() {
-	        batch = new SpriteBatch();
-	        //this.setScreen(new GameScreen(this));
-	    }
-	  
-	  //SEPRGame game is a place holder for a
-	  //game object for the main game
-	  public MainScreen () {
+	
+	  public MainScreen (Main game) {
+		  this.game = game;
 	      background = new Texture("backgroundSEPR.png");
 	      startButtonActive = new Texture("startActivated.png");
 	      startButtonInActive = new Texture("startUnactivated.png");
@@ -51,72 +49,106 @@ public class MainScreen extends Game {
 	      loadButtonInActive = new Texture("loadUnactivated.png");
 	      quitButtonActive = new Texture("quitActivated.png");
 	      quitButtonInActive = new Texture("quitUnactivated.png");
-
 	  }
 
-	 
-	  public void render(float delta) {
+	
+	
+	
+	
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
 
-	      batch.begin();
+	@Override
+	public void render(float delta) {
 
-	    
-	    batch.draw(background, 0, 0, 500, 500);
-	    
-	    int x = Gdx.input.getX();
+		int x = Gdx.input.getX();
 	    int y = 500 - Gdx.input.getY();
+		
+	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+	    	if (x < (startX + btnWidth) && x > startX &&
+		            y < (startY + btnHeight) && y > startY)
+		    {
+	    		game.setScreen(new GameScreen(game));	
+		    }
+    	}
+	    
+	    game.batch.begin();
+	    
+	    game.batch.draw(background, 0, 0, 500, 500);
 	    
 	    //decides if the mouse is within button region
 	    //if is within region, changes button to active state
 	    if (x < (startX + btnWidth) && x > startX &&
 	            y < (startY + btnHeight) && y > startY)
 	    {
-	      batch.draw(startButtonActive, startX, startY, btnWidth, btnHeight);
+	    	game.batch.draw(startButtonActive, startX, startY, btnWidth, btnHeight);
+	    	
+	    	
 	    } else {
-	      batch.draw(startButtonInActive, startX, startY, btnWidth, btnHeight);
+	    	game.batch.draw(startButtonInActive, startX, startY, btnWidth, btnHeight);
 	    }
-
+	    
 
 	    if (x < (loadX + btnWidth) && x > loadX &&
 	            y < (loadY + btnHeight) && y > loadY)
 	    {
-	      batch.draw(loadButtonActive, loadX, loadY, btnWidth, btnHeight);
+	    	game.batch.draw(loadButtonActive, loadX, loadY, btnWidth, btnHeight);
 	    } else {
-	      batch.draw(loadButtonInActive, loadX, loadY, btnWidth, btnHeight);
+	    	game.batch.draw(loadButtonInActive, loadX, loadY, btnWidth, btnHeight);
 	    }
 
 
 	    if (x < (quitX + btnWidth) && x > quitX &&
 	            y < (quitY + btnHeight) && y > quitY)
 	    {
-	      batch.draw(quitButtonActive, quitX, quitY, btnWidth, btnHeight);
+	    	game.batch.draw(quitButtonActive, quitX, quitY, btnWidth, btnHeight);
 	    } else {
-	      batch.draw(quitButtonInActive, quitX, quitY, btnWidth, btnHeight);
+	    	game.batch.draw(quitButtonInActive, quitX, quitY, btnWidth, btnHeight);
 	    }
 
-	    batch.end();
-
+	    
+	    game.batch.end();
+	    
+	    
 	  }
 
 	
 	
 	
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
-    
-
-    public void render() {
-        super.render();
-
-
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-
-    }
-
-    public void dispose() {
-        batch.dispose();
-    }
+	
 }

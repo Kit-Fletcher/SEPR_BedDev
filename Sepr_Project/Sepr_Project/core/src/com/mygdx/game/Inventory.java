@@ -9,7 +9,7 @@ import com.mygdx.uiutils.FontController;
 
 public class Inventory implements Screen {
 
-    private final MainScreen game;
+    private final Main game;
     private FontController fontController;
     private Texture bckgImage;
     private OrthographicCamera camera;
@@ -18,7 +18,7 @@ public class Inventory implements Screen {
     public void show() {
 
     }
-    public Inventory(final MainScreen game) {
+    public Inventory(final Main game) {
         this.game = game;
 
         camera = new OrthographicCamera();

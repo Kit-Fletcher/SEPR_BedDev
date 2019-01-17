@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 	private int screenWidth;
 	private int screenHeight;
 
-	private final MainScreen game;
+	private final Main game;
 	private Texture bckgImage;
 	private OrthographicCamera camera;
 
@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
 	
 	
 
-	public GameScreen(final MainScreen game) {
+	public GameScreen(final Main game) {
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
 		skin = new Skin();
