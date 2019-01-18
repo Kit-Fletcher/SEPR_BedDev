@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.uiutils.FontController;
 
 /*
-GameScreen:
+GameScreen
  */
 public class GameScreen implements Screen {
 
@@ -130,9 +130,8 @@ public class GameScreen implements Screen {
 
 	}
 
-
 	private void addUiStyles() {
-		
+
 		Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.WHITE);
 		pixmap.fill();
@@ -151,8 +150,6 @@ public class GameScreen implements Screen {
 		bfont.getData().setScale(.25f, .25f);
 		skin.add("default", bfont);
 
-		
-		
 		textButtonStyle = new TextButton.TextButtonStyle();
 		textButtonStyle.up = skin.newDrawable("clear", Color.GOLD);
 		textButtonStyle.down = skin.newDrawable("clear", Color.GOLDENROD);
@@ -171,7 +168,6 @@ public class GameScreen implements Screen {
 	}
 
 	private void createTopHUD() {
-
 
 		final TextButton pauseButton = new TextButton("Pause", textButtonStyle);
 		final TextButton inventoryButton = new TextButton("Inventory", textButtonStyle);
@@ -207,12 +203,17 @@ public class GameScreen implements Screen {
 				}
 
 				if (actor == inventoryButton) {
-					game.setScreen(new Inventory(game));
+					gotToInventoryScreen();
 				}
 			}
 		});
 
 		stage.addActor(rootTableOverlay);
+	}
+
+	private void gotToInventoryScreen() {
+
+		game.setScreen(new Inventory(game, this));
 	}
 
 	private void createBottomHUD() {
@@ -327,7 +328,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -364,7 +365,6 @@ public class GameScreen implements Screen {
 
 		game.batch.end();
 
-
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
 			stage.draw();
@@ -372,7 +372,6 @@ public class GameScreen implements Screen {
 			System.out.println(e);
 		}
 
-		
 		if (player.getHealth() < 100 && player.getHealth() > 80) {
 
 			health1.setVisible(true);
@@ -423,6 +422,16 @@ public class GameScreen implements Screen {
 			health6.setVisible(false);
 		}
 
+		// Test purpose
+
+		/*
+		 * check player damage by pressing d
+		 */
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+
+			player.injured(10);
+
+		}
 
 	}
 
@@ -461,7 +470,7 @@ public class GameScreen implements Screen {
 		Pixmap pixmapBckg = new Pixmap(100, 8, Pixmap.Format.RGBA8888);
 		pixmapBckg.setColor(Color.GOLD);
 		pixmapBckg.fill();
-		
+
 		TextureRegion textureRegionOverlay = new TextureRegion(new Texture(pixmapBckg));
 
 		isPause = true;

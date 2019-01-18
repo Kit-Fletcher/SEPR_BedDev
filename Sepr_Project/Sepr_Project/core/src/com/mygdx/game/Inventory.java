@@ -1,16 +1,17 @@
+
 package com.mygdx.game;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,9 +29,13 @@ import com.mygdx.uiutils.FontController;
 public class Inventory implements Screen {
 
 	private final Main game;
+	private final GameScreen parent;
+
 	private FontController fontController;
 	private Texture bckgImage;
 	private OrthographicCamera camera;
+
+	private ClickListener clickListener;
 
 	ScrollPane scrollpane;
 	Skin skin;
@@ -44,7 +49,7 @@ public class Inventory implements Screen {
 	final Pixmap pixmap2;
 
 	/*
-	 * Item needs to be added with unique id, as items are saved using a Hashmap
+	 * Item needs to be added with unique id as items are saved using a Hashmap.
 	 * 
 	 */
 
@@ -52,8 +57,9 @@ public class Inventory implements Screen {
 
 	private HashMap<Integer, Table> itemTableList = new HashMap<Integer, Table>();
 
-	public Inventory(Main game) {
+	public Inventory(final Main game, final GameScreen parent) {
 		this.game = game;
+		this.parent = parent;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -76,13 +82,14 @@ public class Inventory implements Screen {
 
 		// setup skin
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
-		texture1 = new Texture(Gdx.files.internal("items/mikesStick.png"));
-
-		Item item = new Item(new Sprite(texture1), 1, "type1");
-
-		itemList.put(item.getId(), item);
-
+		// gets user input to back to GameScreen.
+		clickListener = new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.setScreen(parent);
+				dispose();
+			}
+		};
 	}
 
 	@Override
@@ -108,6 +115,10 @@ public class Inventory implements Screen {
 			System.out.println(e);
 		}
 
+		if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+			game.setScreen(parent);
+			dispose();
+		}
 
 	}
 
@@ -118,7 +129,7 @@ public class Inventory implements Screen {
 	@Override
 	public void show() {
 
-		// table that holds the scroll pane
+		// table that holds the scrollpane
 		container = new Table();
 		container.setPosition(0, Gdx.graphics.getHeight() * .25f);
 		container.setWidth(Gdx.graphics.getWidth());
@@ -134,18 +145,12 @@ public class Inventory implements Screen {
 		table2.add(new Label("Back to Game", skin)).expandX(); // Y().fillY();
 
 		table2.setTouchable(Touchable.enabled);
-		table2.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new GameScreen(game));
-				dispose();
-			}
-		});
+		table2.addListener(clickListener);
 
 		// inner table that is used as a makeshift list.
 		innerContainer = new Table().pad(8);
 
-		// create the scrollpane
+		// create the scroll pane
 		scrollpane = new ScrollPane(innerContainer);
 
 		// add the scroll pane to the container with header and footer
@@ -158,7 +163,7 @@ public class Inventory implements Screen {
 		// setup stage
 		stage = new Stage();
 
-		// adding lsitener for the item tables
+		// adding listener for the item tables
 		container.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -186,7 +191,6 @@ public class Inventory implements Screen {
 	private void addItemsToList() {
 
 		for (Map.Entry<Integer, Item> entry : itemList.entrySet()) {
-			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 			Item item = entry.getValue();
 			addItemToTheList(item);
 		}
@@ -222,13 +226,12 @@ public class Inventory implements Screen {
 		else
 			table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pixmap2))));
 
-		// table.add(new Image(item.getImage())).expandY().fillY();
 		table.add(new Image(item.getImage())).size(item.getWidth(), item.getHeight());
 		table.add(new Label("", skin)).width(10f).expandY().fillY();// a spacer
 		table.add(new Label("Added Item From Map", skin)).expandY().fillY();
 		table.setTouchable(Touchable.enabled);
 		table.setName(String.valueOf(item.getId()));
-		// add the table to list so that we can remove it wheen needed
+		// add the table to a list so that we can remove it when needed
 		this.itemTableList.put(item.getId(), table);
 
 		innerContainer.row();
@@ -238,6 +241,7 @@ public class Inventory implements Screen {
 
 	@Override
 	public void hide() {
+
 	}
 
 	@Override
