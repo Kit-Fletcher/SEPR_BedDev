@@ -31,16 +31,17 @@ public class MainScreen implements Screen {
 	  //the button sizes
 	  private static final int btnWidth = 210;
 	  private static final int btnHeight = 90;
-
-	  private static final int loadX = 100;
-	  private static final int loadY = 100;
-	  private static final int startX = 100;
-	  private static final int startY = 200;
-	  private static final int quitX = 100;
-	  private static final int quitY = 300;
+	  private static final int offset = (Gdx.graphics.getHeight()/3 - btnHeight)/2;
+	  private static final int loadX = Gdx.graphics.getWidth()/2-btnWidth/2 ;
+	  private static final int loadY = (Gdx.graphics.getHeight() - btnHeight) - offset;
+	  private static final int startX = Gdx.graphics.getWidth()/2-btnWidth/2 ;
+	  private static final int startY = (Gdx.graphics.getHeight()*2/3 - btnHeight-offset) ;
+	  private static final int quitX = Gdx.graphics.getWidth()/2-btnWidth/2;
+	  private static final int quitY = (Gdx.graphics.getHeight()/3 - btnHeight) -offset;
 
 	
 	  public MainScreen (Main game) {
+		  System.out.println(Gdx.graphics.getHeight());
 		  this.game = game;
 	      background = new Texture("backgroundSEPR.png");
 	      startButtonActive = new Texture("startActivated.png");
@@ -65,7 +66,7 @@ public class MainScreen implements Screen {
 	public void render(float delta) {
 
 		int x = Gdx.input.getX();
-	    int y = 500 - Gdx.input.getY();
+	    int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 	    	if (x < (startX + btnWidth) && x > startX &&
@@ -77,7 +78,7 @@ public class MainScreen implements Screen {
 	    
 	    game.batch.begin();
 	    
-	    game.batch.draw(background, 0, 0, 500, 500);
+	    game.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	    
 	    //decides if the mouse is within button region
 	    //if is within region, changes button to active state
