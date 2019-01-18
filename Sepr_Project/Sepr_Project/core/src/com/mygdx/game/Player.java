@@ -155,7 +155,7 @@ public class Player extends Characters {
 		int difY = (int) (chrXY.getY() - zomXY.getY());
 		int offsetX = (-this.getHitBoxWidth() - zombie.getHitBoxWidth()) / 2;
 		int offsetY = (-this.getHitBoxHeight() - zombie.getHitBoxHeight()) / 2;
-		if (this.getOrientationUp() && difY < 0) {
+		if (this.getOrientationUp() && difY <= 0) {
 			if ((Math.abs(difX) + offsetX) < rng && Math.abs(difY) + offsetY < rng) {
 				return true;
 			}
@@ -176,17 +176,16 @@ public class Player extends Characters {
 	 *            sprite of the building to be touched
 	 * @return true if touching else false
 	 */
-	private boolean touchBuilding(Sprite building) {
-		Point zomXY = new Point((int) (building.getX() + building.getWidth() / 2),
+	public boolean touchBuilding(Sprite building) {
+		Point builXY = new Point((int) (building.getX() + building.getWidth() / 2),
 				(int) (building.getY() + building.getHeight() / 2));
 		Point chrXY = new Point(this.getCoord());
-		int rng = this.getRange();
-		int difX = (int) (chrXY.getX() - zomXY.getX());
-		int difY = (int) (chrXY.getY() - zomXY.getY());
+		int difX = (int) (chrXY.getX() - builXY.getX());
+		int difY = (int) (chrXY.getY() - builXY.getY());
 		int offsetX = (int) (-this.getHitBoxWidth() - building.getWidth()) / 2;
-		int offsetY = (-this.getHitBoxHeight() - (int) building.getHeight()) / 2;
+		int offsetY = (int) (-this.getHitBoxHeight() - building.getHeight()) / 2;
 
-		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY + offsetY) < 0) {
+		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
 			return true;
 
 		}

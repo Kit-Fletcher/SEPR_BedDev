@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -88,10 +89,16 @@ public class GameScreen implements Screen {
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
-	private Zombies zmb;
-	private Texture img;
+	
+	// Zombie parameters
+	private Sprite zombieSprite;
+	private Zombies zombie;
 	private List<Zombies> zombies;
-	private Sprite zmbSpr;
+	
+	// Building parameters
+	private Sprite building;
+	private static HashMap<String, Sprite> buildings;
+	
 	// player life
 	private ImageButton health1;
 	private ImageButton health2;
@@ -120,14 +127,18 @@ public class GameScreen implements Screen {
 		createTopHUD();
 
 		// add player to screen
-		this.img = new Texture("MaleFresher.png");
-		this.playerSpr = new Sprite(this.img);
-		this.player = new Player(this.playerSpr, "Gresher", null);
-		this.img = new Texture("Zombie1.png");
-		this.zmbSpr = new Sprite(this.img);
-		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
+		//this.img = new Texture("MaleFresher.png");
+		//this.playerSpr = new Sprite(this.img);
+		//this.player = new Player(this.playerSpr, "Gresher", null);
+		//this.img = new Texture("Zombie1.png");
+		//this.zmbSpr = new Sprite(this.img);
+		//this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
+		addPlayer();
+		this.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
-		this.zombies.add(this.zmb);
+		addZombie();
+		addZombie();
+		addBuilding("Compsci", 161,127,50,60);
 
 	}
 
@@ -138,10 +149,33 @@ public class GameScreen implements Screen {
 		Sprite playerSprite = new Sprite();
 		playerSprite.setRegion(playerTextureRegion);
 
-		player = new Player(playerSprite, "Fresher");
+		player = new Player(playerSprite, "Fresher", null);
+
+	}
+	private void addZombie() {
+
+		TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+
+		Sprite zombieSprite = new Sprite();
+		zombieSprite.setRegion(zombieTextureRegion);
+
+		Zombies zombie = new Zombies(zombieSprite, "Pawn", 1,100,1);
+		
+		this.zombies.add(zombie);
 
 	}
 
+	private void addBuilding(String name, int x, int y,int sizeX, int sizeY) {
+		TextureRegion buildingTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("box.png")));
+
+		
+		building = new Sprite();
+		building.setRegion(buildingTextureRegion);
+		building.setSize(sizeX,sizeY);
+		building.setPosition(x, y);
+		buildings.put(name,building);
+		
+	}
 	private void addUiStyles() {
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine.
@@ -366,7 +400,11 @@ public class GameScreen implements Screen {
 		camera.update();
 		player.getMovement();
 		player.attack(zombies);
-
+		for(String name: buildings.keySet()) {
+			if(player.touchBuilding(buildings.get(name))) {
+				//TODO Call stuff to change to that building
+			}
+		}
 		for (Zombies zombie : zombies) {
 			if (zombie.isAlive) {
 				zombie.getMovement(player);
@@ -388,7 +426,6 @@ public class GameScreen implements Screen {
 		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
 		}
-
 		game.batch.end();
 
 		/*
@@ -465,11 +502,11 @@ public class GameScreen implements Screen {
 		/*
 		 * check player damage by pressing d
 		 */
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-
-			player.setHealth(player.getHealth() - 10);
-			Helper.println(" current health" + player.getHealth());
-		}
+//		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+//
+//			player.setHealth(player.getHealth() - 10);
+//			Helper.println(" current health" + player.getHealth());
+//		}
 
 	}
 
