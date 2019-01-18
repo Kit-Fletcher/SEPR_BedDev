@@ -3,8 +3,6 @@ package com.mygdx.uiutils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.mygdx.Helper;
-
 import java.util.HashMap;
 
 public class FontController {
@@ -53,18 +51,16 @@ public class FontController {
 	public BitmapFont addFont(String fontName, String fontPath, float worldWidth, float worldHeight)
 	{
 		fontInfo = fontCache.get(fontName);		
-		Helper.println("fontinfo: " + fontInfo);
-//		if(!fontCache.containsKey(fontName)){
+
 		if(fontInfo == null){
-			Helper.println("loading font " + fontPath);
-//			Helper.println("Image is not loaded, loading from file: " + imageConstant);
+
+
 			try {
-//				Helper.println("Image loaded successfully, loading from file: " + imageConstant);
-				
+			
 				font = loadFont(fontPath, worldWidth, worldHeight);
 
 			} catch (Exception e) {
-				Helper.println("Font can not be loaded, loading from file: " + fontPath);
+
 				e.printStackTrace();
 				return null;
 			} 
@@ -80,18 +76,15 @@ public class FontController {
 	public BitmapFont addFont(String fontName, String fontPath)
 	{
 		fontInfo = fontCache.get(fontName);		
-		Helper.println("fontinfo: " + fontInfo);
-//		if(!fontCache.containsKey(fontName)){
+		
 		if(fontInfo == null){
-			Helper.println("loading font " + fontPath);
-//			Helper.println("Image is not loaded, loading from file: " + imageConstant);
+		
+
 			try {
-//				Helper.println("Image loaded successfully, loading from file: " + imageConstant);
-				
+			
 				font = loadFont(fontPath, worldWidth, worldHeight);
 
 			} catch (Exception e) {
-				Helper.println("Font can not be loaded, loading from file: " + fontPath);
 				e.printStackTrace();
 				return null;
 			} 
@@ -110,7 +103,6 @@ public class FontController {
 
 		fontInfo = fontCache.get(fontName);		
 		if(fontInfo == null){
-			Helper.println("Font not found: " + fontName);
 			return null;
 		}
 		else
