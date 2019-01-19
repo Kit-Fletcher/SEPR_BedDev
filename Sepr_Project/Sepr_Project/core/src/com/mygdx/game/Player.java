@@ -116,9 +116,7 @@ public class Player extends Characters {
 	}
 
 	/**
-	 * poll as much as movement to check if attacking possible cooldown after
-	 * attacks though Also this enters a for loop so maybe have it threaded
-	 * depending how long loop takes.
+	 * Checks if player is attacking and does the attack
 	 * 
 	 * @param zombies
 	 */
@@ -126,6 +124,7 @@ public class Player extends Characters {
 	public List<Zombies> attack(List<Zombies> zombies) {
 		boolean mouse = mov.getMouseClick();
 		if (mouse) {
+			//TODO attack animation
 			for (Zombies zombie : zombies) {
 				if (closeZombie(zombie)) {
 					zombie.injured(this.getDamage());
@@ -133,6 +132,7 @@ public class Player extends Characters {
 				}
 			}
 		}
+		//TODO stop attack animation
 		// TODO Make zombie bounce back and go in and out of invisibility if injured
 		return zombies;
 	}

@@ -82,11 +82,13 @@ public class Zombies extends Characters{
 		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
 	}
 	public Player attack(Player chr) {
-		boolean mouse = mov.getMouseClick();
+		
 		if(closePlayer(chr)) {
+			//TODO attack animation
 			chr.injured(this.getDamage());
 			
 		}
+		//TODO Stop attack animation
 		//TODO Make Player bounce back and go in and out of invisibility if injured
 		return chr;
 	}
