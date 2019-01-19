@@ -98,6 +98,8 @@ public class GameScreen implements Screen {
     // Building parameters
     private Sprite building;
     private static HashMap<String, Sprite> buildings;
+    private Boolean start = true;
+    private String old;
     
 
 	// player life
@@ -180,29 +182,65 @@ public class GameScreen implements Screen {
     
     private void changeScreen(String name) {
     	//TODO add moving character and resetting new zombies
-    	for (int i = 0; i < zombies.size(); i++) {
-    		zombies.remove(i);   
-        }
+    	zombies.clear();
     	buildings.clear();
     	if(name == "CompSci") {
+    		
     		bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-    		addBuilding("LakeSide",0,435,37,28);
-    		newRoom(new Point(215,157),2, false);
+    		
+    		addBuilding("LakeSide1",0,435,37,28);
+    		addBuilding("LakeSide2",0,255,37,28);
+    		addBuilding("LakeSide3",0,0,37,28);
+    		if(start) {
+    			newRoom(new Point(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2),0, false);
+    			start = false;
+    			//TODO put mike in
+    		}else {
+    			
+    			newRoom(new Point(20,255),1, false);
+    		}
+    		old = name;
+    		//TODO if has stick then boss
+    		
     	}else if(name == "Central"){
-    		bckgImage = new Texture((Gdx.files.internal(("central_hall.png"))));
+    		bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
+    		addBuilding("LakeSide1",80,166,33,13);
+    		addBuilding("LakeSide2",529,166,33,13);
+    		newRoom(new Point(115,166), 3, false);
+    		old = name;
     	}else if(name == "Piazza") {
     		bckgImage = new Texture((Gdx.files.internal((".png"))));
-    	}else if(name == "LakeSide"){
-    		bckgImage = new Texture((Gdx.files.internal(("lakeside_way.png"))));
+    		newRoom(new Point(115,166), 3, false);
+    		addBuilding("LakeSide1",80,166,33,13);
+    		addBuilding("LakeSide2",529,166,33,13);
+    		old = name;
+    		//TODO change once got a piazza image
+    	}else if(name.startsWith("LakeSide")){
+    		if (old == "Central") {
+    			newRoom(new Point(435,304),2, false);
+    		}else if(old == "CompSci") {
+    			newRoom(new Point(215,157),2, false);
+    		}else if(old == "Piazza") {
+    			//TODO once piazza is ready
+    		}
+    		bckgImage = new Texture((Gdx.files.internal(("lakeside_way_odd.png"))));
+    		
     		addBuilding("CompSci", 161,127,50,60);
+    		addBuilding("Central", 524,297,67,95);
     	}
     }
     
     private void newRoom(Point startPos, int numZombies, Boolean boss) {
     	player.setPosition((float)startPos.getX(), (float)startPos.getY());
-    	for(int x = 0; x < numZombies; x++) {
-    		addZombie();
+    	if (numZombies != 0) {
+    		for(int x = 0; x < numZombies; x++) {
+        		addZombie();
+        	}
     	}
+    	if(boss){
+    		//TODO figure out how bosses work
+    	}
+    	
     }
 
 
@@ -416,11 +454,13 @@ public class GameScreen implements Screen {
 		camera.update();
 		player.getMovement();
 		player.attack(zombies);
-		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-        for(String name: buildings.keySet()) {
+		// use this code to check where coordinates are on the screen
+		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		for(String name: buildings.keySet()) {
             if(player.touchBuilding(buildings.get(name))) {
             	System.out.println("touching");
             	this.changeScreen(name);
+            	break;
                 //TODO Call stuff to change to that building
             }
        }
