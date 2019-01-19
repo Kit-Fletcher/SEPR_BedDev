@@ -4,10 +4,12 @@ import java.awt.Point;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Characters {
-
+	
 	private final Weapon weapon;
 
 	private boolean isArmed;
@@ -17,14 +19,14 @@ public class Player extends Characters {
 		super(img, type);
 		this.weapon = null;
 		initialize();
-
 	}
 
 	public Player(final Sprite sprite, String type, final Weapon weapon) {
 		super(sprite, type);
 
 		this.weapon = weapon;
-
+		
+		
 		initialize();
 	}
 
@@ -55,15 +57,40 @@ public class Player extends Characters {
 	 * 
 	 */
 	@Override
-	public void update(final float delta) {
-		super.update(Gdx.graphics.getDeltaTime());
-
-		if (isArmed) {
-
-			// code to show armor
-			// should be added as animation
+	public void update() {
+		super.update();
+		
+		switch(animationCount) {
+			case 0: {
+				//this.setImage(new Texture("keyFrame0.png"));
+			}
+			case 1: {
+				//this.setImage(new Texture("keyFrame1.png"));
+			}
+			case 2: {
+				//this.setImage(new Texture("keyFrame2.png"));
+			}
+			case 3: {
+				//this.setImage(new Texture("keyFrame3.png"));
+			}
+			case 4: {
+				//this.setImage(new Texture("keyFrame4.png"));
+			}
+			case 5: {
+				//this.setImage(new Texture("keyFrame5.png"));
+			}
+			case 6: {
+				//this.setImage(new Texture("keyFrame6.png"));
+			}
+			case 7: {
+				//this.setImage(new Texture("keyFrame7.png"));
+			}
 		}
-
+		
+		animationCount += 1;
+		if (animationCount > 7) {
+			animationCount = 0;
+		}
 	}
 
 	@Override
