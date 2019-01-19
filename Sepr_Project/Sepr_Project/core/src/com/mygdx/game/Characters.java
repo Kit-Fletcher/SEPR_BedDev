@@ -62,7 +62,7 @@ public class Characters extends Sprite {
 	public Characters(final Sprite sprite, String type) {
 		super(sprite);
 		this.image = image;
-		this.type = type;// Fresher or Gresher/ boss or pawn
+		this.type = type;// Fresher or Sesher
 		mov = new Movement();
 
 		initialize();
