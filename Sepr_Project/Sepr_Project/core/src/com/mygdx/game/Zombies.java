@@ -83,7 +83,7 @@ public class Zombies extends Characters{
 	}
 	public Player attack(Player chr) {
 		boolean mouse = mov.getMouseClick();
-		if(closeZombie(chr)) {
+		if(closePlayer(chr)) {
 			chr.injured(this.getDamage());
 			
 		}
@@ -91,7 +91,7 @@ public class Zombies extends Characters{
 		return chr;
 	}
 	
-	private boolean closeZombie(Player chr) {
+	private boolean closePlayer(Player chr) {
 		Point chrXY = new Point(chr.getCoord());
 		Point zomXY = new Point(this.getCoord());
 		int rng = this.getRange();

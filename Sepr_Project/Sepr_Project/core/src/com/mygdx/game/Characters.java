@@ -114,22 +114,27 @@ public class Characters extends Sprite {
 	}
 
 	public void injured(int x) {
-		if (this.timeLastAttack == 0) {
-			this.timeLastAttack = System.currentTimeMillis() - delayTime;
-		}
-		if (System.currentTimeMillis() - this.timeLastAttack > delayTime) {
-			this.timeLastAttack = System.currentTimeMillis();
-
-			final int currentHealth = getHealth();
-
-			if (currentHealth - x > 0) {
-
-				this.setHealth((int) (currentHealth - x * injMod));
-			} else {
-				this.setHealth(0);
-				this.dies();
-
+		if(this.isAlive()) {
+			
+		
+			if (this.timeLastAttack == 0) {
+				this.timeLastAttack = System.currentTimeMillis() - delayTime;
 			}
+			if (System.currentTimeMillis() - this.timeLastAttack > delayTime) {
+				this.timeLastAttack = System.currentTimeMillis();
+				
+				final int currentHealth = getHealth();
+				
+				if (currentHealth - x > 0) {
+					
+					this.setHealth((int) (currentHealth - x * injMod));
+				} else {
+					this.setHealth(0);
+					this.dies();
+					
+				}
+			}
+			
 		}
 	}
 
@@ -138,7 +143,7 @@ public class Characters extends Sprite {
 	}
 
 	public void dies() {
-		this.setAlpha(0.0f);
+		this.rotate90(false);
 	}
 
 	public Point getCoord() {

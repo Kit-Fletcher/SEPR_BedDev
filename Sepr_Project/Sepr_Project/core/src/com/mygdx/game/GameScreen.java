@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -87,10 +88,17 @@ public class GameScreen implements Screen {
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
-	private Zombies zmb;
-	private Texture img;
-	private List<Zombies> zombies;
-	private Sprite zmbSpr;
+	
+	// zombie parameters
+    private Sprite zombieSprite;
+    private Zombies zombie;
+    private List<Zombies> zombies;
+    
+    // Building parameters
+    private Sprite building;
+    private static HashMap<String, Sprite> buildings;
+    
+
 	// player life
 	private ImageButton health1;
 	private ImageButton health2;
@@ -118,17 +126,63 @@ public class GameScreen implements Screen {
 		createBottomHUD();
 		createTopHUD();
 
+		
+//		this.img = new Texture("MaleFresher.png");
+//		this.playerSpr = new Sprite(this.img);
+//		this.player = new Player(this.playerSpr, "Gresher", null);
+//		this.img = new Texture("Zombie1.png");
+//		this.zmbSpr = new Sprite(this.img);
+//		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
+//		this.zombies = new ArrayList<Zombies>();
+//		this.zombies.add(this.zmb);
 		// add player to screen
-		this.img = new Texture("MaleFresher.png");
-		this.playerSpr = new Sprite(this.img);
-		this.player = new Player(this.playerSpr, "Gresher", null);
-		this.img = new Texture("Zombie1.png");
-		this.zmbSpr = new Sprite(this.img);
-		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
-		this.zombies = new ArrayList<Zombies>();
-		this.zombies.add(this.zmb);
+        addPlayer();
+        GameScreen.buildings = new HashMap<String, Sprite>();
+        this.zombies = new ArrayList<Zombies>();
+        // add zombies to screen
+        addZombie();
+        addZombie();
+        // add buildings to screen
+        addBuilding("Compsci", 161,127,50,60);
+
 
 	}
+	
+    private void addPlayer() {
+
+        TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
+
+        Sprite playerSprite = new Sprite();
+        playerSprite.setRegion(playerTextureRegion);
+
+        player = new Player(playerSprite, "Fresher", null);
+
+    }
+    private void addZombie() {
+
+        TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+
+        Sprite zombieSprite = new Sprite();
+        zombieSprite.setRegion(zombieTextureRegion);
+
+        Zombies zombie = new Zombies(zombieSprite, "Pawn", 1,100,1);
+        
+        this.zombies.add(zombie);
+
+    }
+
+    private void addBuilding(String name, int x, int y,int sizeX, int sizeY) {
+        TextureRegion buildingTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("box.png")));
+
+        
+        building = new Sprite();
+        building.setRegion(buildingTextureRegion);
+        building.setSize(sizeX,sizeY);
+        building.setPosition(x, y);
+        buildings.put(name,building);
+        
+    }
+
 
 	private void addUiStyles() {
 
@@ -340,18 +394,30 @@ public class GameScreen implements Screen {
 		camera.update();
 		player.getMovement();
 		player.attack(zombies);
+		
+        for(String name: buildings.keySet()) {
+            if(player.touchBuilding(buildings.get(name))) {
+                //TODO Call stuff to change to that building
+            }
+       }
 
-		for (Zombies zombie : zombies) {
-			if (zombie.isAlive) {
-				zombie.getMovement(player);
-				zombie.attack(player);
-			}
-		}
-		for (int i = 0; i < zombies.size(); i++) {
-			if (zombies.get(i).isAlive() == false) {
-				zombies.remove(i);
-			}
-		}
+       for (Zombies zombie : zombies) {
+            if (zombie.isAlive) {
+                zombie.getMovement(player);
+                zombie.attack(player);
+            }else {
+                
+                zombie.setAlpha((float) (zombie.getColor().a * 0.95));
+            }
+        }
+       // remove dead zombies
+       if(System.currentTimeMillis() % 10000 < 1000) {
+           for (int i = 0; i < zombies.size(); i++) {
+               if (zombies.get(i).isAlive() == false) {
+                   zombies.remove(i);
+               }
+           }
+       }
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
 		game.batch.setProjectionMatrix(camera.combined);

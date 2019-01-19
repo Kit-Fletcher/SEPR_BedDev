@@ -95,10 +95,6 @@ public class Player extends Characters {
 		}
 	}
 
-	@Override
-	public void dies() {
-		this.rotate(90);
-	}
 
 	/**
 	 * Moves the sprite around the screen based on user inputs
