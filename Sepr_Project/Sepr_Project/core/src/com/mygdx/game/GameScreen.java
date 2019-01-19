@@ -107,8 +107,10 @@ public class GameScreen implements Screen {
 	private ImageButton health4;
 	private ImageButton health5;
 	private ImageButton health6;
+	private boolean closeGame;
 
 	public GameScreen(final Main game, String playerType) {
+		closeGame = false;
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
 		skin = new Skin();
@@ -126,7 +128,8 @@ public class GameScreen implements Screen {
 		addUiStyles();
 		createBottomHUD();
 		createTopHUD();
-
+		
+		
 		
 //		this.img = new Texture("MaleFresher.png");
 //		this.playerSpr = new Sprite(this.img);
@@ -511,6 +514,12 @@ public class GameScreen implements Screen {
 			health6.setVisible(false);
 		}
 
+		if (player.isAlive == false) {
+			System.out.println("closing");
+			game.setScreen(new MainScreen(game));
+		}
+		
+		
 		// Test purpose
 
 		/*
