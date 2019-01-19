@@ -29,7 +29,7 @@ public class Characters extends Sprite {
 	protected Movement mov;
 	protected long timeLastAttack = System.currentTimeMillis();
 	private final long delayTime = 1000;// 1 second
-	private Texture image;
+	private Texture img;
 
 	/**
 	 * @param startSpeed
@@ -62,7 +62,7 @@ public class Characters extends Sprite {
 
 	public Characters(final Sprite sprite, String type) {
 		super(sprite);
-		this.image = image;
+		this.img = img;
 		this.type = type;// Fresher or Sesher
 		mov = new Movement();
 
@@ -193,11 +193,11 @@ public class Characters extends Sprite {
 	}
 
 	public Texture getImage() {
-		return image;
+		return img;
 	}
 
 	public void setImage(Texture texture) {
-		this.image = texture;
+		this.img = texture;
 	}
 
 }

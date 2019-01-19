@@ -60,37 +60,6 @@ public class Player extends Characters {
 	public void update() {
 		super.update();
 		
-		switch(animationCount) {
-			case 0: {
-				//this.setImage(new Texture("keyFrame0.png"));
-			}
-			case 1: {
-				//this.setImage(new Texture("keyFrame1.png"));
-			}
-			case 2: {
-				//this.setImage(new Texture("keyFrame2.png"));
-			}
-			case 3: {
-				//this.setImage(new Texture("keyFrame3.png"));
-			}
-			case 4: {
-				//this.setImage(new Texture("keyFrame4.png"));
-			}
-			case 5: {
-				//this.setImage(new Texture("keyFrame5.png"));
-			}
-			case 6: {
-				//this.setImage(new Texture("keyFrame6.png"));
-			}
-			case 7: {
-				//this.setImage(new Texture("keyFrame7.png"));
-			}
-		}
-		
-		animationCount += 1;
-		if (animationCount > 7) {
-			animationCount = 0;
-		}
 	}
 
 	@Override
