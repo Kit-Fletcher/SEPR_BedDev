@@ -17,11 +17,19 @@ public class Mike extends Sprite {
 	private DialogueStore itemFound;
 	private DialogueStore questIntro;
 	
-	private boolean firstTime;
+	private boolean firstTime = true;
+	private boolean fresher = true;
+	private boolean general1 = true;
+	private boolean general2 = true;
+	private boolean general3 = true;
+	private boolean backOnTr = true;
+	private boolean item = true;
+	private boolean quest = true;
+	private long startTime = System.currentTimeMillis();
 	
 	public Mike(final Sprite sprite) {
 		super(sprite);
-		
+		initialize();
 		
 		
 		combatIntro = new DialogueStore("It appears everyone has fallen to the virus. Try clicking the left mouse button to attack.", Gdx.audio.newSound(Gdx.files.internal("mikeCombatIntro.mp3")));
@@ -35,6 +43,28 @@ public class Mike extends Sprite {
 		questIntro = new DialogueStore("", Gdx.audio.newSound(Gdx.files.internal("mikeQuestIntro.mp3")));
 		
 		firstTime = true;
+	}
+	protected void initialize() {
+		this.setSize(30, 75);
+	}
+	
+	public void speak(Player chr) {
+
+		if(firstTime) {
+			greeting.playSound();
+			firstTime = false;
+		}
+		if(fresher == true && chr.type == "Fresher" && System.currentTimeMillis()-startTime >3000) {
+			fresherIntro.playSound();
+			fresher = false;
+		}else {
+			//generalIntro1.playSound();
+			//generalIntro2.playSound();
+				
+		}
+			
+		
+		
 	}
 	
 	

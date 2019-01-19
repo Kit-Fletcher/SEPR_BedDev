@@ -173,7 +173,8 @@ public class GameScreen implements Screen {
         
         mike = new Mike(mikeSprite);
         
-        mike.setPosition(100, 100);
+        mike.setPosition(314, 257);
+        
     }
     
     private void addZombie(String boss) {
@@ -521,7 +522,7 @@ public class GameScreen implements Screen {
 		}
 
 		game.batch.end();
-
+		mike.speak(player);
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
 			stage.draw();
