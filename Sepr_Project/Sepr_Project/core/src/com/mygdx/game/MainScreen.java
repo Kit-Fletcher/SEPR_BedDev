@@ -72,7 +72,7 @@ public class MainScreen implements Screen {
 	    	if (x < (startX + btnWidth) && x > startX &&
 		            y < (startY + btnHeight) && y > startY)
 		    {
-	    		game.setScreen(new GameScreen(game));	
+	    		game.setScreen(new GameScreen(game, "Fresher"));	
 		    }
     	}
 	    

@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
 	private ImageButton health5;
 	private ImageButton health6;
 
-	public GameScreen(final Main game) {
+	public GameScreen(final Main game, String playerType) {
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
 		skin = new Skin();
@@ -136,7 +136,7 @@ public class GameScreen implements Screen {
 //		this.zombies = new ArrayList<Zombies>();
 //		this.zombies.add(this.zmb);
 		// add player to screen
-        addPlayer();
+        addPlayer(playerType);
         GameScreen.buildings = new HashMap<String, Sprite>();
         this.zombies = new ArrayList<Zombies>();
         // add zombies to screen
@@ -148,14 +148,14 @@ public class GameScreen implements Screen {
 
 	}
 	
-    private void addPlayer() {
+    private void addPlayer(String playerType) {
 
         TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
 
         Sprite playerSprite = new Sprite();
         playerSprite.setRegion(playerTextureRegion);
 
-        player = new Player(playerSprite, "Fresher", null);
+        player = new Player(playerSprite, playerType, null);
 
     }
     private void addZombie() {
