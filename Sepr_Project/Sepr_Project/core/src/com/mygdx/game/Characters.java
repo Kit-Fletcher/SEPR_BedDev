@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Characters extends Sprite {
-
+	
+	public int animationCount;
 	public int[] hitBoxDim = {};
 	// protected Texture img;
 	protected int speed = 2;
@@ -28,7 +29,7 @@ public class Characters extends Sprite {
 	protected Movement mov;
 	protected long timeLastAttack = System.currentTimeMillis();
 	private final long delayTime = 1000;// 1 second
-	private Sprite image;
+	private Texture image;
 
 	/**
 	 * @param startSpeed
@@ -69,7 +70,7 @@ public class Characters extends Sprite {
 	}
 
 	protected void initialize() {
-
+		this.animationCount = 8;
 		this.health = 20;
 		this.isAlive = true;
 		this.setSize(WIDTH, HEIGHT);
@@ -78,12 +79,11 @@ public class Characters extends Sprite {
 
 	@Override
 	public void draw(final Batch batch) {
-		update(Gdx.graphics.getDeltaTime());
+		update();
 		super.draw(batch);
 	}
 
-	public void update(final float delta) {
-
+	public void update() {
 		if (getHealth() == 0) {
 			isAlive = false;
 		}
@@ -192,12 +192,12 @@ public class Characters extends Sprite {
 		return this.range;
 	}
 
-	public Sprite getImage() {
+	public Texture getImage() {
 		return image;
 	}
 
-	public void setImage(Sprite image) {
-		this.image = image;
+	public void setImage(Texture texture) {
+		this.image = texture;
 	}
 
 }
