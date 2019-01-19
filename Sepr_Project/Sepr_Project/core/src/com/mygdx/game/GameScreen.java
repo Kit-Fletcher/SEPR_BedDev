@@ -107,10 +107,8 @@ public class GameScreen implements Screen {
 	private ImageButton health4;
 	private ImageButton health5;
 	private ImageButton health6;
-	private boolean closeGame;
 
 	public GameScreen(final Main game, String playerType) {
-		closeGame = false;
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
 		skin = new Skin();
@@ -133,7 +131,7 @@ public class GameScreen implements Screen {
 		
 //		this.img = new Texture("MaleFresher.png");
 //		this.playerSpr = new Sprite(this.img);
-//		this.player = new Player(this.playerSpr, "Gresher", null);
+//		this.player = new Player(this.playerSpr, "Sesher", null);
 //		this.img = new Texture("Zombie1.png");
 //		this.zmbSpr = new Sprite(this.img);
 //		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
