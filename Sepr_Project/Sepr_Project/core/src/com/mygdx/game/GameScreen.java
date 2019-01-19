@@ -89,6 +89,7 @@ public class GameScreen implements Screen {
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
+	private boolean stick;
 	
 	// zombie parameters
     private Sprite zombieSprite;
@@ -186,7 +187,6 @@ public class GameScreen implements Screen {
     }
     
     private void changeScreen(String name) {
-    	//TODO add moving character and resetting new zombies
     	zombies.clear();
     	buildings.clear();
     	if(name == "CompSci") {
@@ -199,14 +199,18 @@ public class GameScreen implements Screen {
     		if(start) {
     			newRoom(new Point(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2),0, false);
     			start = false;
-    			//TODO put mike in
-    		}else {
     			
+    			//TODO put mike in
+    		}else if(stick){
+    			newRoom(new Point(20,255),1, false);
+    			addZombie("mBoss");
+    			//TODO if this zombie dies then you win
+    		}else {
+    			// Placeholder before stick is used
     			newRoom(new Point(20,255),1, false);
     			addZombie("mBoss");
     		}
     		old = name;
-    		//TODO if has stick then boss
     		
     	}else if(name == "Central"){
     		bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
@@ -242,9 +246,6 @@ public class GameScreen implements Screen {
     		for(int x = 0; x < numZombies; x++) {
         		addZombie("");
         	}
-    	}
-    	if(boss){
-    		//TODO figure out how bosses work
     	}
     	
     }
@@ -466,20 +467,20 @@ public class GameScreen implements Screen {
             if(player.touchBuilding(buildings.get(name))) {
             	this.changeScreen(name);
             	break;
-                //TODO Call stuff to change to that building
             }
        }
        for (Zombies zombie : zombies) {
             if (zombie.isAlive()) {
                 zombie.getMovement(player);
                 zombie.attack(player);
-                System.out.println(zombie.type + " " + zombie.getHealth());
             }else {
-                
+                if(zombie.type == "mBoss") {
+                	//TODO add in win thing
+                }
                 zombie.setAlpha((float) (zombie.getColor().a * 0.95));
             }
         }
-       // remove dead zombies
+       // removes dead zombies
        if(System.currentTimeMillis() % 10000 < 1000) {
            for (int i = 0; i < zombies.size(); i++) {
                if (zombies.get(i).isAlive() == false) {

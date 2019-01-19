@@ -29,7 +29,7 @@ public class Zombies extends Characters{
 		if (type == "mBoss") {
 			this.damage = Math.round(20 *this.hardMod);
 			this.health = Math.round(100 * this.hardMod);
-			this.setRegion(new TextureRegion(new Texture(Gdx.files.internal("Mike.png"))));
+			this.setRegion(new TextureRegion(new Texture(Gdx.files.internal("zombieMike.png"))));
 			this.hitBoxDim = new int[] {0,(int)this.getWidth(),0,(int)this.getHeight()};
 			this.setSize(50, 75);
 		}else {
