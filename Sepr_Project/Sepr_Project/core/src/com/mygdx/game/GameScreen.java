@@ -91,6 +91,9 @@ public class GameScreen implements Screen {
 	private Player player;
 	private boolean stick;
 	
+	//mike parameters
+	private Mike mike;
+	
 	// zombie parameters
     private Sprite zombieSprite;
     private Zombies zombie;
@@ -146,6 +149,7 @@ public class GameScreen implements Screen {
         this.zombies = new ArrayList<Zombies>();
         changeScreen("CompSci");
         
+        
 
 
 	}
@@ -160,6 +164,18 @@ public class GameScreen implements Screen {
         player = new Player(playerSprite, playerType, null);
 
     }
+    
+    private void addMike() {
+        TextureRegion mikeTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("mike.png")));
+
+        Sprite mikeSprite = new Sprite();
+        mikeSprite.setRegion(mikeTextureRegion);
+        
+        mike = new Mike(mikeSprite);
+        
+        mike.setPosition(100, 100);
+    }
+    
     private void addZombie(String boss) {
 
         TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
@@ -199,12 +215,16 @@ public class GameScreen implements Screen {
     		if(start) {
     			newRoom(new Point(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2),0, false);
     			start = false;
+<<<<<<< HEAD
     			
     			//TODO put mike in
     		}else if(stick){
     			newRoom(new Point(20,255),1, false);
     			addZombie("mBoss");
     			//TODO if this zombie dies then you win
+=======
+    			addMike();
+>>>>>>> 6842550b825f81e32296f574349508d56fd5c3df
     		}else {
     			// Placeholder before stick is used
     			newRoom(new Point(20,255),1, false);
@@ -495,6 +515,7 @@ public class GameScreen implements Screen {
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		player.draw(game.batch);
+		mike.draw(game.batch);
 		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
 		}
