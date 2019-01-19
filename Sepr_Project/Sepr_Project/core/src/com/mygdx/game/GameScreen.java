@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,11 +140,8 @@ public class GameScreen implements Screen {
         addPlayer();
         GameScreen.buildings = new HashMap<String, Sprite>();
         this.zombies = new ArrayList<Zombies>();
-        // add zombies to screen
-        addZombie();
-        addZombie();
-        // add buildings to screen
-        addBuilding("Compsci", 161,127,50,60);
+        changeScreen("CompSci");
+        
 
 
 	}
@@ -177,6 +175,33 @@ public class GameScreen implements Screen {
         building.setPosition(x, y);
         buildings.put(name,building);
         
+    }
+    
+    private void changeScreen(String name) {
+    	//TODO add moving character and resetting new zombies
+    	for (int i = 0; i < zombies.size(); i++) {
+    		zombies.remove(i);   
+        }
+    	buildings.clear();
+    	if(name == "CompSci") {
+    		bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
+    		addBuilding("LakeSide",0,435,37,28);
+    		newRoom(new Point(215,157),2, false);
+    	}else if(name == "Central"){
+    		bckgImage = new Texture((Gdx.files.internal(("central_hall.png"))));
+    	}else if(name == "Piazza") {
+    		bckgImage = new Texture((Gdx.files.internal((".png"))));
+    	}else if(name == "LakeSide"){
+    		bckgImage = new Texture((Gdx.files.internal(("lakeside_way.png"))));
+    		addBuilding("CompSci", 161,127,50,60);
+    	}
+    }
+    
+    private void newRoom(Point startPos, int numZombies, Boolean boss) {
+    	player.setPosition((float)startPos.getX(), (float)startPos.getY());
+    	for(int x = 0; x < numZombies; x++) {
+    		addZombie();
+    	}
     }
 
 
@@ -390,10 +415,11 @@ public class GameScreen implements Screen {
 		camera.update();
 		player.getMovement();
 		player.attack(zombies);
-		
+		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
         for(String name: buildings.keySet()) {
             if(player.touchBuilding(buildings.get(name))) {
-            	
+            	System.out.println("touching");
+            	this.changeScreen(name);
                 //TODO Call stuff to change to that building
             }
        }
@@ -490,11 +516,6 @@ public class GameScreen implements Screen {
 		/*
 		 * check player damage by pressing d
 		 */
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-
-			player.injured(10);
-
-		}
 //		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 //
 //			player.injured(10);
