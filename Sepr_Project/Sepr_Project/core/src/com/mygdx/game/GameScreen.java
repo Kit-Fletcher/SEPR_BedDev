@@ -215,16 +215,16 @@ public class GameScreen implements Screen {
     		if(start) {
     			newRoom(new Point(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2),0, false);
     			start = false;
-<<<<<<< HEAD
+    			addMike();
     			
     			//TODO put mike in
     		}else if(stick){
     			newRoom(new Point(20,255),1, false);
     			addZombie("mBoss");
     			//TODO if this zombie dies then you win
-=======
-    			addMike();
->>>>>>> 6842550b825f81e32296f574349508d56fd5c3df
+
+    			
+
     		}else {
     			// Placeholder before stick is used
     			newRoom(new Point(20,255),1, false);
