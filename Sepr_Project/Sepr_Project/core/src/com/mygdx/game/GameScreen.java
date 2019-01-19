@@ -255,7 +255,8 @@ public class GameScreen implements Screen {
     			//TODO once piazza is ready
     		}
     		bckgImage = new Texture((Gdx.files.internal(("lakeside_way_odd.png"))));
-    		
+    		old = "LakeSide";
+    		mike.setAlpha(0f);
     		addBuilding("CompSci", 161,127,50,60);
     		addBuilding("Central", 524,297,67,95);
     	}
@@ -522,7 +523,7 @@ public class GameScreen implements Screen {
 		}
 
 		game.batch.end();
-		mike.speak(player);
+		mike.speak(player,old);
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
 			stage.draw();

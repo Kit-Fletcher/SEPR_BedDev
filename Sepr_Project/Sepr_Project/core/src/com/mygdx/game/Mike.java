@@ -23,9 +23,11 @@ public class Mike extends Sprite {
 	private boolean general2 = true;
 	private boolean general3 = true;
 	private boolean backOnTr = true;
+	private boolean combat = true;
 	private boolean item = true;
 	private boolean quest = true;
 	private long startTime = System.currentTimeMillis();
+	private long offset = 0;
 	
 	public Mike(final Sprite sprite) {
 		super(sprite);
@@ -48,19 +50,33 @@ public class Mike extends Sprite {
 		this.setSize(30, 75);
 	}
 	
-	public void speak(Player chr) {
-
+	public void speak(Player chr, String place) {
+		long timeDif = System.currentTimeMillis() - startTime;
 		if(firstTime) {
 			greeting.playSound();
 			firstTime = false;
 		}
-		if(fresher == true && chr.type == "Fresher" && System.currentTimeMillis()-startTime >3000) {
+		if(fresher  && chr.type == "Fresher" && timeDif >3000) {
 			fresherIntro.playSound();
+			offset = 7000;
 			fresher = false;
-		}else {
-			//generalIntro1.playSound();
+		}else if(general1 && timeDif > 3000 + offset){
+			generalIntro1.playSound();
+			general1 = false;
 			//generalIntro2.playSound();
-				
+		
+		}else if(general2 && timeDif > 16000 + offset) {
+			generalIntro2.playSound();
+			general2 = false;
+		}else if(general3 && timeDif > 26000 + offset) {
+			generalIntro3.playSound();
+			general3 = false;
+		}else if(quest && timeDif > 36000 + offset) {
+			questIntro.playSound();
+			quest = false;
+		}else if(combat && timeDif > 48000 + offset && place != "CompSci") {
+			combatIntro.playSound();
+			combat = false;
 		}
 			
 		
