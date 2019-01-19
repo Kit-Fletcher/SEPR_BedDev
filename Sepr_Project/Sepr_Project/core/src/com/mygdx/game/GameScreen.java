@@ -172,11 +172,7 @@ public class GameScreen implements Screen {
     }
 
     private void addBuilding(String name, int x, int y,int sizeX, int sizeY) {
-        TextureRegion buildingTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("box.png")));
-
-        
         building = new Sprite();
-        building.setRegion(buildingTextureRegion);
         building.setSize(sizeX,sizeY);
         building.setPosition(x, y);
         buildings.put(name,building);
@@ -397,6 +393,7 @@ public class GameScreen implements Screen {
 		
         for(String name: buildings.keySet()) {
             if(player.touchBuilding(buildings.get(name))) {
+            	
                 //TODO Call stuff to change to that building
             }
        }
