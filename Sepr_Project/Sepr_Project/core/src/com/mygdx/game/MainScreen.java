@@ -26,19 +26,27 @@ public class MainScreen implements Screen {
 	  Texture loadButtonInActive;
 	  Texture quitButtonActive;
 	  Texture quitButtonInActive;
+	  Texture fresherStats;
+	  Texture sesherStats;
 	  
 	  //standard values assuming a 21:9 ratio of
 	  //the button sizes
 	  private static final int btnWidth = 210;
 	  private static final int btnHeight = 90;
 	  private static final int offset = (Gdx.graphics.getHeight()/3 - btnHeight)/2;
-	  private static final int loadX = Gdx.graphics.getWidth()/2-btnWidth/2 ;
-	  private static final int loadY = (Gdx.graphics.getHeight() - btnHeight) - offset;
-	  private static final int startX = Gdx.graphics.getWidth()/2-btnWidth/2 ;
-	  private static final int startY = (Gdx.graphics.getHeight()*2/3 - btnHeight-offset) ;
-	  private static final int quitX = Gdx.graphics.getWidth()/2-btnWidth/2;
+	  private static final int loadX = offset ;
+	  private static final int loadY = (Gdx.graphics.getHeight()/3 - btnHeight) - offset;
+	  private static final int startFX = offset ;
+	  private static final int startFY = (Gdx.graphics.getHeight() - btnHeight-offset) ;
+	  private static final int startSX = Gdx.graphics.getWidth() -btnWidth - offset; ;
+	  private static final int startSY = (Gdx.graphics.getHeight() - btnHeight-offset) ;
+	  private static final int quitX = Gdx.graphics.getWidth() -btnWidth - offset;
 	  private static final int quitY = (Gdx.graphics.getHeight()/3 - btnHeight) -offset;
-
+	  private static final int fresherX = offset;
+	  private static final int fresherY = (Gdx.graphics.getHeight()*2/3 - btnHeight) ;
+	  private static final int sesherX = Gdx.graphics.getWidth() -btnWidth - offset ;
+	  private static final int sesherY = (Gdx.graphics.getHeight()*2/3 - btnHeight) ;
+	  
 	
 	  public MainScreen (Main game) {
 		  System.out.println(Gdx.graphics.getHeight());
@@ -50,6 +58,8 @@ public class MainScreen implements Screen {
 	      loadButtonInActive = new Texture("loadUnactivated.png");
 	      quitButtonActive = new Texture("quitActivated.png");
 	      quitButtonInActive = new Texture("quitUnactivated.png");
+	      fresherStats = new Texture("fresherStats.png");
+	      sesherStats = new Texture("sesherStats.png");
 	  }
 
 	
@@ -69,10 +79,15 @@ public class MainScreen implements Screen {
 	    int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		
 	    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-	    	if (x < (startX + btnWidth) && x > startX &&
-		            y < (startY + btnHeight) && y > startY)
+	    	if (x < (startFX + btnWidth) && x > startFX &&
+		            y < (startFY + btnHeight) && y > startFY)
 		    {
 	    			btnStartFresher();
+		    }
+	    	if (x < (startSX + btnWidth) && x > startSX &&
+		            y < (startSY + btnHeight) && y > startSY)
+		    {
+	    			btnStartSesher();
 		    }
 	    	if (x < (quitX + btnWidth) && x > quitX &&
 		            y < (quitY + btnHeight) && y > quitY)
@@ -92,16 +107,25 @@ public class MainScreen implements Screen {
 	    
 	    //decides if the mouse is within button region
 	    //if is within region, changes button to active state
-	    if (x < (startX + btnWidth) && x > startX &&
-	            y < (startY + btnHeight) && y > startY)
+	    if (x < (startFX + btnWidth) && x > startFX &&
+	            y < (startFY + btnHeight) && y > startFY)
 	    {
-	    	game.batch.draw(startButtonActive, startX, startY, btnWidth, btnHeight);
+	    	game.batch.draw(startButtonActive, startFX, startFY, btnWidth, btnHeight);
 	    	
 	    	
 	    } else {
-	    	game.batch.draw(startButtonInActive, startX, startY, btnWidth, btnHeight);
+	    	game.batch.draw(startButtonInActive, startFX, startFY, btnWidth, btnHeight);
 	    }
 	    
+	    if (x < (startSX + btnWidth) && x > startSX &&
+	            y < (startSY + btnHeight) && y > startSY)
+	    {
+	    	game.batch.draw(startButtonActive, startSX, startSY, btnWidth, btnHeight);
+	    	
+	    	
+	    } else {
+	    	game.batch.draw(startButtonInActive, startSX, startSY, btnWidth, btnHeight);
+	    }
 
 	    if (x < (loadX + btnWidth) && x > loadX &&
 	            y < (loadY + btnHeight) && y > loadY)
@@ -120,6 +144,9 @@ public class MainScreen implements Screen {
 	    	game.batch.draw(quitButtonInActive, quitX, quitY, btnWidth, btnHeight);
 	    }
 
+	    game.batch.draw(fresherStats, fresherX, fresherY, btnWidth, btnHeight);
+	    
+	    game.batch.draw(sesherStats, sesherX, sesherY, btnWidth, btnHeight);
 	    
 	    game.batch.end();
 	    
