@@ -5,8 +5,9 @@ import java.awt.Point;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-//TODO some of these methods should be moved to character as they will be shared by any character and can be inherited
+
 public class Zombies extends Characters{
 	//private static int[] hitBox ={384,705,160,799};
 	
@@ -25,15 +26,18 @@ public class Zombies extends Characters{
 	
 	protected void initialize() {
 		super.initialize();
-		if (type == "Boss") {
+		if (type == "mBoss") {
 			this.damage = Math.round(20 *this.hardMod);
 			this.health = Math.round(100 * this.hardMod);
+			this.setRegion(new TextureRegion(new Texture(Gdx.files.internal("Mike.png"))));
+			this.hitBoxDim = new int[] {0,(int)this.getWidth(),0,(int)this.getHeight()};
 		}else {
 			this.damage = Math.round(10 *this.hardMod);
 			this.health = Math.round(15 * this.hardMod);
 			this.hitBoxDim = new int[] {37,69,16,78};
 					
 		}
+		
 		this.setPosition(Math.round((Math.random()*Gdx.graphics.getWidth()+1)), Math.round(Math.random()*Gdx.graphics.getHeight()-1));
 	}
 	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 	

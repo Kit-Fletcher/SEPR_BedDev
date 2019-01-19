@@ -159,14 +159,19 @@ public class GameScreen implements Screen {
         player = new Player(playerSprite, playerType, null);
 
     }
-    private void addZombie() {
+    private void addZombie(String boss) {
 
         TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
 
         Sprite zombieSprite = new Sprite();
         zombieSprite.setRegion(zombieTextureRegion);
-
-        Zombies zombie = new Zombies(zombieSprite, "Pawn", 1,100,1);
+        if(boss == "mBoss") {
+        	this.zombie = new Zombies(zombieSprite, "mBoss", 1,100,1);
+            
+        }else {
+        	this.zombie = new Zombies(zombieSprite, "Pawn", 1,100,1);
+            
+        }
         
         this.zombies.add(zombie);
 
@@ -198,6 +203,7 @@ public class GameScreen implements Screen {
     		}else {
     			
     			newRoom(new Point(20,255),1, false);
+    			addZombie("mBoss");
     		}
     		old = name;
     		//TODO if has stick then boss
@@ -234,7 +240,7 @@ public class GameScreen implements Screen {
     	player.setPosition((float)startPos.getX(), (float)startPos.getY());
     	if (numZombies != 0) {
     		for(int x = 0; x < numZombies; x++) {
-        		addZombie();
+        		addZombie("");
         	}
     	}
     	if(boss){
@@ -458,17 +464,16 @@ public class GameScreen implements Screen {
 		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 		for(String name: buildings.keySet()) {
             if(player.touchBuilding(buildings.get(name))) {
-            	System.out.println("touching");
             	this.changeScreen(name);
             	break;
                 //TODO Call stuff to change to that building
             }
        }
-
        for (Zombies zombie : zombies) {
-            if (zombie.isAlive) {
+            if (zombie.isAlive()) {
                 zombie.getMovement(player);
                 zombie.attack(player);
+                System.out.println(zombie.type + " " + zombie.getHealth());
             }else {
                 
                 zombie.setAlpha((float) (zombie.getColor().a * 0.95));
