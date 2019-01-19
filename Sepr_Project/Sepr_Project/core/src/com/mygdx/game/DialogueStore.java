@@ -4,7 +4,12 @@ import com.badlogic.gdx.audio.Sound;
 
 public class DialogueStore {
 	private String text;
-	private Sound audio;
+	private Sound sound;
+	
+	public DialogueStore(String text, Sound sound) {
+		setText(text);
+		setSound(sound);
+	}
 	
 	public String getText() {
 		return text;
@@ -14,12 +19,15 @@ public class DialogueStore {
 		this.text = text;
 	}
 	
-	public Sound getAudio() {
-		return audio;
+	public Sound getSound() {
+		return sound;
 	}
 	
-	public void setAudio(Sound audio) {
-		this.audio = audio;
+	public void setSound(Sound sound) {
+		this.sound = sound;
 	}
 	
+	public void playSound() {
+		sound.play();
+	}
 }
