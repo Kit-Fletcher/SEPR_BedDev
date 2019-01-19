@@ -40,7 +40,7 @@ public class Player extends Characters {
 		this.damage = 10;
 		this.dmgMod = 1f;
 		this.spdMod = 1f;
-		if (type == "Gresher") {
+		if (type == "Sesher") {
 			this.dmgMod = 2f;
 			this.spdMod = 1.5f;
 			this.injMod = 1f;

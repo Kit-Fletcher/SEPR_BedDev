@@ -90,6 +90,9 @@ public class GameScreen implements Screen {
 	private Sprite playerSpr;
 	private Player player;
 	
+	//mike parameters
+	private Mike mike;
+	
 	// zombie parameters
     private Sprite zombieSprite;
     private Zombies zombie;

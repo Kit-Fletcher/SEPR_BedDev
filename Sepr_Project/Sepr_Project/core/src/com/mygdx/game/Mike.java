@@ -1,9 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-
 
 public class Mike extends Sprite {
 
@@ -17,6 +17,8 @@ public class Mike extends Sprite {
 	private DialogueStore itemFound;
 	private DialogueStore questIntro;
 	
+	private boolean firstTime;
+	
 	public Mike() {
 		combatIntro = new DialogueStore("It appears everyone has fallen to the virus. Try clicking the left mouse button to attack.", Gdx.audio.newSound(Gdx.files.internal("mikeCombnatIntro.mp3")));
 		fresherIntro = new DialogueStore("", Gdx.audio.newSound(Gdx.files.internal("mikeFresherIntro.mp3")));
@@ -27,8 +29,14 @@ public class Mike extends Sprite {
 		greeting = new DialogueStore("", Gdx.audio.newSound(Gdx.files.internal("mikeGreeting.mp3")));
 		itemFound = new DialogueStore("", Gdx.audio.newSound(Gdx.files.internal("mikeItemFound.mp3")));
 		questIntro = new DialogueStore("", Gdx.audio.newSound(Gdx.files.internal("mikeQuestIntro")));
+		
+		firstTime = true;
 	}
 	
-	
+	@Override
+	public void draw(final Batch batch) {
+		super.draw(batch);
+	}
+
 	
 }
