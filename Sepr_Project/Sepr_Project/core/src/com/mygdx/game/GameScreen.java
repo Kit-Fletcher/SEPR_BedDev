@@ -495,6 +495,11 @@ public class GameScreen implements Screen {
 			player.injured(10);
 
 		}
+//		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+//
+//			player.injured(10);
+//
+//		}
 
 	}
 
