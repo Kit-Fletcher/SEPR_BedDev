@@ -72,7 +72,17 @@ public class MainScreen implements Screen {
 	    	if (x < (startX + btnWidth) && x > startX &&
 		            y < (startY + btnHeight) && y > startY)
 		    {
-	    		game.setScreen(new GameScreen(game, "Fresher"));	
+	    			btnStartFresher();
+		    }
+	    	if (x < (quitX + btnWidth) && x > quitX &&
+		            y < (quitY + btnHeight) && y > quitY)
+		    {
+	    			btnQuit();
+		    }
+	    	if (x < (loadX + btnWidth) && x > loadX &&
+		            y < (loadY + btnHeight) && y > loadY)
+		    {
+	    			btnLoad();
 		    }
     	}
 	    
@@ -145,11 +155,23 @@ public class MainScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}
 
-
+	public void btnStartFresher() {
+		game.setScreen(new GameScreen(game, "Fresher"));
+	}
 	
+	public void btnStartSesher() {
+		game.setScreen(new GameScreen(game, "Sesher"));
+	}
+	
+	public void btnLoad() {
+		
+	}
+	
+	public void btnQuit() {
+		game.dispose();
+	}
 	
 }
