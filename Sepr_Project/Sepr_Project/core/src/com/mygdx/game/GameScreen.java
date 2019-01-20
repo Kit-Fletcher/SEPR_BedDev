@@ -195,7 +195,7 @@ public class GameScreen implements Screen {
 	
     private void addPowerUp(PowerUps powerup, float x, float y) {
 
-        powerup.setPosition(screenWidth/x, screenHeight*y);
+        powerup.setPosition(x, y);
         powerUps.put(powerup.getId(),powerup);
 
     }
@@ -214,15 +214,12 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			//addPowerUp(redVK, 3f, .90f);
+			
+			
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
-			//if(player.touchPowerUp(redVK)) {
-				//if the powerup is consumed, apply its effect and remove it from the scene. 
-				//redVK.applyEffect(player);
-				//this.redVK = null; 
-			//}
+			
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
@@ -230,11 +227,17 @@ public class GameScreen implements Screen {
 
 				// TODO put mike in
 			} else if (stick) {
+				if(redVK != null) {
+					//addPowerUp(redVK, 200, 200);
+				}
 				newRoom(new Point(20, 255), 1, false);
 				addZombie("mBoss");
 				// TODO if this zombie dies then you win
 
 			} else {
+				if(redVK != null) {
+					//addPowerUp(redVK, 200, 200);
+				}
 				// Placeholder before stick is used
 				newRoom(new Point(20, 255), 1, false);
 				addZombie("mBoss");
@@ -243,12 +246,18 @@ public class GameScreen implements Screen {
 
 		} else if (name == "Central") {
 			bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
+			if(blueVK != null) {
+				//addPowerUp(blueVK, 200, 200);
+			}
 			addBuilding("LakeSide1", 80, 166, 33, 13);
 			addBuilding("LakeSide2", 529, 166, 33, 13);
 			newRoom(new Point(115, 166), 3, false);
 			old = name;
 		} else if (name == "Piazza") {
 			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
+			if(ylwVK != null) {
+				//addPowerUp(ylwVK, 200, 200);
+			}
 			newRoom(new Point(115, 166), 3, false);
 //			addBuilding("LakeSide1", 80, 166, 33, 13);
 //			addBuilding("LakeSide2", 529, 166, 33, 13);
@@ -299,7 +308,7 @@ public class GameScreen implements Screen {
 		player.getMovement();
 		player.attack(zombies);
 		// use this code to check where coordinates are on the screen
-		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 		if(won == false) {
 			for (String name : buildings.keySet()) {
 				if (player.touchBuilding(buildings.get(name))) {
@@ -312,6 +321,28 @@ public class GameScreen implements Screen {
 					
 				}
 			}
+			if(redVK != null) {
+				if(player.touchPowerUp(redVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					redVK.applyEffect(player);
+					this.redVK = null; 
+				}
+			}
+			if(blueVK != null) {
+				if(player.touchPowerUp(blueVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					blueVK.applyEffect(player);
+					this.blueVK = null; 
+				}
+			}
+			if(ylwVK != null) {
+				if(player.touchPowerUp(ylwVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					ylwVK.applyEffect(player);
+					this.ylwVK = null; 
+				}
+			}
+				
 			for (Zombies zombie : zombies) {
 				if (zombie.isAlive()) {
 					zombie.getMovement(player);
@@ -348,12 +379,13 @@ public class GameScreen implements Screen {
 			for (Zombies zombie : zombies) {
 				zombie.draw(game.batch);
 			}
-		
-			for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
-				PowerUps powerUp = entry.getValue();
-				powerUp.draw(game.batch);
-
-	        }
+			if(redVK != null) {
+				redVK.draw(game.batch);
+			}
+			
+			
+			
+			
 		}else {
 				victorySprite.draw(game.batch);
 
