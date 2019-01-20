@@ -173,6 +173,7 @@ public class GameScreen implements Screen {
 			} else {
 				newRoom(new Point(20, 255), 0, false);
 				addMike();				
+				mike.setAlpha(1f);
 			}
 			old = name;
 
