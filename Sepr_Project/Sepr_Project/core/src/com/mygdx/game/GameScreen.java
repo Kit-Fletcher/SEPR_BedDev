@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 		
 		changeScreen("CompSci");
 
-		//addPowerUp(redVK, 2f, .70f);
+
 		stateTime = 0f;
 	}
 
@@ -199,7 +199,7 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			//addPowerUp(redVK, 3f, .90f);
+			addPowerUp(redVK, 3f, .90f);
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);

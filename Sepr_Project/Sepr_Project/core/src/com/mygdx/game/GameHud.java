@@ -51,11 +51,11 @@ public class GameHud implements Disposable {
 	private ImageButton health5;
 	private ImageButton health6;
 
-	// score && time tracking variables
-	// private Integer worldTimer;
-	// private float timeCount;
-	// private static Integer score;
-	// private boolean timeUp;
+	 //score && time tracking variables
+	 private Integer worldTimer;
+	 private float timeCount;
+	 private static Integer score;
+	 private boolean timeUp;
 
 	private TextureRegionDrawable health;
 	private TextureRegionDrawable powerUp;
@@ -98,10 +98,10 @@ public class GameHud implements Disposable {
 	private Label currentObjectiveName;
 
 	public GameHud(SpriteBatch sb, GameScreen gameScreen) {
-		// define tracking variables
-		// worldTimer = 250;
-		// timeCount = 0;
-		// score = 0;
+		 //define tracking variables
+		 worldTimer = 250;
+		 timeCount = 0;
+		 score = 0;
 		skin = new Skin();
 		// get scrren width and scrren height from gdx graphics
 		screenWidth = Gdx.graphics.getWidth();
@@ -417,7 +417,7 @@ public class GameHud implements Disposable {
 		pixmap1.fill();
 		skin.add("white", new Texture(pixmap1));
 
-		// Store the default libgdx font under the name "default".
+		//Store the default libgdx font under the name "default".
 		fontController = new FontController();
 		fontController.addFont("playtime.ttf", "playtime.ttf");
 
@@ -444,25 +444,25 @@ public class GameHud implements Disposable {
 		imageButtonStylem = new ImageButton.ImageButtonStyle();
 		TextureRegion minimap = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
 		imageButtonStylem.up = new TextureRegionDrawable(minimap);// skin.newDrawable("white", Color.DARK_GRAY);
-		// imageButtonStylem.down = skin.newDrawable("white", Color.DARK_GRAY);
-		// imageButtonStylem.checked = skin.newDrawable("white", Color.BLUE);
-		// imageButtonStylem.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		 imageButtonStylem.down = skin.newDrawable("white", Color.DARK_GRAY);
+		 imageButtonStylem.checked = skin.newDrawable("white", Color.BLUE);
+		 imageButtonStylem.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
-		hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
+		 hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
+	}
+		 public void update(float dt) {
+			 timeCount += dt;
+		 if (timeCount >= 1) {
+		 if (worldTimer > 0) {
+		 worldTimer--;
+		 } else {
+		 timeUp = true;
+		 }
+		 timerTextLabel.setText(String.format("%03d", worldTimer));
+		 timeCount = 0;
+		 }
 
-		// public void update(float dt) {
-		// timeCount += dt;
-		// if (timeCount >= 1) {
-		// if (worldTimer > 0) {
-		// worldTimer--;
-		// } else {
-		// timeUp = true;
-		// }
-		// // timerTextLabel.setText(String.format("%03d", worldTimer));
-		// timeCount = 0;
-		// }
 
-		if (null != player)
 			if (player.getHealth() < 100 && player.getHealth() > 80)
 
 			{
@@ -516,10 +516,10 @@ public class GameHud implements Disposable {
 			}
 	}
 
-	// public static void addScore(int value) {
-	// score += value;
-	// // scoreLabel.setText(String.format("%06d", score));
-	// }
+	 public static void addScore(int value) {
+	 score += value;
+	 // scoreLabel.setText(String.format("%06d", score));
+	 }
 
 	@Override
 	public void dispose() {
@@ -530,9 +530,9 @@ public class GameHud implements Disposable {
 		return scoreLabel;
 	}
 
-	// public static Integer getScore() {
-	// return score;
-	// }
+	 public static Integer getScore() {
+	 return score;
+	 }
 
 	public void resumeGame() {
 
