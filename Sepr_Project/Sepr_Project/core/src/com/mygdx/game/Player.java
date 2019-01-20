@@ -273,6 +273,13 @@ public class Player extends Characters {
 		
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
 
+		Point chrXY = new Point(this.getCoord());
+		int difX = (int) (chrXY.getX() - item.getX());
+		int difY = (int) (chrXY.getY() - item.getY());
+		int offsetX = (int) (-this.getHitBoxWidth() - item.getWidth()) / 2;
+		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
+
+		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
 			return true;
 
 		}

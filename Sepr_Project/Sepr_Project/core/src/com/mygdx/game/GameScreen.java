@@ -125,6 +125,9 @@ public class GameScreen implements Screen {
 		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
 		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
 		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		redVK.active = false;
+		blueVK.active = false;
+		ylwVK.active = false;
 		TextureRegion victoryTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("victory.png")));
 		victorySprite = new Sprite();
 		victorySprite.setRegion(victoryTextureRegion);
@@ -195,7 +198,7 @@ public class GameScreen implements Screen {
 	
     private void addPowerUp(PowerUps powerup, float x, float y) {
 
-        powerup.setPosition(screenWidth/x, screenHeight*y);
+        powerup.setPosition(x, y);
         powerUps.put(powerup.getId(),powerup);
 
     }
@@ -212,25 +215,39 @@ public class GameScreen implements Screen {
 		
 		zombies.clear();
 		buildings.clear();
+		redVK.active = false;
+		blueVK.active = false;
+		ylwVK.active = false;
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			//addPowerUp(redVK, 3f, .90f);
+			
+			
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
-			//if(player.touchPowerUp(redVK)) {
-				//if the powerup is consumed, apply its effect and remove it from the scene. 
-				//redVK.applyEffect(player);
-				//this.redVK = null; 
-			//}
+			
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
 				addMike();
 
 			} else if (stick) {
+<<<<<<< HEAD
 				newRoom(new Point(20, 255), 0, false);
+=======
+				addPowerUp(redVK, 400, 200);
+				redVK.active = true;
+				newRoom(new Point(20, 255), 1, false);
+				addZombie("mBoss");
+				// TODO if this zombie dies then you win
+
+			} else {
+				addPowerUp(redVK, 400, 200);
+				redVK.active = true;
+				// Placeholder before stick is used
+				newRoom(new Point(20, 255), 1, false);
+>>>>>>> 1d259363ab24361f81a0871329a37831d410b772
 				addZombie("mBoss");
 			}else {
 				newRoom(new Point(20, 255), 0, false);
@@ -240,6 +257,8 @@ public class GameScreen implements Screen {
 
 		} else if (name == "Central") {
 			bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
+			addPowerUp(blueVK, 200, 200);
+			blueVK.active = true;
 			addBuilding("LakeSide1", 80, 166, 33, 13);
 			addBuilding("LakeSide2", 529, 166, 33, 13);
 			newRoom(new Point(115, 166), 3, false);
@@ -248,6 +267,10 @@ public class GameScreen implements Screen {
 			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
 			newRoom(new Point(430, 46), 3, false);
 			addBuilding("LakeSide1", 522, 46, 33, 33);
+			addPowerUp(ylwVK, 400, 200);
+			ylwVK.active = true;
+			newRoom(new Point(115, 166), 3, false);
+//			addBuilding("LakeSide1", 80, 166, 33, 13);
 //			addBuilding("LakeSide2", 529, 166, 33, 13);
 			if(stick == false) {
 				stickSprite.setAlpha(1f);
@@ -319,6 +342,28 @@ public class GameScreen implements Screen {
 					
 				}
 			}
+			if(redVK.active) {
+				if(player.touchPowerUp(redVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					redVK.applyEffect(player);
+					redVK.active = false; 
+				}
+			}
+			if(blueVK.active) {
+				if(player.touchPowerUp(blueVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					blueVK.applyEffect(player);
+					blueVK.active = false; 
+				}
+			}
+			if(ylwVK.active) {
+				if(player.touchPowerUp(ylwVK)) {
+					//if the powerup is consumed, apply its effect and remove it from the scene. 
+					ylwVK.applyEffect(player);
+					ylwVK.active = false; 
+				}
+			}
+				
 			for (Zombies zombie : zombies) {
 				if (zombie.isAlive()) {
 					zombie.getMovement(player);
@@ -355,12 +400,17 @@ public class GameScreen implements Screen {
 			for (Zombies zombie : zombies) {
 				zombie.draw(game.batch);
 			}
-		
-			for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
-				PowerUps powerUp = entry.getValue();
-				powerUp.draw(game.batch);
-
-	        }
+			if(redVK.active) {
+				redVK.draw(game.batch);
+			}
+			if(blueVK.active) {
+				blueVK.draw(game.batch);
+			}
+			if(ylwVK.active) {
+				ylwVK.draw(game.batch);
+			}
+			
+			
 		}else {
 				victorySprite.draw(game.batch);
 
