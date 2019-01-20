@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,9 +23,23 @@ public class Player extends Characters {
 	private boolean orientationUp; // If mouse is above = True
 	private final int INITIALHEALTH = 100;
 	
-	private Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-	private Texture walkSheet;
-
+	private Animation<TextureRegion> fresherWalkLeftAnimation;
+	private Texture fresherWalkLeftSheet;
+	private Animation<TextureRegion> fresherWalkRightAnimation;
+	private Texture fresherWalkRightSheet;
+	private Animation<TextureRegion> fresherAttackLeftAnimation; 
+	private Texture fresherAttackLeftSheet;
+	private Animation<TextureRegion> fresherAttackRightAnimation; 
+	private Texture fresherAttackRightSheet;
+	private Animation<TextureRegion> sesherWalkLeftAnimation;
+	private Texture sesherWalkLeftSheet;
+	private Animation<TextureRegion> sesherWalkRightAnimation;
+	private Texture sesherWalkRightSheet;
+	private Animation<TextureRegion> sesherAttackLeftAnimation; 
+	private Texture sesherAttackLeftSheet;
+	private Animation<TextureRegion> sesherAttackRightAnimation; 
+	private Texture sesherAttackRightSheet;
+	
 	
 	public Player(final Sprite sprite, String type, final Weapon weapon) {
 		super(sprite, type);
@@ -50,16 +66,29 @@ public class Player extends Characters {
 			this.spdMod = 1.5f;
 			this.injMod = 1f;
 		}
+
+		fresherWalkLeftAnimation = loadAnimation(fresherWalkLeftSheet, Gdx.files.internal("FresherWalkLeft.png"));
+		fresherWalkRightAnimation = loadAnimation(fresherWalkRightSheet, Gdx.files.internal("FresherWalkRight.png"));
+		fresherAttackLeftAnimation = loadAnimation(fresherAttackLeftSheet, Gdx.files.internal("FresherAttackLeft.png"));
+		fresherAttackRightAnimation = loadAnimation(fresherAttackRightSheet, Gdx.files.internal("FresherAttackRight.png"));
+		sesherWalkLeftAnimation = loadAnimation(sesherWalkLeftSheet, Gdx.files.internal("SesherWalkLeft.png"));
+		sesherWalkRightAnimation = loadAnimation(sesherWalkRightSheet, Gdx.files.internal("SesherWalkRight.png"));
+		sesherAttackLeftAnimation = loadAnimation(sesherAttackLeftSheet, Gdx.files.internal("SesherAttackLeft.png"));
+		sesherAttackRightAnimation = loadAnimation(sesherAttackRightSheet, Gdx.files.internal("SesherAttackRight.png"));
+		
+	}
+
+	private Animation<TextureRegion> loadAnimation(Texture sheet, FileHandle file) {
 		
 		// Load the sprite sheet as a Texture
-		walkSheet = new Texture(Gdx.files.internal("FresherWalkLeft.png"));
+		sheet = new Texture(file);
 
 		// Use the split utility method to create a 2D array of TextureRegions. This is 
 		// possible because this sprite sheet contains frames of equal size and they are 
 		// all aligned.
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet, 
-				walkSheet.getWidth() / FRAME_COLS,
-				walkSheet.getHeight() / FRAME_ROWS);
+		TextureRegion[][] tmp = TextureRegion.split(sheet, 
+				sheet.getWidth() / FRAME_COLS,
+				sheet.getHeight() / FRAME_ROWS);
 
 		// Place the regions into a 1D array in the correct order, starting from the top 
 		// left, going across first. The Animation constructor requires a 1D array.
@@ -72,12 +101,10 @@ public class Player extends Characters {
 		}
 
 		// Initialize the Animation with the frame interval and array of frames
-		walkAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
-		
-		
+		return new Animation<TextureRegion>(0.1f, walkFrames);
 		
 	}
-
+	
 	/**
 	 * update player status and response to events react on collision add velocity/
 	 * gravity type value update animation i,e damage animation, weapon animation
@@ -260,9 +287,18 @@ public class Player extends Characters {
 	}
 
 	public void drawAnimation(SpriteBatch batch, float stateTime) {
-		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-		//currentFrame.setRegionWidth(100);
-		//currentFrame.setRegionHeight(100);
+		
+		TextureRegion currentFrame;
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			currentFrame = fresherWalkLeftAnimation.getKeyFrame(stateTime, true);
+		}
+		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+			currentFrame = fresherWalkRightAnimation.getKeyFrame(stateTime, true);
+		}
+		else {
+			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
+		}
 		batch.draw(currentFrame, this.getX() + 30, this.getY() + 17);
 		System.out.println(stateTime);
 	}
