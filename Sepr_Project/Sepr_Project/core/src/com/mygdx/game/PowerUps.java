@@ -9,7 +9,13 @@ public class PowerUps extends Item {
 
 	public PowerUps(Sprite sprite, String type, int x, int y) {
 		super(sprite, type, x ,y );
+		
 	}
+	
+	public PowerUps(Sprite sprite, String type) {
+		super(sprite, type );
+		
+	}	
 
 	/*
 	 * Applies the effect based on the PowerUp type.
@@ -19,11 +25,11 @@ public class PowerUps extends Item {
 
 	public void applyEffect(Player currentPlayer) {
 
-		if (this.getType() ==PowerUpType.HEALTH_REGEN.getValue() ) {
+		if (this.getType() ==PowerUpType.REDVK.getEffect() ) {
 			currentPlayer.resetHealth();
-		} else if (this.getType() == PowerUpType.Strength.getValue()) {
+		} else if (this.getType() == PowerUpType.BLUEVK.getEffect()) {
 			currentPlayer.setDamage(currentPlayer.getDamage() - 2);
-		} else if (this.getType() == PowerUpType.SpeedUp.getValue()) {
+		} else if (this.getType() == PowerUpType.YLWVK.getEffect()) {
 			currentPlayer.setSpeed(currentPlayer.getSpeed() * 2);
 		} else {
 

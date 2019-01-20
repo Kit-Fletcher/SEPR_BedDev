@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -62,12 +63,19 @@ public class GameScreen implements Screen {
 	private Sprite zombieSprite;
 	private Zombies zombie;
 	private List<Zombies> zombies;
-
 	// Building parameters
 	private Sprite building;
 	private static HashMap<String, Sprite> buildings;
 	private Boolean start = true;
 	private String old;
+	//powerUps parameters;
+	private PowerUps redVK;
+	private PowerUps blueVK;
+	private PowerUps ylwVK;
+	private Texture redTex;
+	private Texture bluTex;
+	private Texture ylwTex;
+	private HashMap<Integer,PowerUps> powerUps = new HashMap<Integer, PowerUps>();// where keys are powerups ids and values are powerups.
 
 	// updating Hud parameters
 	private String objective;
@@ -104,7 +112,14 @@ public class GameScreen implements Screen {
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
 		changeScreen("CompSci");
-
+		//create powerups 
+		this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
+		this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
+		this.ylwTex= new Texture(Gdx.files.internal("items/yellowVK.png"));
+		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
+		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
+		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		addPowerUp(redVK, 2f, .70f);
 	}
 
 	private void addPlayer(String playerType) {
@@ -147,6 +162,23 @@ public class GameScreen implements Screen {
 		this.zombies.add(zombie);
 
 	}
+	
+	/*
+	 * adds powerups to the scene. 
+	 * @param PowerUps powerup 
+	 * 		powerup to be added.
+	 * @param float x
+	 * 		position relative to screenwidth.
+	 * @param float y
+	 * 		position relative to screeheight.
+	 */
+	
+    private void addPowerUp(PowerUps powerup, float x, float y) {
+
+        powerup.setPosition(screenWidth/x, screenHeight*y);
+        powerUps.put(powerup.getId(),powerup);
+
+    }
 
 	private void addBuilding(String name, int x, int y, int sizeX, int sizeY) {
 		building = new Sprite();
@@ -276,6 +308,12 @@ public class GameScreen implements Screen {
 		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
 		}
+		
+	    for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
+	            PowerUps powerUp = entry.getValue();
+	            powerUp.draw(game.batch);
+
+	        }
 
 		game.batch.end();
 		mike.speak(player, old);
