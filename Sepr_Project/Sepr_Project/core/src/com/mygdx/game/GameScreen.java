@@ -117,9 +117,9 @@ public class GameScreen implements Screen {
 		this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
 		this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
 		this.ylwTex= new Texture(Gdx.files.internal("items/yellowVK.png"));
-		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
-		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
-		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		redVK= new PowerUps(new Sprite(redTex), PowerUpType.REDVK.getEffect());
+		blueVK= new PowerUps(new Sprite(bluTex), PowerUpType.BLUEVK.getEffect());
+		ylwVK= new PowerUps(new Sprite(ylwTex), PowerUpType.YLWVK.getEffect());
 		
 		changeScreen("CompSci");
 
@@ -178,9 +178,9 @@ public class GameScreen implements Screen {
 	 * 		position relative to screeheight.
 	 */
 	
-    private void addPowerUp(PowerUps powerup, float x, float y) {
+    private void addPowerUp(PowerUps powerup, int x, int y) {
 
-        powerup.setPosition(screenWidth/x, screenHeight*y);
+        powerup.setPosition(x, y);
         powerUps.put(powerup.getId(),powerup);
 
     }
@@ -199,15 +199,11 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			//addPowerUp(redVK, 3f, .90f);
+			addPowerUp(redVK, 200, 200);
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
-			//if(player.touchPowerUp(redVK)) {
-				//if the powerup is consumed, apply its effect and remove it from the scene. 
-				//redVK.applyEffect(player);
-				//this.redVK = null; 
-			//}
+			
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
@@ -289,6 +285,14 @@ public class GameScreen implements Screen {
 				break;
 			}
 		}
+		
+		//if the powerup is consumed, apply its effect and remove it from the scene. 
+		if(player.touchPowerUp(redVK)) {
+			System.out.println("power up touched");
+			redVK.applyEffect(player);
+			this.redVK = null; 
+		}
+		
 		for (Zombies zombie : zombies) {
 			if (zombie.isAlive()) {
 				zombie.getMovement(player);

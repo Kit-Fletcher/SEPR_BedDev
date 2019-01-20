@@ -256,15 +256,20 @@ public class Player extends Characters {
 	 * @return true if touching else false
 	 */
 	public boolean touchPowerUp(Item item) {
-		Point pupXY = new Point((int) (item.getImage().getX() + item.getImage().getWidth() / 2),
-				(int) (item.getImage().getY() + item.getImage().getHeight() / 2));
+		//System.out.println("checking");
+		System.out.println(item.getX());
+		System.out.println(item.getY());
+		
+		Point pupXY = new Point((int) (item.getX() + item.getImage().getWidth() / 2),
+				(int) (item.getY() + item.getImage().getHeight() / 2));
 		Point chrXY = new Point(this.getCoord());
-		int difX = (int) (chrXY.getX() - item.getImage().getX());
-		int difY = (int) (chrXY.getY() - item.getImage().getY());
+		int difX = (int) (chrXY.getX() - item.getX());
+		int difY = (int) (chrXY.getY() - item.getY());
 		int offsetX = (int) (-this.getHitBoxWidth() - item.getImage().getWidth()) / 2;
 		int offsetY = (int) (-this.getHitBoxHeight() - item.getImage().getHeight()) / 2;
 
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
+			System.out.println("PowerupFound");
 			return true;
 
 		}
