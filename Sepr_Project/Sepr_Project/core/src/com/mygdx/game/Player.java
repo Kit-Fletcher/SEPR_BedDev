@@ -256,20 +256,32 @@ public class Player extends Characters {
 	 * @return true if touching else false
 	 */
 	public boolean touchPowerUp(Item item) {
+<<<<<<< HEAD
 		//System.out.println("checking");
-		System.out.println(item.getX());
-		System.out.println(item.getY());
+		//System.out.println(item.getWidth());
+		//System.out.println(item.getHeight());
 		
-		Point pupXY = new Point((int) (item.getX() + item.getImage().getWidth() / 2),
-				(int) (item.getY() + item.getImage().getHeight() / 2));
+		Point pupXY = new Point((int) (item.getX() + item.getWidth() / 2),
+				(int) (item.getY() + item.getHeight() / 2));
 		Point chrXY = new Point(this.getCoord());
 		int difX = (int) (chrXY.getX() - item.getX());
 		int difY = (int) (chrXY.getY() - item.getY());
+		int offsetX = (int) (-this.getHitBoxWidth() - item.getWidth()) / 2;
+		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
+
+		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
+			//System.out.println("PowerupFound");
+=======
+		Point pupXY = new Point((int) (item.getImage().getX() + item.getImage().getWidth() / 2),
+				(int) (item.getImage().getY() + item.getImage().getHeight() / 2));
+		Point chrXY = new Point(this.getCoord());
+		int difX = (int) (chrXY.getX() - item.getImage().getX());
+		int difY = (int) (chrXY.getY() - item.getImage().getY());
 		int offsetX = (int) (-this.getHitBoxWidth() - item.getImage().getWidth()) / 2;
 		int offsetY = (int) (-this.getHitBoxHeight() - item.getImage().getHeight()) / 2;
 
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
-			System.out.println("PowerupFound");
+>>>>>>> 1b7c7ca95b9b941eee4bf1fc1e236cf682e12894
 			return true;
 
 		}
@@ -302,7 +314,7 @@ public class Player extends Characters {
 	public void drawAnimation(SpriteBatch batch, float stateTime) {
 		
 		TextureRegion currentFrame;
-		update();
+		
 		if(animationDirection == "Left") {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
 		}
