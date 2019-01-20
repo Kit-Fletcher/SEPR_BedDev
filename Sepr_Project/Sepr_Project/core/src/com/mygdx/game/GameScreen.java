@@ -229,43 +229,6 @@ public class GameScreen implements Screen {
 
 	}
 
-	private void addUiStyles() {
-
-		Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("clear", new Texture(pixmap));
-
-		Pixmap pixmap1 = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
-		pixmap1.setColor(Color.CLEAR);
-		pixmap1.fill();
-		skin.add("white", new Texture(pixmap1));
-
-		// Store the default libgdx font under the name "default".
-		fontController = new FontController();
-		fontController.addFont("playtime.ttf", "playtime.ttf");
-
-		BitmapFont bfont = fontController.getFont("playtime.ttf");
-		bfont.getData().setScale(.25f, .25f);
-		skin.add("default", bfont);
-
-		textButtonStyle = new TextButton.TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("clear", Color.GOLD);
-		textButtonStyle.down = skin.newDrawable("clear", Color.GOLDENROD);
-
-		textButtonStyle.font = skin.getFont("default");
-
-		imageButtonStyle = new ImageButton.ImageButtonStyle();
-		imageButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		imageButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-
-		imageButtonStylem = new ImageButton.ImageButtonStyle();
-		TextureRegion minimap = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-		imageButtonStylem.up = new TextureRegionDrawable(minimap);
-
-		hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
-	}
-
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
