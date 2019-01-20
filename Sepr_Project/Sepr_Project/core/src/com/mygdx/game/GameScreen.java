@@ -39,6 +39,7 @@ public class GameScreen implements Screen {
 
 	private int screenWidth;
 	private int screenHeight;
+	private GameHud gameHud;
 
 	private final Main game;
 	private Texture bckgImage;
@@ -46,46 +47,15 @@ public class GameScreen implements Screen {
 
 	private Stage stage;
 
-	/// HUD menu
-	private Table rootTable;
 	private Skin skin;
 
 	private FontController fontController;
-	private FontController topControllerFontController;
 
-	// -------------------------------------overlay tables
-	private Table rootTableOverlay;
-
-	// HUD menu element size constants
-	private final static float healthElementSize = 32f;
-	private final static float healthElementPadding = 2f;
-	private final static float powerUpElementSize = 32f;
-	private final static float powerUpElementPadding = 2f;
-	private float topRightHudButtonWidth = 70f;
-	private float topRightHudButtonheight = 24f;
-
-	// ---------------------styles-------------------------
-	TextButton.TextButtonStyle textButtonStyle;
-	ImageButton.ImageButtonStyle imageButtonStyle;
-	ImageButton.ImageButtonStyle imageButtonStylem;
-	Label.LabelStyle hudLabelStyle;
-
-	// -----------------------------pause group-------------
-
-	private static final float MIN_VOLUME = 0;
-	private static final float MAX_VOLUME = 10;
-
-	private boolean isPause;
-	private Group pauseGroup;
-	private Label resulationValue;
-	private Label volumeValue;
-	private CharSequence resulationString = "1280 X 720";
-	private CharSequence volumeLabelValue = "8";
-	private Slider volumeValueSlider;
-	private float volume;
-	private TextureRegionDrawable health;
-	private TextureRegionDrawable powerUp;
-
+    //---------------------styles-------------------------
+    TextButton.TextButtonStyle textButtonStyle;
+    ImageButton.ImageButtonStyle imageButtonStyle;
+	    ImageButton.ImageButtonStyle imageButtonStylem;
+	    Label.LabelStyle hudLabelStyle;
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
@@ -93,7 +63,7 @@ public class GameScreen implements Screen {
 	
 	//mike parameters
 	private Mike mike;
-	
+
 	// zombie parameters
     private Sprite zombieSprite;
     private Zombies zombie;
@@ -104,15 +74,10 @@ public class GameScreen implements Screen {
     private static HashMap<String, Sprite> buildings;
     private Boolean start = true;
     private String old;
-    
 
-	// player life
-	private ImageButton health1;
-	private ImageButton health2;
-	private ImageButton health3;
-	private ImageButton health4;
-	private ImageButton health5;
-	private ImageButton health6;
+	//updating Hud parameters 
+	private String objective;
+	private String[] exp;//stores names of explored buildings.  
 
 	public GameScreen(final Main game, String playerType) {
 		this.game = game;
@@ -121,7 +86,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		// create overlay stage
 		bckgImage = new Texture((Gdx.files.internal(("lakeside_way.png"))));
-
+		
 		// get scrren width and scrren height from gdx graphics
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
@@ -129,9 +94,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, screenWidth, screenHeight);
 
-		addUiStyles();
-		createBottomHUD();
-		createTopHUD();
+		gameHud = new GameHud(game.batch,this);
 		
 		
 		
@@ -147,6 +110,7 @@ public class GameScreen implements Screen {
         addPlayer(playerType);
         GameScreen.buildings = new HashMap<String, Sprite>();
         this.zombies = new ArrayList<Zombies>();
+        this.exp =  new String[2];
         changeScreen("CompSci");
         
         
@@ -310,168 +274,13 @@ public class GameScreen implements Screen {
 		hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
 	}
 
-	private void createTopHUD() {
 
-		final TextButton pauseButton = new TextButton("Pause", textButtonStyle);
-		final TextButton inventoryButton = new TextButton("Inventory", textButtonStyle);
 
-		rootTableOverlay = new Table().pad(2);
-		rootTableOverlay.setFillParent(true);
-		// rootTableOverlay.setDebug(true);
-
-		Table topControllCell = new Table();
-		topControllCell.row();
-		topControllCell.add(pauseButton).size(topRightHudButtonWidth, topRightHudButtonheight).expand().pad(2).left();
-		topControllCell.row();
-		topControllCell.add(inventoryButton).size(topRightHudButtonWidth, topRightHudButtonheight).expand().pad(2)
-				.left();
-		// ----------------------------
-
-		Table topRightHudTable = new Table();
-		topRightHudTable.add(topControllCell).pad(2);
-
-		rootTableOverlay.top().right();
-		rootTableOverlay.add(topRightHudTable);
-
-		rootTableOverlay.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-
-				if (actor == pauseButton) {
-					System.out.println("pauseButton  is clicked");
-					if (!isPause)
-						System.out.println("pauseGame()");
-					pauseGame();
-
-				}
-
-				if (actor == inventoryButton) {
-					gotToInventoryScreen();
-				}
-			}
-		});
-
-		stage.addActor(rootTableOverlay);
-	}
-
-	private void gotToInventoryScreen() {
-
-		game.setScreen(new Inventory(game, this));
-	}
-
-	private void createBottomHUD() {
-
-		// setup drawables
-
-		health = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("hudimages/life.png"))));
-		powerUp = new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/power-up.png"))));
-
-		rootTable = new Table();
-		rootTable.setFillParent(true);
-		// rootTable.setDebug(true);
-
-		skin.add("textButtonStyle", textButtonStyle);
-
-		skin.add("default", imageButtonStyle);
-
-		skin.add("imageButtonStylem", imageButtonStylem);
-
-		final ImageButton playerAvatarImageButton = new ImageButton(imageButtonStylem);
-
-		Label healthLabel = new Label("HEALTH: ", hudLabelStyle);
-		healthLabel.setWrap(true);
-
-		Label powerUpLabel = new Label("P-UPS: ", hudLabelStyle);
-		powerUpLabel.setWrap(true);
-
-		Label currentObjectiveLabel = new Label("Current Objective ", hudLabelStyle);
-		currentObjectiveLabel.setWrap(true);
-
-		Label currentObjectiveName = new Label("Explore", hudLabelStyle);
-		currentObjectiveName.setWrap(true);
-
-		health1 = new ImageButton(health, health);
-		health2 = new ImageButton(health, health);
-		health3 = new ImageButton(health, health);
-		health4 = new ImageButton(health, health);
-		health5 = new ImageButton(health, health);
-		health6 = new ImageButton(health, health);
-
-		ImageButton powerUp1 = new ImageButton(powerUp, powerUp);
-		ImageButton powerUp2 = new ImageButton(powerUp, powerUp);
-		ImageButton powerUp3 = new ImageButton(powerUp, powerUp);
-		ImageButton powerUp4 = new ImageButton(powerUp, powerUp);
-		ImageButton powerUp5 = new ImageButton(powerUp, powerUp);
-		ImageButton powerUp6 = new ImageButton(powerUp, powerUp);
-
-		Table playerAvatarTable = new Table();
-		Table healthPowerUpTable = new Table();
-		Table currentObjectiveTable = new Table();
-
-		rootTable.add(playerAvatarTable).bottom();
-		rootTable.add(healthPowerUpTable).bottom();
-		rootTable.add(currentObjectiveTable).bottom();
-		rootTable.bottom();
-
-		// --------------------------------
-		Table statusCell = new Table();
-		statusCell.add(health1).size(healthElementSize).pad(healthElementPadding);
-		statusCell.add(health2).size(healthElementSize).pad(healthElementPadding);
-		statusCell.add(health3).size(healthElementSize).pad(healthElementPadding);
-		statusCell.add(health4).size(healthElementSize).pad(healthElementPadding);
-		statusCell.add(health5).size(healthElementSize).pad(healthElementPadding);
-		statusCell.add(health6).size(healthElementSize).pad(healthElementPadding);
-		statusCell.row();
-		statusCell.add(powerUp1).size(powerUpElementSize).pad(powerUpElementPadding);
-		statusCell.add(powerUp2).size(powerUpElementSize).pad(powerUpElementPadding);
-		statusCell.add(powerUp3).size(powerUpElementSize).pad(powerUpElementPadding);
-		statusCell.add(powerUp4).size(powerUpElementSize).pad(powerUpElementPadding);
-		statusCell.add(powerUp5).size(powerUpElementSize).pad(powerUpElementPadding);
-		statusCell.add(powerUp6).size(powerUpElementSize).pad(powerUpElementPadding);
-
-		statusCell.setBackground(new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
-		// statusCell.setBackground(skin.newDrawable("clear", Color.YELLOW));
-		// --------------
-
-		Table mapTextCell = new Table();
-		// mapTextCell.setDebug(true);
-		mapTextCell.add(healthLabel).expandX().center().pad(healthElementPadding);
-		mapTextCell.row();
-		mapTextCell.add(powerUpLabel).expandX().center().pad(powerUpElementPadding);
-		mapTextCell.setBackground(new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
-		// mapTextCell.setBackground(skin.newDrawable("clear", Color.YELLOW));
-
-		// -----------------------------------
-		final Table playerAvatarCellTable = new Table();
-		playerAvatarCellTable.add(playerAvatarImageButton).size(screenWidth / 5, screenHeight / 4);
-		playerAvatarCellTable.setBackground(new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
-
-		Table objectiveTextCell = new Table();
-		// objectiveTextCell.setDebug(true);
-		objectiveTextCell.add(currentObjectiveLabel).expandX().left().pad(healthElementPadding);
-		objectiveTextCell.row();
-		objectiveTextCell.add(currentObjectiveName).expandX().left().pad(powerUpElementPadding);
-		objectiveTextCell.setBackground(new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
-
-		playerAvatarTable.add(playerAvatarCellTable).size(screenWidth / 5, screenHeight / 4).pad(2);
-
-		healthPowerUpTable.add(mapTextCell).size(screenWidth / 5, screenHeight / 5).padTop(2).padBottom(2);
-		healthPowerUpTable.add(statusCell).size(Gdx.graphics.getWidth() * 1.8f / 5, screenHeight / 5).padTop(2)
-				.padBottom(2);
-		currentObjectiveTable.add(objectiveTextCell).size(Gdx.graphics.getWidth() / 5, screenHeight / 5).pad(2);
-
-		stage.addActor(rootTable);
-
-	}
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(stage);
+		 Gdx.input.setInputProcessor(stage);
+		 Gdx.input.setInputProcessor(gameHud.getStage());
 	}
 
 	@Override
@@ -531,74 +340,35 @@ public class GameScreen implements Screen {
 			System.out.println(e);
 		}
 
-		if (player.getHealth() < 100 && player.getHealth() > 80) {
 
-			health1.setVisible(true);
-			health2.setVisible(true);
-			health3.setVisible(true);
-			health4.setVisible(true);
-			health5.setVisible(true);
-			health6.setVisible(false);
-		} else if (player.getHealth() < 80 && player.getHealth() > 60) {
-
-			health1.setVisible(true);
-			health2.setVisible(true);
-			health3.setVisible(true);
-			health4.setVisible(true);
-			health5.setVisible(false);
-			health6.setVisible(false);
-		} else if (player.getHealth() < 60 && player.getHealth() > 40) {
-
-			health1.setVisible(true);
-			health2.setVisible(true);
-			health3.setVisible(true);
-			health4.setVisible(false);
-			health5.setVisible(false);
-			health6.setVisible(false);
-		} else if (player.getHealth() < 40 && player.getHealth() > 20) {
-
-			health1.setVisible(true);
-			health2.setVisible(true);
-			health3.setVisible(false);
-			health4.setVisible(false);
-			health5.setVisible(false);
-			health6.setVisible(false);
-		} else if (player.getHealth() < 20 && player.getHealth() >= 10) {
-
-			health1.setVisible(true);
-			health2.setVisible(false);
-			health3.setVisible(false);
-			health4.setVisible(false);
-			health5.setVisible(false);
-			health6.setVisible(false);
-		} else if (player.getHealth() < 10 && player.getHealth() >= 0) {
-
-			health1.setVisible(false);
-			health2.setVisible(false);
-			health3.setVisible(false);
-			health4.setVisible(false);
-			health5.setVisible(false);
-			health6.setVisible(false);
-		}
 
 		if (player.isAlive == false) {
 			System.out.println("closing");
 			game.setScreen(new MainScreen(game));
 		}
 		
+
+        //Set batch to now draw what the Hud camera sees.
+        game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
+        gameHud.stage.draw();
+
+        gameHud.update(delta);
 		
-		// Test purpose
+        if(player.type=="Sesher"){
+            TextureRegion  textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+            gameHud.updatePlayerAvatar(textureRegion);
+        }
+        if(stick) {
+            gameHud.updateCurrentObjective(objective);
+        }
 
-		/*
-		 * check player damage by pressing d
-		 */
-//		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-//
-//			player.injured(10);
-//
-//		}
+            gameHud.updateExplored(exp.length);
+            		
 
-	}
+
+        }
+
+	
 
 	@Override
 	public void resize(int width, int height) {
@@ -624,124 +394,12 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		bckgImage.dispose();
 	}
+	
+    public Player getPlayer() {
+        return player;}
 
-	public void pauseGame() {
 
-		Drawable checkboxOff = new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/unchecked-checkbox.png"))));
-		Drawable checkboxOn = new TextureRegionDrawable(
-				new TextureRegion(new Texture(Gdx.files.internal("hudimages/checked-checkbox.png"))));
-
-		Pixmap pixmapBckg = new Pixmap(100, 8, Pixmap.Format.RGBA8888);
-		pixmapBckg.setColor(Color.GOLD);
-		pixmapBckg.fill();
-
-		TextureRegion textureRegionOverlay = new TextureRegion(new Texture(pixmapBckg));
-
-		isPause = true;
-		pauseGroup = new Group();
-		final Image semiTransparentBG = new Image(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")));
-		semiTransparentBG.setSize(screenWidth / 1.5f, screenHeight / 1.5f);
-		semiTransparentBG.setPosition(screenWidth / 6, screenHeight / 4);
-		Color color = semiTransparentBG.getColor();
-		semiTransparentBG.setColor(new Color(color.r, color.g, color.b, .85f));
-		pauseGroup.addActor(semiTransparentBG);
-
-		// slider style
-
-		Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
-		sliderStyle.knob = checkboxOff;
-		sliderStyle.knobDown = checkboxOn;
-		sliderStyle.knobOver = checkboxOff;
-		sliderStyle.background = new TextureRegionDrawable(textureRegionOverlay);
-
-		// crate all other pause UI buttons with listener and add to pauseGroup
-
-		Label resulationLabel = new Label("Resulation", hudLabelStyle);
-		Label volumeLabel = new Label("Volume", hudLabelStyle);
-		resulationValue = new Label(resulationString, hudLabelStyle);
-		volumeValue = new Label(volumeLabelValue, hudLabelStyle);
-
-		volumeValueSlider = new Slider(MIN_VOLUME, MAX_VOLUME, 1, false, sliderStyle);
-
-		CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
-		checkBoxStyle.font = fontController.getFont("playtime.ttf");
-		checkBoxStyle.fontColor = Color.RED;
-
-		checkBoxStyle.checkboxOff = checkboxOff;
-		checkBoxStyle.checkboxOn = checkboxOn;
-
-		CheckBox fullScreenCheckBox = new CheckBox("Full Screen", checkBoxStyle);
-		// resulationLabel.setPosition(semiTransparentBG.getX()+16,screenHeight/4+semiTransparentBG.getHeight()-16);
-
-		Table configTable = new Table();
-		configTable.setPosition(screenWidth / 2, semiTransparentBG.getHeight() - 16);
-		configTable.add(resulationLabel).padRight(screenWidth / 12);
-		configTable.add(resulationValue);
-		configTable.row();
-		configTable.add(volumeLabel).padRight(screenWidth / 12);
-		configTable.add(volumeValueSlider);
-		configTable.add(volumeValue).padRight(screenWidth / 12);
-		configTable.row();
-		configTable.add(fullScreenCheckBox).padRight(screenWidth / 12);
-
-		pauseGroup.addActor(configTable);
-
-		final TextButton backButton = new TextButton("Back", textButtonStyle);
-		backButton.setSize(topRightHudButtonWidth, topRightHudButtonheight);
-		backButton.setPosition(screenWidth / 6 + semiTransparentBG.getWidth() / 2 - topRightHudButtonWidth / 2,
-				screenHeight / 3);
-		pauseGroup.addActor(backButton);
-
-		pauseGroup.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				if (actor == backButton) {
-					resumeGame();
-				}
-
-			}
-		});
-
-		volumeValueSlider.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				Slider slider = (Slider) actor;
-
-				float value = slider.getValue();
-
-				if (value == 0) {
-					// appProperties.setVolume(0);
-					volume = 0;
-				} else {
-					// appProperties.setVolume((int) value);
-					volume = value;
-				}
-
-				updateVelocityText();
-			}
-
-		});
-
-		stage.addActor(pauseGroup);
-
-	}
-
-	private void updateVelocityText() {
-		// float value = appProperties.getVolume();
-
-		volumeValueSlider.setValue(volume);
-
-		volumeValue.setText(String.valueOf(volume));
-		volumeValue.invalidate();
-	}
-
-	public void resumeGame() {
-
-		if (isPause) {
-			isPause = false;
-			pauseGroup.remove();
-		}
-	}
+    public Main getGame() {
+        return game;
+    }
 }
