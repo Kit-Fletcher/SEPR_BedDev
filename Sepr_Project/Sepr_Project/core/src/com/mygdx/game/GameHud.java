@@ -107,7 +107,7 @@ public class GameHud implements Disposable {
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		this.gameScreen = gameScreen;
-		player = gameScreen.getPlayer();
+		
 
 		// setup the HUD viewport using a new camera separate from game cam
 		// define stage using that viewport and games spritebatch
@@ -451,6 +451,7 @@ public class GameHud implements Disposable {
 		 hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
 	}
 		 public void update(float dt) {
+			 
 			 timeCount += dt;
 		 if (timeCount >= 1) {
 		 if (worldTimer > 0) {
@@ -461,7 +462,7 @@ public class GameHud implements Disposable {
 		 timerTextLabel.setText(String.format("%03d", worldTimer));
 		 timeCount = 0;
 		 }
-
+		 player = gameScreen.getPlayer();
 
 			if (player.getHealth() < 100 && player.getHealth() > 80)
 
@@ -545,7 +546,6 @@ public class GameHud implements Disposable {
 	public Stage getStage() {
 		return stage;
 	}
-
 	public void updatePlayerAvatar(TextureRegion newAvatar) {
 
 		playerAvatarImageButton.getStyle().up = new TextureRegionDrawable(newAvatar);
