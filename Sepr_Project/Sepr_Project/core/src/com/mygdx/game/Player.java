@@ -40,6 +40,7 @@ public class Player extends Characters {
 	private Animation<TextureRegion> sesherAttackRightAnimation; 
 	private Texture sesherAttackRightSheet;
 	
+	private String animationDirection;
 	
 	public Player(final Sprite sprite, String type, final Weapon weapon) {
 		super(sprite, type);
@@ -76,6 +77,7 @@ public class Player extends Characters {
 		sesherAttackLeftAnimation = loadAnimation(sesherAttackLeftSheet, Gdx.files.internal("SesherAttackLeft.png"));
 		sesherAttackRightAnimation = loadAnimation(sesherAttackRightSheet, Gdx.files.internal("SesherAttackRight.png"));
 		
+		animationDirection = "Left";
 	}
 
 	private Animation<TextureRegion> loadAnimation(Texture sheet, FileHandle file) {
@@ -292,15 +294,20 @@ public class Player extends Characters {
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(stateTime, true);
+			animationDirection = "Left";
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 			currentFrame = fresherWalkRightAnimation.getKeyFrame(stateTime, true);
+			animationDirection = "Right";
 		}
-		else {
+		else if(animationDirection == "Left") {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
 		}
+		else {
+			currentFrame = fresherWalkRightAnimation.getKeyFrame(0, true);
+		}
 		batch.draw(currentFrame, this.getX() + 30, this.getY() + 17);
-		System.out.println(stateTime);
+		
 	}
 
 	
