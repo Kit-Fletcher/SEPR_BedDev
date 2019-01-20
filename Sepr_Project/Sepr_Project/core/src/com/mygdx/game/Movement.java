@@ -6,8 +6,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-
-
 public class Movement {
 	private static HashMap<String, Integer> controls;
 	private int rand =0;
@@ -43,11 +41,9 @@ public class Movement {
 	    
 		if(Gdx.input.isKeyPressed(controls.get("LEFT"))) {
             character.translateX(-character.getSpeed());
-            //TODO make character look left
         }
         if(Gdx.input.isKeyPressed(controls.get("RIGHT"))){
         	character.translateX(character.getSpeed());
-        	//TODO make character look right
         }
         if(Gdx.input.isKeyPressed(controls.get("UP"))){
         	character.translateY(character.getSpeed());    
@@ -62,7 +58,6 @@ public class Movement {
 
 	public Point getZombieMovement(Zombies zombie, Player character) {
 		
-
 		int difX = (int)Math.round(character.getCoord().getX() - zombie.getCoord().getX());
 		int difY = (int)Math.round(character.getCoord().getY() - zombie.getCoord().getY());
 		if(((Math.abs(difX)<zombie.getAttackRadius())) && (Math.abs(difY)<zombie.getAttackRadius()) ) {
@@ -85,32 +80,24 @@ public class Movement {
 				rand -= 1;
 				if(randDir == 1) {
 					zombie.translateX(-zombie.getSpeed());
-					// TODO zombie look left
 				}else if(randDir == 2){
 					zombie.translateX(zombie.getSpeed());
-					//TODO zombie look right
 				}else if(randDir == 3) {
 					zombie.translateY(-zombie.getSpeed());
-					//TODO zombie look up
 				}else if (randDir == 4){
 					zombie.translateY(zombie.getSpeed());
-					//TODO zombie look up
 				}else if (randDir == 5){
 					zombie.translateY(zombie.getSpeed()/2);
 					zombie.translateX(zombie.getSpeed()/2);
-					// TODO look right
 				}else if (randDir == 6){
 					zombie.translateY(zombie.getSpeed()/2);
 					zombie.translateX(-zombie.getSpeed()/2);
-					//TODO look left
 				}else if (randDir == 7){
 					zombie.translateY(-zombie.getSpeed()/2);
 					zombie.translateX(zombie.getSpeed()/2);
-					//TODO look right
 				}else if (randDir == 8){
 					zombie.translateY(-zombie.getSpeed()/2);
 					zombie.translateX(-zombie.getSpeed()/2);
-					//TODO look left
 				}
 			}
 		}

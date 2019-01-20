@@ -16,8 +16,6 @@ public class Item extends Sprite{
 
     private int item_WIDTH = 10;
     private int item_HEIGHT = 30;
- 
-
 
     //positions the item in the passed coordinates.
     public Item(Sprite sprite, String type, int x, int y) {
@@ -30,6 +28,7 @@ public class Item extends Sprite{
         this.setPosition( x, y);
         this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     }
+    
     //positions the item in the default coordinates.
     public Item(Sprite sprite, String type) {
         super(sprite);
@@ -41,22 +40,15 @@ public class Item extends Sprite{
         this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     }
 
-
-
-
-
     @Override
     public void draw(Batch batch) {
         update(Gdx.graphics.getDeltaTime());
         super.draw(batch);
     }
 
-
-
     /*
     update item status and response to events
     react on collision
-  
      */
 
     public void update(float delta)
@@ -75,8 +67,6 @@ public class Item extends Sprite{
     public int getId() {
         return id;
     }
-
- 
 
     public Sprite getImage() {
         return image;

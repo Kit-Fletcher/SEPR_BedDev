@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 public class Zombies extends Characters{
-	//private static int[] hitBox ={384,705,160,799};
-	
 
 	public Zombies(final Sprite sprite, String type, final int id, final int attackRadius,final float multiplier) {
 		super(sprite,type);
@@ -38,7 +36,6 @@ public class Zombies extends Characters{
 		
 		this.setPosition(Math.round((Math.random()*Gdx.graphics.getWidth()+1)), Math.round(Math.random()*Gdx.graphics.getHeight()-1));
 	}
-	//TODO Need to add animations from the resource manager, position on the map, size etc. Use Vector2 and Map Class 	
 	
 	private int id;
 	private int attackRadius;
@@ -49,11 +46,9 @@ public class Zombies extends Characters{
 	
 	private float hardMod = 1;
 	
-
 	public boolean isHard() {
 			return isHard;
 	}
-
 	
 	public int getId() {
 		return id;
@@ -72,8 +67,6 @@ public class Zombies extends Characters{
 			
 	}
 	
-
-	
 	@Override
 	public void setDamage(int damage) {
 			super.setDamage(Math.round(damage*hardMod));
@@ -86,12 +79,8 @@ public class Zombies extends Characters{
 	public Player attack(Player chr) {
 		
 		if(closePlayer(chr)) {
-			//TODO attack animation
-			chr.injured(this.getDamage());
-			
+			chr.injured(this.getDamage());		
 		}
-		//TODO Stop attack animation
-		//TODO Make Player bounce back and go in and out of invisibility if injured
 		return chr;
 	}
 	

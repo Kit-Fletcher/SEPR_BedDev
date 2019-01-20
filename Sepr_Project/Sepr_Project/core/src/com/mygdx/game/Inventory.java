@@ -105,9 +105,6 @@ public class Inventory implements Screen {
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		game.batch.end();
 
-		// stage.draw();
-		// stage.act(delta);
-
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
 			stage.draw();

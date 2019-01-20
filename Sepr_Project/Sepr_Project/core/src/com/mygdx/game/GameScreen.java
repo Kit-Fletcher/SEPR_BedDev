@@ -164,7 +164,6 @@ public class GameScreen implements Screen {
 			} else if (stick) {
 
 				newRoom(new Point(20, 255), 0, false);
-
 				addPowerUp(redVK, 400, 200);
 				redVK.active = true;
 				newRoom(new Point(20, 255), 1, false);
@@ -172,7 +171,6 @@ public class GameScreen implements Screen {
 
 			} else {
 				newRoom(new Point(20, 255), 0, false);
-				addMike();				
 				mike.setAlpha(1f);
 			}
 			old = name;
@@ -194,12 +192,9 @@ public class GameScreen implements Screen {
 			addPowerUp(ylwVK, 400, 200);
 			ylwVK.active = true;
 			
-//			addBuilding("LakeSide1", 80, 166, 33, 13);
-//			addBuilding("LakeSide2", 529, 166, 33, 13);
 			if(stick == false) {
 				stickSprite.setAlpha(1f);
 				addBuilding("Stick", (int)stickSprite.getX(), (int)stickSprite.getY(), (int)stickSprite.getWidth(), (int)stickSprite.getHeight());
-				
 			}else {
 				stickSprite.setAlpha(0f);
 			}
@@ -213,6 +208,7 @@ public class GameScreen implements Screen {
 				stickSprite.setAlpha(0f);
 				newRoom(new Point(425, 225), 2, false);
 			}
+			
 			bckgImage = new Texture((Gdx.files.internal(("gamemap.png"))));
 			old = "LakeSide";
 			mike.setAlpha(0f);
@@ -229,7 +225,6 @@ public class GameScreen implements Screen {
 				addZombie("");
 			}
 		}
-
 	}
 
 	@Override
@@ -243,13 +238,10 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(.235f, .245f, 0.2f, .1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-		
-		// tell the camera to update its matrices.
-		//camera.update();
+
 		player.getMovement();
 		player.attack(zombies);
-		// use this code to check where coordinates are on the screen
-		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		
 		if(won == false) {
 			for (String name : buildings.keySet()) {
 				if (player.touchBuilding(buildings.get(name))) {
@@ -258,31 +250,29 @@ public class GameScreen implements Screen {
 						break;
 					}else {
 						System.out.println("stick got");
-					
 						stickSprite.setAlpha(0f);
 						this.stick = true;
 						break;
 					}
-					
 				}
 			}
+			
 			if(redVK.active) {
 				if(player.touchPowerUp(redVK)) {
-					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					redVK.applyEffect(player);
 					redVK.active = false; 
 				}
 			}
+			
 			if(blueVK.active) {
 				if(player.touchPowerUp(blueVK)) {
-					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					blueVK.applyEffect(player);
 					blueVK.active = false; 
 				}
 			}
+			
 			if(ylwVK.active) {
 				if(player.touchPowerUp(ylwVK)) {
-					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					ylwVK.applyEffect(player);
 					ylwVK.active = false; 
 				}
@@ -309,21 +299,15 @@ public class GameScreen implements Screen {
 			}
 		}
 		
-		// tell the SpriteBatch to render in the
-		// coordinate system specified by the camera.
-		//game.batch.setProjectionMatrix(camera.combined);
-
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		if(won ==false) {
-			
-		
+		if(won ==false) {	
 			player.drawAnimation(game.batch, stateTime);
-			//player.draw(game.batch);
 			mike.draw(game.batch);
 			for (Zombies zombie : zombies) {
 				zombie.draw(game.batch);
 			}
+			
 			if(redVK.active) {
 				redVK.draw(game.batch);
 			}
@@ -334,15 +318,15 @@ public class GameScreen implements Screen {
 				ylwVK.draw(game.batch);
 			}
 			
-			
 		}else {
 				victorySprite.draw(game.batch);
-
 		}
+		
 		stickSprite.draw(game.batch);
 		game.batch.end();
 		mike.speak(player, old);
 		stage.act(Gdx.graphics.getDeltaTime());
+		
 		try {
 			stage.draw();
 		} catch (Exception e) {
@@ -354,13 +338,10 @@ public class GameScreen implements Screen {
 			game.setScreen(new MainScreen(game));
 		}
 
-		// Set batch to now draw what the Hud camera sees.
-		game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
 		gameHud.update(Gdx.graphics.getDeltaTime());
 		gameHud.stage.draw();
 
-		//gameHud.update(delta);
-        if(player.getHealth() < 100 && player.getHealth() > 80){
+		if(player.getHealth() < 100 && player.getHealth() > 80){
 
             gameHud.health1.setVisible(true);
             gameHud.health2.setVisible(true);
@@ -410,8 +391,7 @@ public class GameScreen implements Screen {
             gameHud.health6.setVisible(false);
         }  
 		if (player.type == "Sesher") {
-			//error when ever adding sesher, xombime is a place holder
-			TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+			TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("characters_sesher/MaleSesherWalkStationary.png")));
 			gameHud.updatePlayerAvatar(textureRegion);
 		}
 		if (stick) {

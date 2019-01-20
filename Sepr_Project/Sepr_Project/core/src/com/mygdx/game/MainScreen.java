@@ -1,16 +1,10 @@
 package com.mygdx.game;
 
-import java.io.Console;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class MainScreen implements Screen {
 	
@@ -65,15 +59,9 @@ public class MainScreen implements Screen {
 	      fresherStats = new Texture("fresherStats.png");
 	      sesherStats = new Texture("sesherStats.png");
 	  }
-
-	
-	
-	
 	
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -156,31 +144,24 @@ public class MainScreen implements Screen {
 	    
 	    
 	  }
-
-	
-	
 	
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		
 	}
 

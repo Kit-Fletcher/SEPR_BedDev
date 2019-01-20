@@ -8,19 +8,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Characters {
 	
-	private static final int FRAME_COLS = 4, FRAME_ROWS = 2;
-	
 	private final Weapon weapon;
 
 	private boolean isArmed;
-	private boolean orientationUp; // If mouse is above = True
 	private final int INITIALHEALTH = 100;
 	
 	private Animation<TextureRegion> fresherWalkLeftAnimation;
@@ -113,12 +109,6 @@ public class Player extends Characters {
 		
 	}
 	
-	/**
-	 * update player status and response to events react on collision add velocity/
-	 * gravity type value update animation i,e damage animation, weapon animation
-	 * trigger
-	 * 
-	 */
 	@Override
 	public void update() {
 		super.update();
@@ -162,17 +152,8 @@ public class Player extends Characters {
 
 		Point xy = new Point(mov.getPlayerMovement(this));
 		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
-		if (Gdx.graphics.getHeight() - mov.getMouseCoordinatesY() > this.getCoord().getY()) {
-			orientationUp = true;
-		} else {
-			orientationUp = false;
-		}
-		// TODO change sprite to looking away if orientationUp is true - cosmetic
 	}
 
-	public boolean getOrientationUp() {
-		return orientationUp;
-	}
 
 	/**
 	 * Checks if player is attacking and does the attack
@@ -183,7 +164,6 @@ public class Player extends Characters {
 	public List<Zombies> attack(List<Zombies> zombies) {
 		boolean mouse = mov.getMouseClick();
 		if (mouse) {
-			//TODO attack animation
 			for (Zombies zombie : zombies) {
 				if (closeZombie(zombie)) {
 					zombie.injured(this.getDamage());
@@ -191,8 +171,6 @@ public class Player extends Characters {
 				}
 			}
 		}
-		//TODO stop attack animation
-		// TODO Make zombie bounce back and go in and out of invisibility if injured
 		return zombies;
 	}
 
@@ -210,16 +188,9 @@ public class Player extends Characters {
 		int difY = (int) (chrXY.getY() - zomXY.getY());
 		int offsetX = (-this.getHitBoxWidth() - zombie.getHitBoxWidth()) / 2;
 		int offsetY = (-this.getHitBoxHeight() - zombie.getHitBoxHeight()) / 2;
-//		if (this.getOrientationUp() && difY <= 0) {
 		if ((Math.abs(difX) + offsetX) < rng && Math.abs(difY) + offsetY < rng) {
 			return true;
 		}
-
-//		} else if (this.getOrientationUp() == false && difY >= 0) {
-//			if (Math.abs(difX) + offsetX < rng && difY + offsetY < rng) {
-//				return true;
-//			}
-//		}
 		return false;
 
 	}
@@ -257,10 +228,6 @@ public class Player extends Characters {
 	 */
 	public boolean touchPowerUp(Item item) {
 
-		//System.out.println("checking");
-		//System.out.println(item.getWidth());
-		//System.out.println(item.getHeight());
-		
 		Point pupXY = new Point((int) (item.getX() + item.getWidth() / 2),
 				(int) (item.getY() + item.getHeight() / 2));
 
@@ -269,7 +236,6 @@ public class Player extends Characters {
 		int difY = (int) (chrXY.getY() - item.getY());
 		int offsetX = (int) (-this.getHitBoxWidth() - item.getWidth()) / 2;
 		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
-
 		
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
 

@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 
 public class Mike extends Sprite {
 	
@@ -63,7 +61,6 @@ public class Mike extends Sprite {
 		}else if(general1 && timeDif > 3000 + offset){
 			generalIntro1.playSound();
 			general1 = false;
-			//generalIntro2.playSound();
 		
 		}else if(general2 && timeDif > 16000 + offset) {
 			generalIntro2.playSound();
@@ -79,10 +76,6 @@ public class Mike extends Sprite {
 			combat = false;
 		}
 			
-		
-		
 	}
-	
-	
 	
 }
