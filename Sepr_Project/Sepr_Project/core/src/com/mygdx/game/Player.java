@@ -256,18 +256,12 @@ public class Player extends Characters {
 	 * @return true if touching else false
 	 */
 	public boolean touchPowerUp(Item item) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> db859414463acaf11d0624312b80788b2730a7ce
 		//System.out.println("checking");
 		//System.out.println(item.getWidth());
 		//System.out.println(item.getHeight());
 		
 		Point pupXY = new Point((int) (item.getX() + item.getWidth() / 2),
 				(int) (item.getY() + item.getHeight() / 2));
-<<<<<<< HEAD
-=======
 		Point chrXY = new Point(this.getCoord());
 		int difX = (int) (chrXY.getX() - item.getX());
 		int difY = (int) (chrXY.getY() - item.getY());
@@ -275,19 +269,6 @@ public class Player extends Characters {
 		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
 
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
-			//System.out.println("PowerupFound");
-=======
-		Point pupXY = new Point((int) (item.getImage().getX() + item.getImage().getWidth() / 2),
-				(int) (item.getImage().getY() + item.getImage().getHeight() / 2));
->>>>>>> db859414463acaf11d0624312b80788b2730a7ce
-		Point chrXY = new Point(this.getCoord());
-		int difX = (int) (chrXY.getX() - item.getX());
-		int difY = (int) (chrXY.getY() - item.getY());
-		int offsetX = (int) (-this.getHitBoxWidth() - item.getWidth()) / 2;
-		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
-
-		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
->>>>>>> 1b7c7ca95b9b941eee4bf1fc1e236cf682e12894
 			return true;
 
 		}
