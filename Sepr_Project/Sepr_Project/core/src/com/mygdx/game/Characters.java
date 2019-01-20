@@ -84,6 +84,7 @@ public class Characters extends Sprite {
 	}
 
 	public void update() {
+		System.out.println("hI");
 		if (getHealth() == 0) {
 			isAlive = false;
 		}
@@ -199,5 +200,7 @@ public class Characters extends Sprite {
 	public void setImage(Texture texture) {
 		this.img = texture;
 	}
+	
+
 
 }

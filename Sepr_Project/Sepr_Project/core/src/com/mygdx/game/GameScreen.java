@@ -431,7 +431,55 @@ public class GameScreen implements Screen {
 		gameHud.stage.draw();
 
 		//gameHud.update(delta);
+        if(player.getHealth() < 100 && player.getHealth() > 80){
 
+            gameHud.health1.setVisible(true);
+            gameHud.health2.setVisible(true);
+            gameHud.health3.setVisible(true);
+            gameHud.health4.setVisible(true);
+            gameHud.health5.setVisible(true);
+            gameHud.health6.setVisible(false);
+        }else if(player.getHealth() < 80 && player.getHealth() > 60){
+
+            gameHud.health1.setVisible(true);
+            gameHud.health2.setVisible(true);
+            gameHud.health3.setVisible(true);
+            gameHud.health4.setVisible(true);
+            gameHud.health5.setVisible(false);
+            gameHud.health6.setVisible(false);
+        }else if(player.getHealth() < 60 && player.getHealth() > 40){
+
+            gameHud.health1.setVisible(true);
+            gameHud.health2.setVisible(true);
+            gameHud.health3.setVisible(true);
+            gameHud.health4.setVisible(false);
+            gameHud.health5.setVisible(false);
+            gameHud.health6.setVisible(false);
+        }else if(player.getHealth() < 40 && player.getHealth() > 20){
+
+            gameHud.health1.setVisible(true);
+            gameHud.health2.setVisible(true);
+            gameHud.health3.setVisible(false);
+            gameHud.health4.setVisible(false);
+            gameHud.health5.setVisible(false);
+            gameHud.health6.setVisible(false);
+        }else if(player.getHealth() < 20 && player.getHealth() >= 10){
+
+            gameHud.health1.setVisible(true);
+            gameHud.health2.setVisible(false);
+            gameHud.health3.setVisible(false);
+            gameHud.health4.setVisible(false);
+            gameHud.health5.setVisible(false);
+            gameHud.health6.setVisible(false);
+        }else if(player.getHealth() < 10 && player.getHealth() >= 0){
+
+            gameHud.health1.setVisible(false);
+            gameHud.health2.setVisible(false);
+            gameHud.health3.setVisible(false);
+            gameHud.health4.setVisible(false);
+            gameHud.health5.setVisible(false);
+            gameHud.health6.setVisible(false);
+        }  
 		if (player.type == "Sesher") {
 			//error when ever adding sesher, xombime is a place holder
 			TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));

@@ -115,7 +115,7 @@ public class GameHud implements Disposable {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
         this.gameScreen = gameScreen;
-        player = gameScreen.getPlayer();
+        //player = gameScreen.getPlayer();
 
         //setup the HUD viewport using a new camera seperate from gamecam
         //define stage using that viewport and games spritebatch
@@ -494,6 +494,7 @@ public class GameHud implements Disposable {
     }
 
     public void update(float dt) {
+    	player = gameScreen.getPlayer();
         timeCount += dt;
         if (timeCount >= 1) {
             if (worldTimer > 0) {

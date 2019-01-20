@@ -303,7 +303,7 @@ public class Player extends Characters {
 	}
 
 	public void drawAnimation(SpriteBatch batch, float stateTime) {
-		
+		update();
 		TextureRegion currentFrame;
 		
 		if(animationDirection == "Left") {
