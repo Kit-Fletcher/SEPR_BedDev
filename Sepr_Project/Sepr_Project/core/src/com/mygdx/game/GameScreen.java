@@ -51,33 +51,33 @@ public class GameScreen implements Screen {
 
 	private FontController fontController;
 
-    //---------------------styles-------------------------
-    TextButton.TextButtonStyle textButtonStyle;
-    ImageButton.ImageButtonStyle imageButtonStyle;
-	    ImageButton.ImageButtonStyle imageButtonStylem;
-	    Label.LabelStyle hudLabelStyle;
+	// ---------------------styles-------------------------
+	TextButton.TextButtonStyle textButtonStyle;
+	ImageButton.ImageButtonStyle imageButtonStyle;
+	ImageButton.ImageButtonStyle imageButtonStylem;
+	Label.LabelStyle hudLabelStyle;
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
 	private boolean stick;
-	
-	//mike parameters
+
+	// mike parameters
 	private Mike mike;
 
 	// zombie parameters
-    private Sprite zombieSprite;
-    private Zombies zombie;
-    private List<Zombies> zombies;
-    
-    // Building parameters
-    private Sprite building;
-    private static HashMap<String, Sprite> buildings;
-    private Boolean start = true;
-    private String old;
+	private Sprite zombieSprite;
+	private Zombies zombie;
+	private List<Zombies> zombies;
 
-	//updating Hud parameters 
+	// Building parameters
+	private Sprite building;
+	private static HashMap<String, Sprite> buildings;
+	private Boolean start = true;
+	private String old;
+
+	// updating Hud parameters
 	private String objective;
-	private String[] exp;//stores names of explored buildings.  
+	private String[] exp;// stores names of explored buildings.
 
 	public GameScreen(final Main game, String playerType) {
 		this.game = game;
@@ -86,7 +86,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		// create overlay stage
 		bckgImage = new Texture((Gdx.files.internal(("lakeside_way.png"))));
-		
+
 		// get scrren width and scrren height from gdx graphics
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
@@ -94,148 +94,140 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, screenWidth, screenHeight);
 
-		gameHud = new GameHud(game.batch,this);
-		
-		
-		
-//		this.img = new Texture("MaleFresher.png");
-//		this.playerSpr = new Sprite(this.img);
-//		this.player = new Player(this.playerSpr, "Sesher", null);
-//		this.img = new Texture("Zombie1.png");
-//		this.zmbSpr = new Sprite(this.img);
-//		this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
-//		this.zombies = new ArrayList<Zombies>();
-//		this.zombies.add(this.zmb);
-		// add player to screen
-        addPlayer(playerType);
-        GameScreen.buildings = new HashMap<String, Sprite>();
-        this.zombies = new ArrayList<Zombies>();
-        this.exp =  new String[2];
-        changeScreen("CompSci");
-        
-        
+		gameHud = new GameHud(game.batch, this);
 
+		// this.img = new Texture("MaleFresher.png");
+		// this.playerSpr = new Sprite(this.img);
+		// this.player = new Player(this.playerSpr, "Sesher", null);
+		// this.img = new Texture("Zombie1.png");
+		// this.zmbSpr = new Sprite(this.img);
+		// this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
+		// this.zombies = new ArrayList<Zombies>();
+		// this.zombies.add(this.zmb);
+		// add player to screen
+		addPlayer(playerType);
+		GameScreen.buildings = new HashMap<String, Sprite>();
+		this.zombies = new ArrayList<Zombies>();
+		this.exp = new String[2];
+		changeScreen("CompSci");
 
 	}
-	
-    private void addPlayer(String playerType) {
 
-        TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
+	private void addPlayer(String playerType) {
 
-        Sprite playerSprite = new Sprite();
-        playerSprite.setRegion(playerTextureRegion);
+		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
 
-        player = new Player(playerSprite, playerType, null);
+		Sprite playerSprite = new Sprite();
+		playerSprite.setRegion(playerTextureRegion);
 
-    }
-    
-    private void addMike() {
-        TextureRegion mikeTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("mike.png")));
+		player = new Player(playerSprite, playerType, null);
 
-        Sprite mikeSprite = new Sprite();
-        mikeSprite.setRegion(mikeTextureRegion);
-        
-        mike = new Mike(mikeSprite);
-        
-        mike.setPosition(314, 257);
-        
-    }
-    
-    private void addZombie(String boss) {
+	}
 
-        TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+	private void addMike() {
+		TextureRegion mikeTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("mike.png")));
 
-        Sprite zombieSprite = new Sprite();
-        zombieSprite.setRegion(zombieTextureRegion);
-        if(boss == "mBoss") {
-        	this.zombie = new Zombies(zombieSprite, "mBoss", 1,100,1);
-            
-        }else {
-        	this.zombie = new Zombies(zombieSprite, "Pawn", 1,100,1);
-            
-        }
-        
-        this.zombies.add(zombie);
+		Sprite mikeSprite = new Sprite();
+		mikeSprite.setRegion(mikeTextureRegion);
 
-    }
+		mike = new Mike(mikeSprite);
 
-    private void addBuilding(String name, int x, int y,int sizeX, int sizeY) {
-        building = new Sprite();
-        building.setSize(sizeX,sizeY);
-        building.setPosition(x, y);
-        buildings.put(name,building);
-        
-    }
-    
-    private void changeScreen(String name) {
-    	zombies.clear();
-    	buildings.clear();
-    	if(name == "CompSci") {
-    		
-    		bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-    		
-    		addBuilding("LakeSide1",0,435,37,28);
-    		addBuilding("LakeSide2",0,255,37,28);
-    		addBuilding("LakeSide3",0,0,37,28);
-    		if(start) {
-    			newRoom(new Point(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2),0, false);
-    			start = false;
-    			addMike();
-    			
-    			//TODO put mike in
-    		}else if(stick){
-    			newRoom(new Point(20,255),1, false);
-    			addZombie("mBoss");
-    			//TODO if this zombie dies then you win
+		mike.setPosition(314, 257);
 
-    			
+	}
 
-    		}else {
-    			// Placeholder before stick is used
-    			newRoom(new Point(20,255),1, false);
-    			addZombie("mBoss");
-    		}
-    		old = name;
-    		
-    	}else if(name == "Central"){
-    		bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
-    		addBuilding("LakeSide1",80,166,33,13);
-    		addBuilding("LakeSide2",529,166,33,13);
-    		newRoom(new Point(115,166), 3, false);
-    		old = name;
-    	}else if(name == "Piazza") {
-    		bckgImage = new Texture((Gdx.files.internal((".png"))));
-    		newRoom(new Point(115,166), 3, false);
-    		addBuilding("LakeSide1",80,166,33,13);
-    		addBuilding("LakeSide2",529,166,33,13);
-    		old = name;
-    		//TODO change once got a piazza image
-    	}else if(name.startsWith("LakeSide")){
-    		if (old == "Central") {
-    			newRoom(new Point(435,304),2, false);
-    		}else if(old == "CompSci") {
-    			newRoom(new Point(215,157),2, false);
-    		}else if(old == "Piazza") {
-    			//TODO once piazza is ready
-    		}
-    		bckgImage = new Texture((Gdx.files.internal(("lakeside_way_odd.png"))));
-    		old = "LakeSide";
-    		mike.setAlpha(0f);
-    		addBuilding("CompSci", 161,127,50,60);
-    		addBuilding("Central", 524,297,67,95);
-    	}
-    }
-    
-    private void newRoom(Point startPos, int numZombies, Boolean boss) {
-    	player.setPosition((float)startPos.getX(), (float)startPos.getY());
-    	if (numZombies != 0) {
-    		for(int x = 0; x < numZombies; x++) {
-        		addZombie("");
-        	}
-    	}
-    	
-    }
+	private void addZombie(String boss) {
 
+		TextureRegion zombieTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+
+		Sprite zombieSprite = new Sprite();
+		zombieSprite.setRegion(zombieTextureRegion);
+		if (boss == "mBoss") {
+			this.zombie = new Zombies(zombieSprite, "mBoss", 1, 100, 1);
+
+		} else {
+			this.zombie = new Zombies(zombieSprite, "Pawn", 1, 100, 1);
+
+		}
+
+		this.zombies.add(zombie);
+
+	}
+
+	private void addBuilding(String name, int x, int y, int sizeX, int sizeY) {
+		building = new Sprite();
+		building.setSize(sizeX, sizeY);
+		building.setPosition(x, y);
+		buildings.put(name, building);
+
+	}
+
+	private void changeScreen(String name) {
+		zombies.clear();
+		buildings.clear();
+		if (name == "CompSci") {
+
+			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
+
+			addBuilding("LakeSide1", 0, 435, 37, 28);
+			addBuilding("LakeSide2", 0, 255, 37, 28);
+			addBuilding("LakeSide3", 0, 0, 37, 28);
+			if (start) {
+				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
+				start = false;
+				addMike();
+
+				// TODO put mike in
+			} else if (stick) {
+				newRoom(new Point(20, 255), 1, false);
+				addZombie("mBoss");
+				// TODO if this zombie dies then you win
+
+			} else {
+				// Placeholder before stick is used
+				newRoom(new Point(20, 255), 1, false);
+				addZombie("mBoss");
+			}
+			old = name;
+
+		} else if (name == "Central") {
+			bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
+			addBuilding("LakeSide1", 80, 166, 33, 13);
+			addBuilding("LakeSide2", 529, 166, 33, 13);
+			newRoom(new Point(115, 166), 3, false);
+			old = name;
+		} else if (name == "Piazza") {
+			bckgImage = new Texture((Gdx.files.internal((".png"))));
+			newRoom(new Point(115, 166), 3, false);
+			addBuilding("LakeSide1", 80, 166, 33, 13);
+			addBuilding("LakeSide2", 529, 166, 33, 13);
+			old = name;
+			// TODO change once got a piazza image
+		} else if (name.startsWith("LakeSide")) {
+			if (old == "Central") {
+				newRoom(new Point(435, 304), 2, false);
+			} else if (old == "CompSci") {
+				newRoom(new Point(215, 157), 2, false);
+			} else if (old == "Piazza") {
+				// TODO once piazza is ready
+			}
+			bckgImage = new Texture((Gdx.files.internal(("lakeside_way_odd.png"))));
+			old = "LakeSide";
+			mike.setAlpha(0f);
+			addBuilding("CompSci", 161, 127, 50, 60);
+			addBuilding("Central", 524, 297, 67, 95);
+		}
+	}
+
+	private void newRoom(Point startPos, int numZombies, Boolean boss) {
+		player.setPosition((float) startPos.getX(), (float) startPos.getY());
+		if (numZombies != 0) {
+			for (int x = 0; x < numZombies; x++) {
+				addZombie("");
+			}
+		}
+
+	}
 
 	private void addUiStyles() {
 
@@ -274,13 +266,10 @@ public class GameScreen implements Screen {
 		hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
 	}
 
-
-
-
 	@Override
 	public void show() {
-		 Gdx.input.setInputProcessor(stage);
-		 Gdx.input.setInputProcessor(gameHud.getStage());
+		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(gameHud.getStage());
 	}
 
 	@Override
@@ -293,32 +282,32 @@ public class GameScreen implements Screen {
 		player.getMovement();
 		player.attack(zombies);
 		// use this code to check where coordinates are on the screen
-		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-		for(String name: buildings.keySet()) {
-            if(player.touchBuilding(buildings.get(name))) {
-            	this.changeScreen(name);
-            	break;
-            }
-       }
-       for (Zombies zombie : zombies) {
-            if (zombie.isAlive()) {
-                zombie.getMovement(player);
-                zombie.attack(player);
-            }else {
-                if(zombie.type == "mBoss") {
-                	//TODO add in win thing
-                }
-                zombie.setAlpha((float) (zombie.getColor().a * 0.95));
-            }
-        }
-       // removes dead zombies
-       if(System.currentTimeMillis() % 10000 < 1000) {
-           for (int i = 0; i < zombies.size(); i++) {
-               if (zombies.get(i).isAlive() == false) {
-                   zombies.remove(i);
-               }
-           }
-       }
+		// System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		for (String name : buildings.keySet()) {
+			if (player.touchBuilding(buildings.get(name))) {
+				this.changeScreen(name);
+				break;
+			}
+		}
+		for (Zombies zombie : zombies) {
+			if (zombie.isAlive()) {
+				zombie.getMovement(player);
+				zombie.attack(player);
+			} else {
+				if (zombie.type == "mBoss") {
+					// TODO add in win thing
+				}
+				zombie.setAlpha((float) (zombie.getColor().a * 0.95));
+			}
+		}
+		// removes dead zombies
+		if (System.currentTimeMillis() % 10000 < 1000) {
+			for (int i = 0; i < zombies.size(); i++) {
+				if (zombies.get(i).isAlive() == false) {
+					zombies.remove(i);
+				}
+			}
+		}
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
 		game.batch.setProjectionMatrix(camera.combined);
@@ -332,7 +321,7 @@ public class GameScreen implements Screen {
 		}
 
 		game.batch.end();
-		mike.speak(player,old);
+		mike.speak(player, old);
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {
 			stage.draw();
@@ -340,35 +329,29 @@ public class GameScreen implements Screen {
 			System.out.println(e);
 		}
 
-
-
 		if (player.isAlive == false) {
 			System.out.println("closing");
 			game.setScreen(new MainScreen(game));
 		}
-		
 
-        //Set batch to now draw what the Hud camera sees.
-        game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
-        gameHud.stage.draw();
+		// Set batch to now draw what the Hud camera sees.
+		game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
+		gameHud.stage.draw();
 
-        gameHud.update(delta);
-		
-        if(player.type=="Sesher"){
-            TextureRegion  textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
-            gameHud.updatePlayerAvatar(textureRegion);
-        }
-        if(stick) {
-            gameHud.updateCurrentObjective(objective);
-        }
+		gameHud.update(delta);
 
-            gameHud.updateExplored(exp.length);
-            		
+		if (player.type == "Sesher") {
+			//error when ever adding sesher, xombime is a place holder
+			TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
+			gameHud.updatePlayerAvatar(textureRegion);
+		}
+		if (stick) {
+			gameHud.updateCurrentObjective(objective);
+		}
 
+		gameHud.updateExplored(exp.length);
 
-        }
-
-	
+	}
 
 	@Override
 	public void resize(int width, int height) {
@@ -394,12 +377,12 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		bckgImage.dispose();
 	}
-	
-    public Player getPlayer() {
-        return player;}
 
+	public Player getPlayer() {
+		return player;
+	}
 
-    public Main getGame() {
-        return game;
-    }
+	public Main getGame() {
+		return game;
+	}
 }
