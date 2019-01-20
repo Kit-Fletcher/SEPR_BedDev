@@ -25,7 +25,6 @@ public class Player extends Characters {
 
 		this.weapon = weapon;
 		
-		
 		initialize(walkSheet, walkAnimation);
 	}
 
@@ -48,7 +47,7 @@ public class Player extends Characters {
 		}
 		
 		// Load the sprite sheet as a Texture
-		walkSheet = new Texture(Gdx.files.internal(".png"));
+		walkSheet = new Texture(Gdx.files.internal("SesherWalkLeft.png"));
 
 		// Use the split utility method to create a 2D array of TextureRegions. This is 
 		// possible because this sprite sheet contains frames of equal size and they are 
@@ -69,6 +68,8 @@ public class Player extends Characters {
 
 		// Initialize the Animation with the frame interval and array of frames
 		walkAnimation = new Animation<TextureRegion>(0.025f, walkFrames);
+		
+		System.out.println("working");
 		
 	}
 
