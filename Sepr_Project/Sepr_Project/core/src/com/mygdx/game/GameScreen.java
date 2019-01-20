@@ -57,8 +57,6 @@ public class GameScreen implements Screen {
 	private Player player;
 	private boolean stick;
 	private float stateTime;
-	Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-	Texture walkSheet;
 
 	// mike parameters
 	private Mike mike;
@@ -111,7 +109,7 @@ public class GameScreen implements Screen {
 		// this.zombies = new ArrayList<Zombies>();
 		// this.zombies.add(this.zmb);
 		// add player to screen
-		addPlayer(playerType, walkSheet, walkAnimation);
+		addPlayer(playerType);
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
@@ -129,14 +127,14 @@ public class GameScreen implements Screen {
 		stateTime = 0f;
 	}
 
-	private void addPlayer(String playerType, Texture walkSheet,Animation<TextureRegion> walkAnimation) {
+	private void addPlayer(String playerType) {
 
 		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
 
 		Sprite playerSprite = new Sprite();
 		playerSprite.setRegion(playerTextureRegion);
 
-		player = new Player(playerSprite, playerType, null, walkSheet, walkAnimation);
+		player = new Player(playerSprite, playerType, null);
 
 	}
 
@@ -315,6 +313,7 @@ public class GameScreen implements Screen {
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		player.drawAnimation(game.batch, stateTime);
 		player.draw(game.batch);
 		mike.draw(game.batch);
 		for (Zombies zombie : zombies) {
