@@ -1,0 +1,85 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x77679665, pid=7824, tid=0x00001d60
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_131-b11) (build 1.8.0_131-b11)
+# Java VM: Java HotSpot(TM) Client VM (25.131-b11 mixed mode windows-x86 )
+# Problematic frame:
+# C  [ntdll.dll+0x59665]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x15d1f000):  JavaThread "LWJGL Application" [_thread_in_native, id=7520, stack(0x16ea0000,0x16ef0000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0xfffffff8
+
+Registers:
+EAX=0x014400c0, EBX=0x00000000, ECX=0xd1b50000, EDX=0xbf73a3bb
+ESP=0x16eece58, EBP=0x16eece68, ESI=0xfffffff8, EDI=0x01440000
+EIP=0x77679665, EFLAGS=0x00010206
+
+Top of Stack: (sp=0x16eece58)
+0x16eece58:   00088b70 01440000 00000833 01440000
+0x16eece68:   16eeceb0 77678a3c 01440000 181f6aa0
+0x16eece78:   181f2908 168ffe04 00000000 181f2908
+0x16eece88:   168ffe04 77665e00 163d65e0 1693ffdc
+0x16eece98:   00000000 01170000 00010c92 163ddac8
+0x16eecea8:   00000000 16eeceb8 16eed000 77664751
+0x16eeceb8:   00000833 00000000 1c5f12df 181f6788
+0x16eecec8:   01440000 181f6790 000007ff 77665d3e 
+
+Instructions: (pc=0x77679665)
+0x77679645:   46 03 8b 47 50 31 06 8b 5b 04 8d 87 c0 00 00 00
+0x77679655:   3b d8 74 64 83 7f 4c 00 8d 73 f8 74 20 8b 57 50
+0x77679665:   33 16 8b ca 89 16 8b c2 c1 e9 10 c1 e8 08 32 c8
+0x77679675:   32 ca c1 ea 18 3a d1 0f 85 75 f0 03 00 0f b7 0e 
+
+
+Register to memory mapping:
+
+EAX=0x014400c0 is an unknown value
+EBX=0x00000000 is an unknown value
+ECX=0xd1b50000 is an unknown value
+EDX=0xbf73a3bb is an unknown value
+ESP=0x16eece58 is pointing into the stack for thread: 0x15d1f000
+EBP=0x16eece68 is pointing into the stack for thread: 0x15d1f000
+ESI=0xfffffff8 is an unknown value
+EDI=0x01440000 is an unknown value
+
+
+Stack: [0x16ea0000,0x16ef0000],  sp=0x16eece58,  free space=307k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [ntdll.dll+0x59665]
+C  [ntdll.dll+0x58a3c]
+C  [ntdll.dll+0x44751]
+C  [ntdll.dll+0x43812]
+C  [AcLayers.DLL+0x1ae97]
+C  [AcLayers.DLL+0x23285]
+C  [igc32.dll+0x50c582]
+C  [igc32.dll+0x3e19e2]
+C  [igc32.dll+0x3e397b]
+C  [igc32.dll+0x4b18ea]
+C  [igc32.dll+0x4b1a71]
+C  [igc32.dll+0x4b14bd]
+C  [igc32.dll+0xf8417]
+C  [igc32.dll+0x2b2fa]
+C  [igc32.dll+0x23f34]
+C  [igc32.dll+0x2599a]
+C  [igc32.dll+0x21f94]
+C  [ig9icd32.dll+0x62e43e]
+C  [ig9icd32.dll+0x62f708]
+C  [ig9icd32.dll+0x600fd7]
+C  [ig9icd32.dll+0x600d4f]
+C  [ig9icd32.dll+0x60090c]
+C  [ig9icd32.dll+0x1a4cb0]
+C  [ig9icd32.dll+0x19d3f6]
+C
