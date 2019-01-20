@@ -153,16 +153,13 @@ public class GameHud implements Disposable {
 
                 if(actor ==  pauseButton )
                 {
-                    System.out.println("pauseButton  is clicked");
                     if(!isPause)
-                        System.out.println("pauseGame()");
                     pauseGame();
 
                 }
 
                 if(actor == inventoryButton )
                 {
-                    System.out.println("inventoryButton  is clicked");
                     gotToInventoryScreen();
 
                 }
@@ -241,11 +238,9 @@ public class GameHud implements Disposable {
 
         pauseGroup.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                System.out.println("Clicked! Is checked: Pause ");
                 if(actor == backButton )
                 {
-                    Helper.println("Pause screen touched ");
-                    resumeGame();
+                	resumeGame();
                 }
 
             }

@@ -186,7 +186,7 @@ public class GameScreen implements Screen {
 			old = name;
 		} 
 		else if (name == "Piazza") {
-			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
+			bckgImage = new Texture((Gdx.files.internal(("environments/piazza.png"))));
 			newRoom(new Point(430, 46), 3, false);
 			addBuilding("LakeSide1", 522, 46, 33, 33);
 			addPowerUp(ylwVK, 400, 200);
@@ -249,7 +249,6 @@ public class GameScreen implements Screen {
 						this.changeScreen(name);
 						break;
 					}else {
-						System.out.println("stick got");
 						stickSprite.setAlpha(0f);
 						this.stick = true;
 						break;
@@ -334,7 +333,6 @@ public class GameScreen implements Screen {
 		}
 		
 		if (player.isAlive == false) {
-			System.out.println("closing");
 			game.setScreen(new MainScreen(game));
 		}
 

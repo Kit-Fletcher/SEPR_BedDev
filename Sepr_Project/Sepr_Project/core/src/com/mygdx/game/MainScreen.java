@@ -45,7 +45,6 @@ public class MainScreen implements Screen {
 	  
 	
 	  public MainScreen (Main game) {
-		  System.out.println(Gdx.graphics.getHeight());
 		  this.game = game;
 	      background = new Texture("backgroundSEPR.png");
 	      startFresherButtonActive = new Texture("selectFresherActivated.png");
