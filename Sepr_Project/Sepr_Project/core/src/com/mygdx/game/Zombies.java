@@ -10,8 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Zombies extends Characters{
 	//private static int[] hitBox ={384,705,160,799};
-	private long timeLastAttack = System.currentTimeMillis() - 2000;
-	private long attackDelay = 1;
+	
 	public Zombies(final Texture img) {
 		super(img);
 		initialize();
@@ -33,7 +32,6 @@ public class Zombies extends Characters{
 			this.setRegion(new TextureRegion(new Texture(Gdx.files.internal("zombieMike.png"))));
 			this.hitBoxDim = new int[] {0,(int)this.getWidth(),0,(int)this.getHeight()};
 			this.setSize(50, 75);
-			this.attackDelay = 2;
 		}else {
 			this.damage = Math.round(10 *this.hardMod);
 			this.health = Math.round(15 * this.hardMod);
@@ -89,13 +87,11 @@ public class Zombies extends Characters{
 		this.setPosition(Math.round(xy.getX()), Math.round(xy.getY()));
 	}
 	public Player attack(Player chr) {
-		if(System.currentTimeMillis() -this.timeLastAttack >  (1000 * this.attackDelay)) {
-			this.timeLastAttack = System.currentTimeMillis();
 		
-			if(closePlayer(chr)) {
-				//TODO attack animation
-				chr.injured(this.getDamage());
-			}
+		if(closePlayer(chr)) {
+			//TODO attack animation
+			chr.injured(this.getDamage());
+			
 		}
 		//TODO Stop attack animation
 		//TODO Make Player bounce back and go in and out of invisibility if injured
@@ -111,9 +107,7 @@ public class Zombies extends Characters{
 		int offsetX = (int)(-this.getHitBoxWidth()- chr.getHitBoxWidth())/2;
 		int offsetY = (int)(-this.getHitBoxHeight()- chr.getHitBoxHeight())/2;
 		if((Math.abs(difX) + offsetX)< rng && Math.abs(difY) +offsetY<rng) {
-			
 			return true;
-			
 		}
 		return false;	
 	}
