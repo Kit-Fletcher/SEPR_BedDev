@@ -125,6 +125,9 @@ public class GameScreen implements Screen {
 		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
 		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
 		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		redVK.active = false;
+		blueVK.active = false;
+		ylwVK.active = false;
 		TextureRegion victoryTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("victory.png")));
 		victorySprite = new Sprite();
 		victorySprite.setRegion(victoryTextureRegion);
@@ -211,6 +214,9 @@ public class GameScreen implements Screen {
 	private void changeScreen(String name) {
 		zombies.clear();
 		buildings.clear();
+		redVK.active = false;
+		blueVK.active = false;
+		ylwVK.active = false;
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
@@ -227,17 +233,15 @@ public class GameScreen implements Screen {
 
 				// TODO put mike in
 			} else if (stick) {
-				if(redVK != null) {
-					//addPowerUp(redVK, 200, 200);
-				}
+				addPowerUp(redVK, 400, 200);
+				redVK.active = true;
 				newRoom(new Point(20, 255), 1, false);
 				addZombie("mBoss");
 				// TODO if this zombie dies then you win
 
 			} else {
-				if(redVK != null) {
-					//addPowerUp(redVK, 200, 200);
-				}
+				addPowerUp(redVK, 400, 200);
+				redVK.active = true;
 				// Placeholder before stick is used
 				newRoom(new Point(20, 255), 1, false);
 				addZombie("mBoss");
@@ -246,18 +250,16 @@ public class GameScreen implements Screen {
 
 		} else if (name == "Central") {
 			bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
-			if(blueVK != null) {
-				//addPowerUp(blueVK, 200, 200);
-			}
+			addPowerUp(blueVK, 200, 200);
+			blueVK.active = true;
 			addBuilding("LakeSide1", 80, 166, 33, 13);
 			addBuilding("LakeSide2", 529, 166, 33, 13);
 			newRoom(new Point(115, 166), 3, false);
 			old = name;
 		} else if (name == "Piazza") {
 			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
-			if(ylwVK != null) {
-				//addPowerUp(ylwVK, 200, 200);
-			}
+			addPowerUp(ylwVK, 400, 200);
+			ylwVK.active = true;
 			newRoom(new Point(115, 166), 3, false);
 //			addBuilding("LakeSide1", 80, 166, 33, 13);
 //			addBuilding("LakeSide2", 529, 166, 33, 13);
@@ -321,25 +323,25 @@ public class GameScreen implements Screen {
 					
 				}
 			}
-			if(redVK != null) {
+			if(redVK.active) {
 				if(player.touchPowerUp(redVK)) {
 					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					redVK.applyEffect(player);
-					this.redVK = null; 
+					redVK.active = false; 
 				}
 			}
-			if(blueVK != null) {
+			if(blueVK.active) {
 				if(player.touchPowerUp(blueVK)) {
 					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					blueVK.applyEffect(player);
-					this.blueVK = null; 
+					blueVK.active = false; 
 				}
 			}
-			if(ylwVK != null) {
+			if(ylwVK.active) {
 				if(player.touchPowerUp(ylwVK)) {
 					//if the powerup is consumed, apply its effect and remove it from the scene. 
 					ylwVK.applyEffect(player);
-					this.ylwVK = null; 
+					ylwVK.active = false; 
 				}
 			}
 				
@@ -379,11 +381,15 @@ public class GameScreen implements Screen {
 			for (Zombies zombie : zombies) {
 				zombie.draw(game.batch);
 			}
-			if(redVK != null) {
+			if(redVK.active) {
 				redVK.draw(game.batch);
 			}
-			
-			
+			if(blueVK.active) {
+				blueVK.draw(game.batch);
+			}
+			if(ylwVK.active) {
+				ylwVK.draw(game.batch);
+			}
 			
 			
 		}else {

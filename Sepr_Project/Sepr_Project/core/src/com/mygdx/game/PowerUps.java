@@ -7,14 +7,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class PowerUps extends Item {
 
+	public Boolean active;
+	
 	public PowerUps(Sprite sprite, String type, int x, int y) {
 		super(sprite, type, x ,y );
-		
+		active = false;
 	}
 	
 	public PowerUps(Sprite sprite, String type) {
 		super(sprite, type );
-		
+		active = false;
 	}	
 
 	/*
