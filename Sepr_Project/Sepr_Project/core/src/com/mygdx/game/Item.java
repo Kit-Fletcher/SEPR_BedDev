@@ -14,7 +14,7 @@ public class Item extends Sprite{
     private Sprite image;
     private int id;
 
-    private int item_WIDTH = 30;
+    private int item_WIDTH = 10;
     private int item_HEIGHT = 30;
  
 

@@ -111,7 +111,6 @@ public class GameScreen implements Screen {
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
-		changeScreen("CompSci");
 		//create powerups 
 		this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
 		this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
@@ -119,7 +118,10 @@ public class GameScreen implements Screen {
 		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
 		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
 		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
-		addPowerUp(redVK, 2f, .70f);
+		
+		changeScreen("CompSci");
+
+		//addPowerUp(redVK, 2f, .70f);
 	}
 
 	private void addPlayer(String playerType) {
@@ -194,10 +196,15 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-
+			addPowerUp(redVK, 3f, .90f);
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
+			if(player.touchPowerUp(redVK)) {
+				//if the powerup is consumed, apply its effect and remove it from the scene. 
+				redVK.applyEffect(player);
+				this.redVK = null; 
+			}
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
