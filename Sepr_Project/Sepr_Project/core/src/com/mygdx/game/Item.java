@@ -1,40 +1,48 @@
 package com.mygdx.game;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Item extends Sprite{
 
-
+    // so that item id is not duplicated
+    private static final AtomicInteger count = new AtomicInteger(0);
     private String type;
-    private int id;
     private Sprite image;
-
+    private int id;
 
     private int item_WIDTH = 100;
     private int item_HEIGHT = 100;
+ 
 
 
-
-    public Item(Sprite sprite,int id, String type) {
+    //positions the item in the passed coordinates.
+    public Item(Sprite sprite, String type, int x, int y) {
         super(sprite);
         this.image = sprite;
         this.type = type;
-        this.id = id;
+        this.id = count.incrementAndGet();
         this.type = type;
-
-        initialize();
-    }
-
-    /*
-    set default value of item attributes
-     */
-    private void initialize() {
-
         this.setSize(item_WIDTH,item_HEIGHT);
-        this.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        this.setPosition( x, y);
+        this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     }
+    //positions the item in the default coordinates.
+    public Item(Sprite sprite, String type) {
+        super(sprite);
+        this.image = sprite;
+        this.type = type;
+        this.id = count.incrementAndGet();
+        this.type = type;
+        this.setSize(item_WIDTH,item_HEIGHT);
+        this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+    }
+
+
+
 
 
     @Override
@@ -53,7 +61,7 @@ public class Item extends Sprite{
 
     public void update(float delta)
     {
-
+    	
     }
 
     public String getType() {
@@ -68,9 +76,7 @@ public class Item extends Sprite{
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+ 
 
     public Sprite getImage() {
         return image;

@@ -14,7 +14,9 @@ public class Player extends Characters {
 
 	private boolean isArmed;
 	private boolean orientationUp; // If mouse is above = True
-
+	private final int INITIALHEALTH = 100;
+	
+	
 	public Player(final Sprite img, String type) {
 		super(img, type);
 		this.weapon = null;
@@ -65,7 +67,7 @@ public class Player extends Characters {
 	@Override
 	public void injured(int x) {
 
-		if (type == "Gresher") {
+		if (type == "Sesher") {
 
 			x = (int) (x * this.injMod);
 
@@ -184,6 +186,30 @@ public class Player extends Characters {
 		return false;
 
 	}
+	
+	/**
+	 * Checks if the character is touching an Item.
+	 * 
+	 * @param item
+	 *            Item to be touched
+	 * @return true if touching else false
+	 */
+	public boolean touchPowerUp(Item item) {
+		Point pupXY = new Point((int) (item.getImage().getX() + item.getImage().getWidth() / 2),
+				(int) (item.getImage().getY() + item.getImage().getHeight() / 2));
+		Point chrXY = new Point(this.getCoord());
+		int difX = (int) (chrXY.getX() - item.getImage().getX());
+		int difY = (int) (chrXY.getY() - item.getImage().getY());
+		int offsetX = (int) (-this.getHitBoxWidth() - item.getImage().getWidth()) / 2;
+		int offsetY = (int) (-this.getHitBoxHeight() - item.getImage().getHeight()) / 2;
+
+		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
+			return true;
+
+		}
+		return false;
+
+	}
 
 	@Override
 	public int getRange() {
@@ -197,6 +223,14 @@ public class Player extends Characters {
 	@Override
 	public int getSpeed() {
 		return (int) (this.speed * spdMod);
+	}
+	
+	public void resetHealth() {
+		this.health = getINITIALHEALTH();
+	}
+
+	public int getINITIALHEALTH() {
+		return INITIALHEALTH;
 	}
 
 }

@@ -49,13 +49,7 @@ public class GameScreen implements Screen {
 
 	private Skin skin;
 
-	private FontController fontController;
 
-	// ---------------------styles-------------------------
-	TextButton.TextButtonStyle textButtonStyle;
-	ImageButton.ImageButtonStyle imageButtonStyle;
-	ImageButton.ImageButtonStyle imageButtonStylem;
-	Label.LabelStyle hudLabelStyle;
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
