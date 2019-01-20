@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
 	// updating Hud parameters
 	private String objective;
 	private String[] exp;// stores names of explored buildings.
-
+	boolean gs; 
 	public GameScreen(final Main game, String playerType) {
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
@@ -110,6 +110,7 @@ public class GameScreen implements Screen {
 		// this.zombies.add(this.zmb);
 		// add player to screen
 		addPlayer(playerType);
+
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
@@ -122,8 +123,7 @@ public class GameScreen implements Screen {
 		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
 		
 		changeScreen("CompSci");
-
-
+		this.stick= true; 
 		stateTime = 0f;
 	}
 
@@ -134,7 +134,7 @@ public class GameScreen implements Screen {
 		Sprite playerSprite = new Sprite();
 		playerSprite.setRegion(playerTextureRegion);
 
-		player = new Player(playerSprite, playerType, null);
+		this.player = new Player(playerSprite, playerType, null);
 
 	}
 
@@ -289,10 +289,22 @@ public class GameScreen implements Screen {
 				break;
 			}
 		}
+<<<<<<< HEAD
+		
+		//if the powerup is consumed, apply its effect and remove it from the scene.
+		if(redVK != null) {
+			if(player.touchPowerUp(redVK)) {
+				redVK.applyEffect(player);
+				this.redVK = null;
+			}
+		}
+		
+=======
+>>>>>>> 1b7c7ca95b9b941eee4bf1fc1e236cf682e12894
 		for (Zombies zombie : zombies) {
 			if (zombie.isAlive()) {
 				zombie.getMovement(player);
-				player = zombie.attack(player);
+				zombie.attack(player);
 			} else {
 				if (zombie.type == "mBoss") {
 					// TODO add in win thing
@@ -323,11 +335,18 @@ public class GameScreen implements Screen {
 		
 	    for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
 	            PowerUps powerUp = entry.getValue();
-	            powerUp.draw(game.batch);
-
+	            if(powerUp != null) {
+	            	powerUp.draw(game.batch);
+	            }
 	        }
 
 		game.batch.end();
+		// Set batch to now draw what the Hud camera sees.
+		game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
+		gameHud.stage.draw();
+		if(gs) {
+		gameHud.update(delta);
+		}
 		mike.speak(player, old);
 		stage.act(Gdx.graphics.getDeltaTime());
 		try {

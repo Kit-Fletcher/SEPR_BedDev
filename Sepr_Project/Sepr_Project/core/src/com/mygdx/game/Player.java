@@ -256,13 +256,17 @@ public class Player extends Characters {
 	 * @return true if touching else false
 	 */
 	public boolean touchPowerUp(Item item) {
-		Point pupXY = new Point((int) (item.getImage().getX() + item.getImage().getWidth() / 2),
-				(int) (item.getImage().getY() + item.getImage().getHeight() / 2));
+		//System.out.println("checking");
+		//System.out.println(item.getWidth());
+		//System.out.println(item.getHeight());
+		
+		Point pupXY = new Point((int) (item.getX() + item.getWidth() / 2),
+				(int) (item.getY() + item.getHeight() / 2));
 		Point chrXY = new Point(this.getCoord());
-		int difX = (int) (chrXY.getX() - item.getImage().getX());
-		int difY = (int) (chrXY.getY() - item.getImage().getY());
-		int offsetX = (int) (-this.getHitBoxWidth() - item.getImage().getWidth()) / 2;
-		int offsetY = (int) (-this.getHitBoxHeight() - item.getImage().getHeight()) / 2;
+		int difX = (int) (chrXY.getX() - item.getX());
+		int difY = (int) (chrXY.getY() - item.getY());
+		int offsetX = (int) (-this.getHitBoxWidth() - item.getWidth()) / 2;
+		int offsetY = (int) (-this.getHitBoxHeight() - item.getHeight()) / 2;
 
 		if ((Math.abs(difX) + offsetX) < 0 && Math.abs(difY) +offsetY < 0) {
 			return true;
@@ -297,7 +301,7 @@ public class Player extends Characters {
 	public void drawAnimation(SpriteBatch batch, float stateTime) {
 		
 		TextureRegion currentFrame;
-		update();
+		
 		if(animationDirection == "Left") {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
 		}
