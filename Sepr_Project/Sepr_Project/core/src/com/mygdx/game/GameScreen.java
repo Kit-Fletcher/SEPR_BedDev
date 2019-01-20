@@ -233,9 +233,9 @@ public class GameScreen implements Screen {
 				addMike();
 
 			} else if (stick) {
-<<<<<<< HEAD
+
 				newRoom(new Point(20, 255), 0, false);
-=======
+
 				addPowerUp(redVK, 400, 200);
 				redVK.active = true;
 				newRoom(new Point(20, 255), 1, false);
@@ -243,15 +243,10 @@ public class GameScreen implements Screen {
 				// TODO if this zombie dies then you win
 
 			} else {
-				addPowerUp(redVK, 400, 200);
-				redVK.active = true;
 				// Placeholder before stick is used
-				newRoom(new Point(20, 255), 1, false);
->>>>>>> 1d259363ab24361f81a0871329a37831d410b772
-				addZombie("mBoss");
-			}else {
 				newRoom(new Point(20, 255), 0, false);
 				addMike();
+				
 			}
 			old = name;
 
@@ -269,7 +264,7 @@ public class GameScreen implements Screen {
 			addBuilding("LakeSide1", 522, 46, 33, 33);
 			addPowerUp(ylwVK, 400, 200);
 			ylwVK.active = true;
-			newRoom(new Point(115, 166), 3, false);
+			
 //			addBuilding("LakeSide1", 80, 166, 33, 13);
 //			addBuilding("LakeSide2", 529, 166, 33, 13);
 			if(stick == false) {
