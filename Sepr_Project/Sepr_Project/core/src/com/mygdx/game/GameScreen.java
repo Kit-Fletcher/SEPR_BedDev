@@ -286,11 +286,12 @@ public class GameScreen implements Screen {
 			}
 		}
 		
-		//if the powerup is consumed, apply its effect and remove it from the scene. 
-		if(player.touchPowerUp(redVK)) {
-			System.out.println("power up touched");
-			redVK.applyEffect(player);
-			this.redVK = null; 
+		//if the powerup is consumed, apply its effect and remove it from the scene.
+		if(redVK != null) {
+			if(player.touchPowerUp(redVK)) {
+				redVK.applyEffect(player);
+				this.redVK = null;
+			}
 		}
 		
 		for (Zombies zombie : zombies) {
@@ -327,8 +328,9 @@ public class GameScreen implements Screen {
 		
 	    for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
 	            PowerUps powerUp = entry.getValue();
-	            powerUp.draw(game.batch);
-
+	            if(powerUp != null) {
+	            	powerUp.draw(game.batch);
+	            }
 	        }
 
 		game.batch.end();
