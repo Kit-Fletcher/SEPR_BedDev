@@ -20,8 +20,10 @@ public class MainScreen implements Screen {
 
 	  Texture background;
 
-	  Texture startButtonActive;
-	  Texture startButtonInActive;
+	  Texture startFresherButtonActive;
+	  Texture startFresherButtonInActive;
+	  Texture startSesherButtonActive;
+	  Texture startSesherButtonInActive;
 	  Texture loadButtonActive;
 	  Texture loadButtonInActive;
 	  Texture quitButtonActive;
@@ -52,8 +54,10 @@ public class MainScreen implements Screen {
 		  System.out.println(Gdx.graphics.getHeight());
 		  this.game = game;
 	      background = new Texture("backgroundSEPR.png");
-	      startButtonActive = new Texture("startActivated.png");
-	      startButtonInActive = new Texture("startUnactivated.png");
+	      startFresherButtonActive = new Texture("selectFresherActivated.png");
+	      startFresherButtonInActive = new Texture("selectFresherUnactivated.png");
+	      startSesherButtonActive = new Texture("selectSesherActivated.png");
+	      startSesherButtonInActive = new Texture("selectSesherUnactivated.png");
 	      loadButtonActive = new Texture("loadActivated.png");
 	      loadButtonInActive = new Texture("loadUnactivated.png");
 	      quitButtonActive = new Texture("quitActivated.png");
@@ -110,21 +114,21 @@ public class MainScreen implements Screen {
 	    if (x < (startFX + btnWidth) && x > startFX &&
 	            y < (startFY + btnHeight) && y > startFY)
 	    {
-	    	game.batch.draw(startButtonActive, startFX, startFY, btnWidth, btnHeight);
+	    	game.batch.draw(startFresherButtonActive, startFX, startFY, btnWidth, btnHeight);
 	    	
 	    	
 	    } else {
-	    	game.batch.draw(startButtonInActive, startFX, startFY, btnWidth, btnHeight);
+	    	game.batch.draw(startFresherButtonInActive, startFX, startFY, btnWidth, btnHeight);
 	    }
 	    
 	    if (x < (startSX + btnWidth) && x > startSX &&
 	            y < (startSY + btnHeight) && y > startSY)
 	    {
-	    	game.batch.draw(startButtonActive, startSX, startSY, btnWidth, btnHeight);
+	    	game.batch.draw(startSesherButtonActive, startSX, startSY, btnWidth, btnHeight);
 	    	
 	    	
 	    } else {
-	    	game.batch.draw(startButtonInActive, startSX, startSY, btnWidth, btnHeight);
+	    	game.batch.draw(startSesherButtonInActive, startSX, startSY, btnWidth, btnHeight);
 	    }
 
 	    if (x < (loadX + btnWidth) && x > loadX &&

@@ -33,10 +33,7 @@ public class GameHud implements Disposable {
     public Stage stage;
     private Viewport viewport;
     GameScreen gameScreen;
-
-
     private FontController fontController;
-
 
     //---------------------styles-------------------------
     TextButton.TextButtonStyle textButtonStyle;
@@ -67,7 +64,6 @@ public class GameHud implements Disposable {
     //Scene2D Widgets
     private Label countdownLabel, timeLabel, linkLabel,timerTextLabel;
     private static Label scoreLabel;
-
 
     // HUD menu element size constants
     private final static float healthElementSize = 32f;
@@ -111,17 +107,15 @@ public class GameHud implements Disposable {
         timeCount = 0;
         score = 0;
         skin = new Skin();
-        // get scrren width and scrren height from gdx graphics
+        // get screen width and screen height from gdx graphics
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
         this.gameScreen = gameScreen;
-        //player = gameScreen.getPlayer();
 
         //setup the HUD viewport using a new camera seperate from gamecam
         //define stage using that viewport and games spritebatch
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
-
 
         addUiStyles();
         createBottomHUD();
@@ -131,8 +125,6 @@ public class GameHud implements Disposable {
 
 
     private void createTopHUD() {
-
-
         final Label timerLabel = new Label("Time: ",hudLabelStyle);
         timerTextLabel = new Label("00 ",hudLabelStyle);
         final TextButton pauseButton = new TextButton("Pause",textButtonStyle);
@@ -140,8 +132,6 @@ public class GameHud implements Disposable {
 
         rootTableOverlay = new Table().pad(2);
         rootTableOverlay.setFillParent(true);
-//        rootTableOverlay.setDebug(true);
-
 
         Table topControllCell = new Table();
         topControllCell.add(timerLabel).expandX().left();
@@ -191,10 +181,7 @@ public class GameHud implements Disposable {
 
         Pixmap pixmapBckg = new Pixmap(100, 8, Pixmap.Format.RGBA8888);
         pixmapBckg.setColor(Color.GOLD);
-//        pixmapBckg.setColor(0,0,0,1f);
         pixmapBckg.fill();
-
-//        new Texture(Gdx.files.internal("metor.png"))
 
         TextureRegion textureRegionOverlay = new TextureRegion(new Texture(pixmapBckg));
 
@@ -207,7 +194,6 @@ public class GameHud implements Disposable {
         semiTransparentBG.setColor(new Color(color.r,color.g,color.b,.85f));
         pauseGroup.addActor(semiTransparentBG);
 
-
         // slider style
 
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
@@ -215,7 +201,6 @@ public class GameHud implements Disposable {
         sliderStyle.knobDown = checkboxOn;
         sliderStyle.knobOver = checkboxOff;
         sliderStyle.background = new TextureRegionDrawable(textureRegionOverlay);
-
 
         //crate all other pause UI buttons with listener and add to pauseGroup
 
@@ -234,7 +219,6 @@ public class GameHud implements Disposable {
         checkBoxStyle.checkboxOn = checkboxOn;
 
         CheckBox fullScreenCheckBox = new CheckBox("Full Screen",checkBoxStyle);
-//        resulationLabel.setPosition(semiTransparentBG.getX()+16,screenHeight/4+semiTransparentBG.getHeight()-16);
 
         Table configTable = new Table();
         configTable.setPosition(screenWidth/2,semiTransparentBG.getHeight()-16);
@@ -258,9 +242,6 @@ public class GameHud implements Disposable {
         pauseGroup.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("Clicked! Is checked: Pause ");
-//                textButton.setText("Command");
-                // g.setScreen( new GameScreen());
-                //   buttonFlag = true;
                 if(actor == backButton )
                 {
                     Helper.println("Pause screen touched ");
@@ -282,12 +263,10 @@ public class GameHud implements Disposable {
 
                 if (value == 0)
                 {
-                    //appProperties.setVolume(0);
                     volume = 0;
                 }
                 else
                 {
-                    //appProperties.setVolume((int) value);
                     volume = value;
                 }
 
@@ -303,7 +282,6 @@ public class GameHud implements Disposable {
 
     private void updateVolumeText()
     {
-        // float value = appProperties.getVolume();
 
         volumeValueSlider.setValue(volume);
 
@@ -329,25 +307,12 @@ public class GameHud implements Disposable {
 
         rootTable = new Table();
         rootTable.setFillParent(true);
-//        rootTable.setDebug(true);
-
-
-
 
         skin.add("textButtonStyle", textButtonStyle);
-
-
         skin.add("default", imageButtonStyle);
-
-
         skin.add("imageButtonStylem", imageButtonStylem);
 
-
         playerAvatarImageButton = new ImageButton(imageButtonStylem);
-
-
-
-
 
         Label healthLabel = new Label("Health: ", hudLabelStyle);
         healthLabel.setWrap(true);
@@ -375,11 +340,9 @@ public class GameHud implements Disposable {
         ImageButton powerUp5 = new ImageButton(powerUp,powerUp);
         ImageButton powerUp6 = new ImageButton(powerUp,powerUp);
 
-
         Table playerAvatarTable = new Table();
         Table healthPowerUpTable = new Table();
         Table currentObjectiveTable = new Table();
-
 
         rootTable.add(playerAvatarTable).bottom();
         rootTable.add(healthPowerUpTable).bottom();
@@ -407,12 +370,10 @@ public class GameHud implements Disposable {
 //--------------
 
         Table mapTextCell = new Table();
-//        mapTextCell.setDebug(true);
         mapTextCell.add(healthLabel).expandX().center().pad(healthElementPadding);
         mapTextCell.row();
         mapTextCell.add(powerUpLabel).expandX().center().pad(powerUpElementPadding);
         mapTextCell.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
-//        mapTextCell.setBackground(skin.newDrawable("clear", Color.YELLOW));
 
         //-----------------------------------
         final Table playerAvatarCellTable = new Table();
@@ -420,7 +381,6 @@ public class GameHud implements Disposable {
         playerAvatarCellTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("hudimages/statbckg.jpeg")))));
 
         Table objectiveTextCell = new Table();
-//        objectiveTextCell.setDebug(true);
         objectiveTextCell.add(currentObjectiveLabel).expandX().left().pad(healthElementPadding);
         objectiveTextCell.row();
         objectiveTextCell.add(currentObjectiveName).expandX().left().pad(powerUpElementPadding);
@@ -432,13 +392,11 @@ public class GameHud implements Disposable {
         healthPowerUpTable.add(statusCell).size(Gdx.graphics.getWidth()* 1.8f/ 5, screenHeight/5).padTop(2).padBottom(2);
         currentObjectiveTable.add(objectiveTextCell).size(Gdx.graphics.getWidth()/ 5, screenHeight/5).pad(2);
 
-
         stage.addActor(rootTable);
 
     }
 
     private void addUiStyles() {
-
 
         // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
         // recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
@@ -461,34 +419,21 @@ public class GameHud implements Disposable {
         bfont.getData().setScale(.25f, .25f );
         skin.add("default",bfont);
 
-
-
-
-
-
         // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("clear", Color.GOLD);
         textButtonStyle.down = skin.newDrawable("clear", Color.GOLDENROD);
-        // textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        //  textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
         textButtonStyle.font = skin.getFont("default");
-
 
         imageButtonStyle = new ImageButton.ImageButtonStyle();
         imageButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
         imageButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        //     imageButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        //  imageButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
         imageButtonStylem = new ImageButton.ImageButtonStyle();
         TextureRegion minimap = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-        imageButtonStylem.up = new TextureRegionDrawable(minimap);//skin.newDrawable("white", Color.DARK_GRAY);
-//        imageButtonStylem.down = skin.newDrawable("white", Color.DARK_GRAY);
-        // imageButtonStylem.checked = skin.newDrawable("white", Color.BLUE);
-        // imageButtonStylem.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-
+        imageButtonStylem.up = new TextureRegionDrawable(minimap);
+        
         hudLabelStyle = new Label.LabelStyle(fontController.getFont("playtime.ttf"), Color.RED);
 
     }
@@ -502,14 +447,12 @@ public class GameHud implements Disposable {
             } else {
                 timeUp = true;
             }
-//            timerTextLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
         }
  }
 
     public static void addScore(int value) {
         score += value;
-//        scoreLabel.setText(String.format("%06d", score));
     }
 
     @Override
@@ -520,7 +463,6 @@ public class GameHud implements Disposable {
     public boolean isTimeUp() {
         return timeUp;
     }
-
 
     public static Label getScoreLabel() {
         return scoreLabel;
@@ -553,8 +495,4 @@ public class GameHud implements Disposable {
         currentObjectiveName.setText(currentObjective);
     }
 
-    public void updateExplored(int visited ){
-
-        // TODO
-    }
 }

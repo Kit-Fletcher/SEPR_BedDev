@@ -11,10 +11,7 @@ public class Characters extends Sprite {
 	
 	public int animationCount;
 	public int[] hitBoxDim = {};
-	// protected Texture img;
 	protected int speed = 2;
-	// protected float scale = 1f/10f;
-
 	protected boolean isAlive;
 	protected int health;
 	protected int damage = 10;
@@ -22,6 +19,7 @@ public class Characters extends Sprite {
 	protected final int HEIGHT = 100;
 	protected final String type;
 	protected final int range = 5;
+	
 	// Modifiers for different characters
 	protected float spdMod = 1;
 	protected float dmgMod = 1;
@@ -31,41 +29,11 @@ public class Characters extends Sprite {
 	private final long delayTime = 1000;// 1 second
 	private Texture img;
 
-	/**
-	 * @param startSpeed
-	 *            a float number which represents how many pixels the this will move
-	 *            each render cycle
-	 * @param hitBox
-	 *            an array defining how big the this is compared to its image
-	 *            {xleft,xright,ybottom,ytop}
-	 * @param startImg
-	 *            the file name of the image to be used for the character
-	 */
-	// public Characters(float startSpeed, int[] hitBox, String startImg) {
-	// speed = startSpeed;
-	// hitBoxDim = new int[4];
-	// hitBoxDim = hitBox;
-	// img = new Texture(startImg);
-	//// batch = new SpriteBatch();
-	//// this = new Sprite(img);
-	//// this.setOrigin(0, 0);
-	//// this.setScale(scale);
-	//
-	//
-	// }
-	public Characters(final Texture img) {
-		super(img);
-		this.type = "lol";
-		mov = new Movement();
-		initialize();
-	}
-
 	public Characters(final Sprite sprite, String type) {
 		super(sprite);
 		this.img = img;
 		this.type = type;// Fresher or Sesher
 		mov = new Movement();
-
 		initialize();
 	}
 
@@ -74,8 +42,7 @@ public class Characters extends Sprite {
 		this.health = 20;
 		this.isAlive = true;
 		this.setSize(WIDTH, HEIGHT);
-		// this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-	}
+		}
 
 	@Override
 	public void draw(final Batch batch) {
@@ -116,11 +83,10 @@ public class Characters extends Sprite {
 
 	public void injured(int x) {
 		if(this.isAlive()) {
-			
-		
 			if (this.timeLastAttack == 0) {
 				this.timeLastAttack = System.currentTimeMillis() - delayTime;
 			}
+			
 			if (System.currentTimeMillis() - this.timeLastAttack > delayTime) {
 				this.timeLastAttack = System.currentTimeMillis();
 				
@@ -131,11 +97,9 @@ public class Characters extends Sprite {
 					this.setHealth((int) (currentHealth - x * injMod));
 				} else {
 					this.setHealth(0);
-					this.dies();
-					
+					this.dies();		
 				}
 			}
-			System.out.println(this.getHealth());
 		}
 	}
 
@@ -167,7 +131,6 @@ public class Characters extends Sprite {
 	// Makes sure this is within the current screen
 	public void checkBounds() {
 		if (this.getX() + hitBoxDim[0] < 0) {
-			// this.setPosition(screen.getX()-hitBoxDim[0]*scale , this.getY());
 			this.setPosition(0 - hitBoxDim[0], this.getY());
 		}
 		if ((this.getX() + hitBoxDim[1]) > Gdx.graphics.getWidth()) {
@@ -200,7 +163,5 @@ public class Characters extends Sprite {
 	public void setImage(Texture texture) {
 		this.img = texture;
 	}
-	
-
 
 }

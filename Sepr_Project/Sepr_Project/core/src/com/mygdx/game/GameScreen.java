@@ -4,57 +4,27 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mygdx.uiutils.FontController;
 
-/*
-GameScreen
- */
 public class GameScreen implements Screen {
 
-	private int screenWidth;
-	private int screenHeight;
 	private GameHud gameHud;
 
 	private final Main game;
 	private Texture bckgImage;
-	private OrthographicCamera camera;
 
 	private Stage stage;
 
-	private Skin skin;
-
-
 	// player parameters
-	private Sprite playerSpr;
 	private Player player;
 	private boolean stick = false;
 	private float stateTime;
@@ -64,10 +34,8 @@ public class GameScreen implements Screen {
 	private boolean won = false;
 	private Sprite victorySprite;
 	private Sprite stickSprite;
-	
 
 	// zombie parameters
-	private Sprite zombieSprite;
 	private Zombies zombie;
 	private List<Zombies> zombies;
 	// Building parameters
@@ -82,42 +50,23 @@ public class GameScreen implements Screen {
 	private Texture redTex;
 	private Texture bluTex;
 	private Texture ylwTex;
-	private HashMap<Integer,PowerUps> powerUps = new HashMap<Integer, PowerUps>();// where keys are powerups ids and values are powerups.
 
 	// updating Hud parameters
 	private String objective;
-	private String[] exp;// stores names of explored buildings.
 
 	public GameScreen(final Main game, String playerType) {
 		this.game = game;
 		this.stage = new Stage();// this can be alse game.stage;
-		skin = new Skin();
 		Gdx.input.setInputProcessor(stage);
 		// create overlay stage
 		bckgImage = new Texture((Gdx.files.internal(("lakeside_way.png"))));
 
-		// get scrren width and scrren height from gdx graphics
-		screenWidth = Gdx.graphics.getWidth();
-		screenHeight = Gdx.graphics.getHeight();
-		// camera and the SpriteBatch
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, screenWidth, screenHeight);
-
 		gameHud = new GameHud(game.batch, this);
 
-		// this.img = new Texture("MaleFresher.png");
-		// this.playerSpr = new Sprite(this.img);
-		// this.player = new Player(this.playerSpr, "Sesher", null);
-		// this.img = new Texture("Zombie1.png");
-		// this.zmbSpr = new Sprite(this.img);
-		// this.zmb = new Zombies(this.zmbSpr, "none", 1, 100, 1);
-		// this.zombies = new ArrayList<Zombies>();
-		// this.zombies.add(this.zmb);
-		// add player to screen
 		addPlayer(playerType);
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
-		this.exp = new String[2];
+		
 		//create powerups 
 		this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
 		this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
@@ -128,19 +77,21 @@ public class GameScreen implements Screen {
 		redVK.active = false;
 		blueVK.active = false;
 		ylwVK.active = false;
+		
 		TextureRegion victoryTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("victory.png")));
 		victorySprite = new Sprite();
 		victorySprite.setRegion(victoryTextureRegion);
 		victorySprite.setSize(420,180);
 		victorySprite.setPosition(Gdx.graphics.getWidth()/2 - victorySprite.getWidth()/2,Gdx.graphics.getHeight()/2 - victorySprite.getHeight()/2 );
+		
 		TextureRegion stickTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("items/mikesStick.png")));
 		stickSprite = new Sprite();
 		stickSprite.setRegion(stickTextureRegion);
 		stickSprite.setSize(30,50);
 		stickSprite.setPosition(200,400);
 		stickSprite.setAlpha(0f);
+		
 		changeScreen("CompSci");
-
 
 		stateTime = 0f;
 	}
@@ -148,12 +99,9 @@ public class GameScreen implements Screen {
 	private void addPlayer(String playerType) {
 
 		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-
 		Sprite playerSprite = new Sprite();
 		playerSprite.setRegion(playerTextureRegion);
-
 		player = new Player(playerSprite, playerType, null);
-
 	}
 
 	private void addMike() {
@@ -163,7 +111,6 @@ public class GameScreen implements Screen {
 		mikeSprite.setRegion(mikeTextureRegion);
 
 		mike = new Mike(mikeSprite);
-
 		mike.setPosition(314, 257);
 
 	}
@@ -174,33 +121,18 @@ public class GameScreen implements Screen {
 
 		Sprite zombieSprite = new Sprite();
 		zombieSprite.setRegion(zombieTextureRegion);
+		
 		if (boss == "mBoss") {
 			this.zombie = new Zombies(zombieSprite, "mBoss", 1, 100, 1);
-
 		} else {
 			this.zombie = new Zombies(zombieSprite, "Pawn", 1, 100, 1);
-
 		}
 
 		this.zombies.add(zombie);
-
 	}
 	
-	/*
-	 * adds powerups to the scene. 
-	 * @param PowerUps powerup 
-	 * 		powerup to be added.
-	 * @param float x
-	 * 		position relative to screenwidth.
-	 * @param float y
-	 * 		position relative to screeheight.
-	 */
-	
     private void addPowerUp(PowerUps powerup, float x, float y) {
-
         powerup.setPosition(x, y);
-        powerUps.put(powerup.getId(),powerup);
-
     }
 
 	private void addBuilding(String name, int x, int y, int sizeX, int sizeY) {
@@ -208,11 +140,9 @@ public class GameScreen implements Screen {
 		building.setSize(sizeX, sizeY);
 		building.setPosition(x, y);
 		buildings.put(name, building);
-
 	}
 
 	private void changeScreen(String name) {
-		
 		zombies.clear();
 		buildings.clear();
 		redVK.active = false;
@@ -221,7 +151,6 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			
 			
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
@@ -240,17 +169,15 @@ public class GameScreen implements Screen {
 				redVK.active = true;
 				newRoom(new Point(20, 255), 1, false);
 				addZombie("mBoss");
-				// TODO if this zombie dies then you win
 
 			} else {
-				// Placeholder before stick is used
 				newRoom(new Point(20, 255), 0, false);
-				addMike();
-				
+				addMike();				
 			}
 			old = name;
 
-		} else if (name == "Central") {
+		} 
+		else if (name == "Central") {
 			bckgImage = new Texture((Gdx.files.internal(("environments/central_hall.png"))));
 			addPowerUp(blueVK, 200, 200);
 			blueVK.active = true;
@@ -258,7 +185,8 @@ public class GameScreen implements Screen {
 			addBuilding("LakeSide2", 529, 166, 33, 13);
 			newRoom(new Point(115, 166), 3, false);
 			old = name;
-		} else if (name == "Piazza") {
+		} 
+		else if (name == "Piazza") {
 			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
 			newRoom(new Point(430, 46), 3, false);
 			addBuilding("LakeSide1", 522, 46, 33, 33);
@@ -316,7 +244,7 @@ public class GameScreen implements Screen {
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 		
 		// tell the camera to update its matrices.
-		camera.update();
+		//camera.update();
 		player.getMovement();
 		player.attack(zombies);
 		// use this code to check where coordinates are on the screen
@@ -382,7 +310,7 @@ public class GameScreen implements Screen {
 		
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
-		game.batch.setProjectionMatrix(camera.combined);
+		//game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -488,8 +416,6 @@ public class GameScreen implements Screen {
 		if (stick) {
 			gameHud.updateCurrentObjective(objective);
 		}
-
-		gameHud.updateExplored(exp.length);
 
 	}
 

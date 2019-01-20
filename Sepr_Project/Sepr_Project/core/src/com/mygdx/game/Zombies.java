@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Zombies extends Characters{
 	//private static int[] hitBox ={384,705,160,799};
 	
-	public Zombies(final Texture img) {
-		super(img);
-		initialize();
-	}
+
 	public Zombies(final Sprite sprite, String type, final int id, final int attackRadius,final float multiplier) {
 		super(sprite,type);
 		this.setId(id);
