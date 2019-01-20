@@ -297,7 +297,7 @@ public class Player extends Characters {
 	public void drawAnimation(SpriteBatch batch, float stateTime) {
 		
 		TextureRegion currentFrame;
-		
+		update();
 		if(animationDirection == "Left") {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
 		}

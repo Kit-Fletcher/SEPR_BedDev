@@ -292,7 +292,7 @@ public class GameScreen implements Screen {
 		for (Zombies zombie : zombies) {
 			if (zombie.isAlive()) {
 				zombie.getMovement(player);
-				zombie.attack(player);
+				player = zombie.attack(player);
 			} else {
 				if (zombie.type == "mBoss") {
 					// TODO add in win thing
@@ -343,6 +343,7 @@ public class GameScreen implements Screen {
 
 		// Set batch to now draw what the Hud camera sees.
 		game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
+		gameHud.update(Gdx.graphics.getDeltaTime());
 		gameHud.stage.draw();
 
 		//gameHud.update(delta);
