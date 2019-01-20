@@ -210,16 +210,16 @@ public class Player extends Characters {
 		int difY = (int) (chrXY.getY() - zomXY.getY());
 		int offsetX = (-this.getHitBoxWidth() - zombie.getHitBoxWidth()) / 2;
 		int offsetY = (-this.getHitBoxHeight() - zombie.getHitBoxHeight()) / 2;
-		if (this.getOrientationUp() && difY <= 0) {
-			if ((Math.abs(difX) + offsetX) < rng && Math.abs(difY) + offsetY < rng) {
-				return true;
-			}
-
-		} else if (this.getOrientationUp() == false && difY >= 0) {
-			if (Math.abs(difX) + offsetX < rng && difY + offsetY < rng) {
-				return true;
-			}
+//		if (this.getOrientationUp() && difY <= 0) {
+		if ((Math.abs(difX) + offsetX) < rng && Math.abs(difY) + offsetY < rng) {
+			return true;
 		}
+
+//		} else if (this.getOrientationUp() == false && difY >= 0) {
+//			if (Math.abs(difX) + offsetX < rng && difY + offsetY < rng) {
+//				return true;
+//			}
+//		}
 		return false;
 
 	}
