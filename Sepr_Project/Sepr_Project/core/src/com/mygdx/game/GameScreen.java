@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
 
 	private int screenWidth;
 	private int screenHeight;
-	private GameHud gameHud;
+	//private GameHud gameHud;
 
 	private final Main game;
 	private Texture bckgImage;
@@ -57,8 +57,6 @@ public class GameScreen implements Screen {
 	private Player player;
 	private boolean stick;
 	private float stateTime;
-	Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-	Texture walkSheet;
 
 	// mike parameters
 	private Mike mike;
@@ -100,7 +98,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, screenWidth, screenHeight);
 
-		gameHud = new GameHud(game.batch, this);
+		//gameHud = new GameHud(game.batch, this);
 
 		// this.img = new Texture("MaleFresher.png");
 		// this.playerSpr = new Sprite(this.img);
@@ -111,17 +109,17 @@ public class GameScreen implements Screen {
 		// this.zombies = new ArrayList<Zombies>();
 		// this.zombies.add(this.zmb);
 		// add player to screen
-		addPlayer(playerType, walkSheet, walkAnimation);
+		addPlayer(playerType);
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
 		//create powerups 
-		this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
-		this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
-		this.ylwTex= new Texture(Gdx.files.internal("items/yellowVK.png"));
-		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
-		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
-		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		//this.redTex= new Texture(Gdx.files.internal("items/redVK.png"));
+		//this.bluTex= new Texture(Gdx.files.internal("items/blueVK.png"));
+		//this.ylwTex= new Texture(Gdx.files.internal("items/yellowVK.png"));
+		//redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
+		//blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
+		//ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
 		
 		changeScreen("CompSci");
 
@@ -129,15 +127,17 @@ public class GameScreen implements Screen {
 		stateTime = 0f;
 	}
 
-	private void addPlayer(String playerType, Texture walkSheet,Animation<TextureRegion> walkAnimation) {
-
+	private void addPlayer(String playerType) {
+		
+		
 		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
-
+		
 		Sprite playerSprite = new Sprite();
+		
 		playerSprite.setRegion(playerTextureRegion);
-
-		player = new Player(playerSprite, playerType, null, walkSheet, walkAnimation);
-
+		
+		player = new Player(playerSprite, playerType, null);
+		
 	}
 
 	private void addMike() {
@@ -201,15 +201,15 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			addPowerUp(redVK, 3f, .90f);
+			//addPowerUp(redVK, 3f, .90f);
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
-			if(player.touchPowerUp(redVK)) {
+			//if(player.touchPowerUp(redVK)) {
 				//if the powerup is consumed, apply its effect and remove it from the scene. 
-				redVK.applyEffect(player);
-				this.redVK = null; 
-			}
+				//redVK.applyEffect(player);
+				//this.redVK = null; 
+			//}
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
@@ -270,13 +270,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
-		Gdx.input.setInputProcessor(gameHud.getStage());
+		//Gdx.input.setInputProcessor(gameHud.getStage());
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(.235f, .245f, 0.2f, .1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stateTime += Gdx.graphics.getDeltaTime();
 
 		// tell the camera to update its matrices.
 		camera.update();
@@ -315,7 +316,7 @@ public class GameScreen implements Screen {
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		player.draw(game.batch);
+		player.drawAnimation(game.batch, stateTime);
 		mike.draw(game.batch);
 		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
@@ -342,21 +343,21 @@ public class GameScreen implements Screen {
 		}
 
 		// Set batch to now draw what the Hud camera sees.
-		game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
-		gameHud.stage.draw();
+		//game.batch.setProjectionMatrix(gameHud.stage.getCamera().combined);
+		//gameHud.stage.draw();
 
-		gameHud.update(delta);
+		//gameHud.update(delta);
 
 		if (player.type == "Sesher") {
 			//error when ever adding sesher, xombime is a place holder
 			TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Zombie1.png")));
-			gameHud.updatePlayerAvatar(textureRegion);
+			//gameHud.updatePlayerAvatar(textureRegion);
 		}
 		if (stick) {
-			gameHud.updateCurrentObjective(objective);
+			//gameHud.updateCurrentObjective(objective);
 		}
 
-		gameHud.updateExplored(exp.length);
+		//gameHud.updateExplored(exp.length);
 
 	}
 

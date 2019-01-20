@@ -6,12 +6,14 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Characters {
 	
-	private static final int FRAME_COLS = 6, FRAME_ROWS = 5;
+	private static final int FRAME_COLS = 5, FRAME_ROWS = 2;
 	
 	private final Weapon weapon;
 
@@ -19,22 +21,24 @@ public class Player extends Characters {
 	private boolean orientationUp; // If mouse is above = True
 	private final int INITIALHEALTH = 100;
 	
+	private Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
+	private Texture walkSheet;
 
-	public Player(final Sprite sprite, String type, final Weapon weapon, Texture walkSheet, Animation<TextureRegion> walkAnimation) {
+	
+	public Player(final Sprite sprite, String type, final Weapon weapon) {
 		super(sprite, type);
-
-		this.weapon = weapon;
 		
+		this.weapon = weapon;	
 		
-		initialize(walkSheet, walkAnimation);
+		initialize();
 	}
 
 	/**
 	 * set default value of player attributes
 	 */
-	//@Override
-	protected void initialize(Texture walkSheet, Animation<TextureRegion> walkAnimation) {
-		//super.initialize();
+	@Override
+	protected void initialize() {
+		super.initialize();
 		this.hitBoxDim = new int[] { 31, 62, 16, 81 };
 		this.speed = 2;
 		this.health = 100;
@@ -48,7 +52,7 @@ public class Player extends Characters {
 		}
 		
 		// Load the sprite sheet as a Texture
-		walkSheet = new Texture(Gdx.files.internal(".png"));
+		walkSheet = new Texture(Gdx.files.internal("SesherWalkLeft.png"));
 
 		// Use the split utility method to create a 2D array of TextureRegions. This is 
 		// possible because this sprite sheet contains frames of equal size and they are 
@@ -68,7 +72,9 @@ public class Player extends Characters {
 		}
 
 		// Initialize the Animation with the frame interval and array of frames
-		walkAnimation = new Animation<TextureRegion>(0.025f, walkFrames);
+		walkAnimation = new Animation<TextureRegion>(0.05f, walkFrames);
+		
+		
 		
 	}
 
@@ -253,4 +259,15 @@ public class Player extends Characters {
 		return INITIALHEALTH;
 	}
 
+	public void drawAnimation(SpriteBatch batch, float stateTime) {
+		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+		//currentFrame.setRegionWidth(100);
+		//currentFrame.setRegionHeight(100);
+		batch.draw(currentFrame, this.getX(), this.getY());
+		System.out.println(this.getX());
+		System.out.println(this.getY());
+	}
+
+	
+	
 }
