@@ -292,7 +292,7 @@ public class GameScreen implements Screen {
 		for (Zombies zombie : zombies) {
 			if (zombie.isAlive()) {
 				zombie.getMovement(player);
-				zombie.attack(player);
+				player = zombie.attack(player);
 			} else {
 				if (zombie.type == "mBoss") {
 					// TODO add in win thing

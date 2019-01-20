@@ -91,7 +91,6 @@ public class Zombies extends Characters{
 		if(closePlayer(chr)) {
 			//TODO attack animation
 			chr.injured(this.getDamage());
-			
 		}
 		//TODO Stop attack animation
 		//TODO Make Player bounce back and go in and out of invisibility if injured
@@ -107,7 +106,9 @@ public class Zombies extends Characters{
 		int offsetX = (int)(-this.getHitBoxWidth()- chr.getHitBoxWidth())/2;
 		int offsetY = (int)(-this.getHitBoxHeight()- chr.getHitBoxHeight())/2;
 		if((Math.abs(difX) + offsetX)< rng && Math.abs(difY) +offsetY<rng) {
+			
 			return true;
+			
 		}
 		return false;	
 	}
