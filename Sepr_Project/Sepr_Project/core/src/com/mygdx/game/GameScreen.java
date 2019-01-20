@@ -134,8 +134,8 @@ public class GameScreen implements Screen {
 		stickSprite = new Sprite();
 		stickSprite.setRegion(stickTextureRegion);
 		stickSprite.setSize(30,50);
-		stickSprite.setPosition(200,200);
-		
+		stickSprite.setPosition(200,400);
+		stickSprite.setAlpha(0f);
 		changeScreen("CompSci");
 
 
@@ -209,6 +209,7 @@ public class GameScreen implements Screen {
 	}
 
 	private void changeScreen(String name) {
+		
 		zombies.clear();
 		buildings.clear();
 		if (name == "CompSci") {
@@ -228,16 +229,12 @@ public class GameScreen implements Screen {
 				start = false;
 				addMike();
 
-				// TODO put mike in
 			} else if (stick) {
-				newRoom(new Point(20, 255), 1, false);
+				newRoom(new Point(20, 255), 0, false);
 				addZombie("mBoss");
-				// TODO if this zombie dies then you win
-
-			} else {
-				// Placeholder before stick is used
-				newRoom(new Point(20, 255), 1, false);
-				addZombie("mBoss");
+			}else {
+				newRoom(new Point(20, 255), 0, false);
+				addMike();
 			}
 			old = name;
 
@@ -249,19 +246,25 @@ public class GameScreen implements Screen {
 			old = name;
 		} else if (name == "Piazza") {
 			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
-			newRoom(new Point(115, 166), 3, false);
-//			addBuilding("LakeSide1", 80, 166, 33, 13);
+			newRoom(new Point(430, 46), 3, false);
+			addBuilding("LakeSide1", 522, 46, 33, 33);
 //			addBuilding("LakeSide2", 529, 166, 33, 13);
-			//addBuilding("Stick", stickSprite.getX(), stickSprite.getY(), stickSprite.getWidth(), stickSprite.getHeight());
+			if(stick == false) {
+				stickSprite.setAlpha(1f);
+				addBuilding("Stick", (int)stickSprite.getX(), (int)stickSprite.getY(), (int)stickSprite.getWidth(), (int)stickSprite.getHeight());
+				
+			}else {
+				stickSprite.setAlpha(0f);
+			}
 			old = name;
-			// TODO change once got a piazza image
 		} else if (name.startsWith("LakeSide")) {
 			if (old == "Central") {
-				newRoom(new Point(190, 173), 2, false);
+				newRoom(new Point(180, 173), 2, false);
 			} else if (old == "CompSci") {
-				newRoom(new Point(310, 300), 2, false);
+				newRoom(new Point(250, 275), 2, false);
 			} else if (old == "Piazza") {
-				newRoom(new Point(425, 250), 2, false);
+				stickSprite.setAlpha(0f);
+				newRoom(new Point(425, 225), 2, false);
 			}
 			bckgImage = new Texture((Gdx.files.internal(("gamemap.png"))));
 			old = "LakeSide";
@@ -299,15 +302,19 @@ public class GameScreen implements Screen {
 		player.getMovement();
 		player.attack(zombies);
 		// use this code to check where coordinates are on the screen
-		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 		if(won == false) {
 			for (String name : buildings.keySet()) {
 				if (player.touchBuilding(buildings.get(name))) {
-					if(name != "stick") {
+					if(name != "Stick") {
 						this.changeScreen(name);
 						break;
 					}else {
+						System.out.println("stick got");
+					
+						stickSprite.setAlpha(0f);
 						this.stick = true;
+						break;
 					}
 					
 				}
@@ -358,6 +365,7 @@ public class GameScreen implements Screen {
 				victorySprite.draw(game.batch);
 
 		}
+		stickSprite.draw(game.batch);
 		game.batch.end();
 		mike.speak(player, old);
 		stage.act(Gdx.graphics.getDeltaTime());
