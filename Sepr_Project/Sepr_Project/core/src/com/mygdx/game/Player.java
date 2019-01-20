@@ -62,7 +62,7 @@ public class Player extends Characters {
 		this.hitBoxDim = new int[] { 31, 62, 16, 81 };
 		this.speed = 2;
 		this.health = 100;
-		this.damage = 10;
+		this.damage = 100;
 		this.dmgMod = 1f;
 		this.spdMod = 1f;
 		if (type == "Sesher") {

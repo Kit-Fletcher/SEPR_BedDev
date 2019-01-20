@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -55,11 +56,15 @@ public class GameScreen implements Screen {
 	// player parameters
 	private Sprite playerSpr;
 	private Player player;
-	private boolean stick;
+	private boolean stick = false;
 	private float stateTime;
 
 	// mike parameters
 	private Mike mike;
+	private boolean won = false;
+	private Sprite victorySprite;
+	private Sprite stickSprite;
+	
 
 	// zombie parameters
 	private Sprite zombieSprite;
@@ -120,6 +125,16 @@ public class GameScreen implements Screen {
 		redVK= new PowerUps(new Sprite(redTex),PowerUpType.REDVK.getEffect());
 		blueVK= new PowerUps(new Sprite(bluTex),PowerUpType.BLUEVK.getEffect());
 		ylwVK= new PowerUps(new Sprite(ylwTex),PowerUpType.YLWVK.getEffect());
+		TextureRegion victoryTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("victory.png")));
+		victorySprite = new Sprite();
+		victorySprite.setRegion(victoryTextureRegion);
+		victorySprite.setSize(420,180);
+		victorySprite.setPosition(Gdx.graphics.getWidth()/2 - victorySprite.getWidth()/2,Gdx.graphics.getHeight()/2 - victorySprite.getHeight()/2 );
+		TextureRegion stickTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("items/mikesStick.png")));
+		stickSprite = new Sprite();
+		stickSprite.setRegion(stickTextureRegion);
+		stickSprite.setSize(30,50);
+		stickSprite.setPosition(200,200);
 		
 		changeScreen("CompSci");
 
@@ -233,25 +248,27 @@ public class GameScreen implements Screen {
 			newRoom(new Point(115, 166), 3, false);
 			old = name;
 		} else if (name == "Piazza") {
-			bckgImage = new Texture((Gdx.files.internal((".png"))));
+			bckgImage = new Texture((Gdx.files.internal(("piazza.png"))));
 			newRoom(new Point(115, 166), 3, false);
-			addBuilding("LakeSide1", 80, 166, 33, 13);
-			addBuilding("LakeSide2", 529, 166, 33, 13);
+//			addBuilding("LakeSide1", 80, 166, 33, 13);
+//			addBuilding("LakeSide2", 529, 166, 33, 13);
+			//addBuilding("Stick", stickSprite.getX(), stickSprite.getY(), stickSprite.getWidth(), stickSprite.getHeight());
 			old = name;
 			// TODO change once got a piazza image
 		} else if (name.startsWith("LakeSide")) {
 			if (old == "Central") {
-				newRoom(new Point(435, 304), 2, false);
+				newRoom(new Point(190, 173), 2, false);
 			} else if (old == "CompSci") {
-				newRoom(new Point(215, 157), 2, false);
+				newRoom(new Point(310, 300), 2, false);
 			} else if (old == "Piazza") {
-				// TODO once piazza is ready
+				newRoom(new Point(425, 250), 2, false);
 			}
-			bckgImage = new Texture((Gdx.files.internal(("lakeside_way_odd.png"))));
+			bckgImage = new Texture((Gdx.files.internal(("gamemap.png"))));
 			old = "LakeSide";
 			mike.setAlpha(0f);
-			addBuilding("CompSci", 161, 127, 50, 60);
-			addBuilding("Central", 524, 297, 67, 95);
+			addBuilding("CompSci", 200, 375, 102, 89);
+			addBuilding("Central", 103, 173, 83, 77);
+			addBuilding("Piazza", 415, 325,159,90 );
 		}
 	}
 
@@ -282,51 +299,65 @@ public class GameScreen implements Screen {
 		player.getMovement();
 		player.attack(zombies);
 		// use this code to check where coordinates are on the screen
-		// System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-		for (String name : buildings.keySet()) {
-			if (player.touchBuilding(buildings.get(name))) {
-				this.changeScreen(name);
-				break;
-			}
-		}
-		for (Zombies zombie : zombies) {
-			if (zombie.isAlive()) {
-				zombie.getMovement(player);
-				player = zombie.attack(player);
-			} else {
-				if (zombie.type == "mBoss") {
-					// TODO add in win thing
-				}
-				zombie.setAlpha((float) (zombie.getColor().a * 0.95));
-			}
-		}
-		// removes dead zombies
-		if (System.currentTimeMillis() % 10000 < 1000) {
-			for (int i = 0; i < zombies.size(); i++) {
-				if (zombies.get(i).isAlive() == false) {
-					zombies.remove(i);
+		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+		if(won == false) {
+			for (String name : buildings.keySet()) {
+				if (player.touchBuilding(buildings.get(name))) {
+					if(name != "stick") {
+						this.changeScreen(name);
+						break;
+					}else {
+						this.stick = true;
+					}
+					
 				}
 			}
+			for (Zombies zombie : zombies) {
+				if (zombie.isAlive()) {
+					zombie.getMovement(player);
+					player = zombie.attack(player);
+				} else {
+					if (zombie.type == "mBoss") {
+						won = true;
+					}
+					zombie.setAlpha((float) (zombie.getColor().a * 0.95));
+				}
+			}
+			// removes dead zombies
+			if (System.currentTimeMillis() % 10000 < 1000) {
+				for (int i = 0; i < zombies.size(); i++) {
+					if (zombies.get(i).isAlive() == false) {
+						zombies.remove(i);
+					}
+				}
+			}
 		}
+		
 		// tell the SpriteBatch to render in the
 		// coordinate system specified by the camera.
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		player.drawAnimation(game.batch, stateTime);
-		//player.draw(game.batch);
-		mike.draw(game.batch);
-		for (Zombies zombie : zombies) {
-			zombie.draw(game.batch);
-		}
+		if(won ==false) {
+			
 		
-	    for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
-	            PowerUps powerUp = entry.getValue();
-	            powerUp.draw(game.batch);
+			player.drawAnimation(game.batch, stateTime);
+			//player.draw(game.batch);
+			mike.draw(game.batch);
+			for (Zombies zombie : zombies) {
+				zombie.draw(game.batch);
+			}
+		
+			for (Entry<Integer, PowerUps> entry : powerUps.entrySet()) {
+				PowerUps powerUp = entry.getValue();
+				powerUp.draw(game.batch);
 
 	        }
+		}else {
+				victorySprite.draw(game.batch);
 
+		}
 		game.batch.end();
 		mike.speak(player, old);
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -335,7 +366,7 @@ public class GameScreen implements Screen {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
+		
 		if (player.isAlive == false) {
 			System.out.println("closing");
 			game.setScreen(new MainScreen(game));

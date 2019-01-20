@@ -134,7 +134,7 @@ public class Characters extends Sprite {
 					
 				}
 			}
-			
+			System.out.println(this.getHealth());
 		}
 	}
 
