@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -55,6 +56,9 @@ public class GameScreen implements Screen {
 	private Sprite playerSpr;
 	private Player player;
 	private boolean stick;
+	private float stateTime;
+	Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
+	Texture walkSheet;
 
 	// mike parameters
 	private Mike mike;
@@ -107,7 +111,7 @@ public class GameScreen implements Screen {
 		// this.zombies = new ArrayList<Zombies>();
 		// this.zombies.add(this.zmb);
 		// add player to screen
-		addPlayer(playerType);
+		addPlayer(playerType, walkSheet, walkAnimation);
 		GameScreen.buildings = new HashMap<String, Sprite>();
 		this.zombies = new ArrayList<Zombies>();
 		this.exp = new String[2];
@@ -122,16 +126,17 @@ public class GameScreen implements Screen {
 		changeScreen("CompSci");
 
 		//addPowerUp(redVK, 2f, .70f);
+		stateTime = 0f;
 	}
 
-	private void addPlayer(String playerType) {
+	private void addPlayer(String playerType, Texture walkSheet,Animation<TextureRegion> walkAnimation) {
 
 		TextureRegion playerTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("MaleFresher.png")));
 
 		Sprite playerSprite = new Sprite();
 		playerSprite.setRegion(playerTextureRegion);
 
-		player = new Player(playerSprite, playerType, null);
+		player = new Player(playerSprite, playerType, null, walkSheet, walkAnimation);
 
 	}
 
