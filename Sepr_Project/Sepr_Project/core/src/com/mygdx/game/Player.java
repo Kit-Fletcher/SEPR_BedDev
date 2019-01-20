@@ -41,6 +41,9 @@ public class Player extends Characters {
 	private Texture sesherAttackRightSheet;
 	
 	private String animationDirection;
+	private Boolean isAttacking;
+	private Boolean isWalking;
+	private int attackTimer;
 	
 	public Player(final Sprite sprite, String type, final Weapon weapon) {
 		super(sprite, type);
@@ -68,19 +71,22 @@ public class Player extends Characters {
 			this.injMod = 1f;
 		}
 
-		fresherWalkLeftAnimation = loadAnimation(fresherWalkLeftSheet, Gdx.files.internal("FresherWalkLeft.png"));
-		fresherWalkRightAnimation = loadAnimation(fresherWalkRightSheet, Gdx.files.internal("FresherWalkRight.png"));
-		fresherAttackLeftAnimation = loadAnimation(fresherAttackLeftSheet, Gdx.files.internal("FresherAttackLeft.png"));
-		fresherAttackRightAnimation = loadAnimation(fresherAttackRightSheet, Gdx.files.internal("FresherAttackRight.png"));
-		sesherWalkLeftAnimation = loadAnimation(sesherWalkLeftSheet, Gdx.files.internal("SesherWalkLeft.png"));
-		sesherWalkRightAnimation = loadAnimation(sesherWalkRightSheet, Gdx.files.internal("SesherWalkRight.png"));
-		sesherAttackLeftAnimation = loadAnimation(sesherAttackLeftSheet, Gdx.files.internal("SesherAttackLeft.png"));
-		sesherAttackRightAnimation = loadAnimation(sesherAttackRightSheet, Gdx.files.internal("SesherAttackRight.png"));
+		fresherWalkLeftAnimation = loadAnimation(fresherWalkLeftSheet, Gdx.files.internal("FresherWalkLeft.png"), 4, 2);
+		fresherWalkRightAnimation = loadAnimation(fresherWalkRightSheet, Gdx.files.internal("FresherWalkRight.png"), 4, 2);
+		fresherAttackLeftAnimation = loadAnimation(fresherAttackLeftSheet, Gdx.files.internal("FresherAttackLeft.png"), 4, 1);
+		fresherAttackRightAnimation = loadAnimation(fresherAttackRightSheet, Gdx.files.internal("FresherAttackRight.png"), 4, 1);
+		sesherWalkLeftAnimation = loadAnimation(sesherWalkLeftSheet, Gdx.files.internal("SesherWalkLeft.png"), 5, 2);
+		sesherWalkRightAnimation = loadAnimation(sesherWalkRightSheet, Gdx.files.internal("SesherWalkRight.png"), 5, 2);
+		sesherAttackLeftAnimation = loadAnimation(sesherAttackLeftSheet, Gdx.files.internal("SesherAttackLeft.png"), 4, 2);
+		sesherAttackRightAnimation = loadAnimation(sesherAttackRightSheet, Gdx.files.internal("SesherAttackRight.png"), 4, 2);
 		
 		animationDirection = "Left";
+		attackTimer = 0;
+		isWalking = false;
+		isAttacking = false;
 	}
 
-	private Animation<TextureRegion> loadAnimation(Texture sheet, FileHandle file) {
+	private Animation<TextureRegion> loadAnimation(Texture sheet, FileHandle file, int frameCols, int frameRows) {
 		
 		// Load the sprite sheet as a Texture
 		sheet = new Texture(file);
@@ -89,15 +95,15 @@ public class Player extends Characters {
 		// possible because this sprite sheet contains frames of equal size and they are 
 		// all aligned.
 		TextureRegion[][] tmp = TextureRegion.split(sheet, 
-				sheet.getWidth() / FRAME_COLS,
-				sheet.getHeight() / FRAME_ROWS);
+				sheet.getWidth() / frameCols,
+				sheet.getHeight() / frameRows);
 
 		// Place the regions into a 1D array in the correct order, starting from the top 
 		// left, going across first. The Animation constructor requires a 1D array.
-		TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		TextureRegion[] walkFrames = new TextureRegion[frameCols * frameRows];
 		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
+		for (int i = 0; i < frameRows; i++) {
+			for (int j = 0; j < frameCols; j++) {
 				walkFrames[index++] = tmp[i][j];
 			}
 		}
@@ -292,20 +298,80 @@ public class Player extends Characters {
 		
 		TextureRegion currentFrame;
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			currentFrame = fresherWalkLeftAnimation.getKeyFrame(stateTime, true);
-			animationDirection = "Left";
-		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-			currentFrame = fresherWalkRightAnimation.getKeyFrame(stateTime, true);
-			animationDirection = "Right";
-		}
-		else if(animationDirection == "Left") {
+		if(animationDirection == "Left") {
 			currentFrame = fresherWalkLeftAnimation.getKeyFrame(0, true);
 		}
 		else {
 			currentFrame = fresherWalkRightAnimation.getKeyFrame(0, true);
 		}
+		if (type == "Sesher") {
+			if(animationDirection == "Left") {
+				currentFrame = sesherWalkLeftAnimation.getKeyFrame(0, true);
+			}
+			else {
+				currentFrame = sesherWalkRightAnimation.getKeyFrame(0, true);
+			}
+		}
+
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			isAttacking = true;
+			attackTimer = 0;
+		}		
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			isWalking = true;
+			animationDirection = "Left";
+		}
+		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+			isWalking = true;
+			animationDirection = "Right";
+		} else {
+			isWalking = false;
+		}
+		
+		if (type == "Sesher") {
+			if (isAttacking) {
+				attackTimer += 1;
+				if(attackTimer > 10) {
+					isAttacking = false;
+					attackTimer = 0;
+				}
+				if(animationDirection == "Left") {
+					currentFrame = sesherAttackLeftAnimation.getKeyFrame(stateTime, true);
+				}
+				else {
+					currentFrame = sesherAttackRightAnimation.getKeyFrame(stateTime, true);
+				}
+			}
+			else if(isWalking) {
+				if(animationDirection == "Left") {
+					currentFrame = sesherWalkLeftAnimation.getKeyFrame(stateTime, true);
+				}else {
+					currentFrame = sesherWalkRightAnimation.getKeyFrame(stateTime, true);	
+				}
+			}
+		} else {
+			if (isAttacking) {
+				attackTimer += 1;
+				if(attackTimer > 20) {
+					isAttacking = false;
+					attackTimer = 0;
+				}
+				if(animationDirection == "Left") {
+					currentFrame = fresherAttackLeftAnimation.getKeyFrame(stateTime, true);
+				}
+				else {
+					currentFrame = fresherAttackRightAnimation.getKeyFrame(stateTime, true);
+				}
+			}
+			else if(isWalking) {
+				if(animationDirection == "Left") {
+					currentFrame = fresherWalkLeftAnimation.getKeyFrame(stateTime, true);
+				}else {
+					currentFrame = fresherWalkRightAnimation.getKeyFrame(stateTime, true);	
+				}
+			}
+		}
+		
 		batch.draw(currentFrame, this.getX() + 30, this.getY() + 17);
 		
 	}

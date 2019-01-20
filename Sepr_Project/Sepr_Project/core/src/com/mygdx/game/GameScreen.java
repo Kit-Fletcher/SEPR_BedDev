@@ -199,15 +199,15 @@ public class GameScreen implements Screen {
 		if (name == "CompSci") {
 
 			bckgImage = new Texture((Gdx.files.internal(("hardware_lab.png"))));
-			addPowerUp(redVK, 3f, .90f);
+			//addPowerUp(redVK, 3f, .90f);
 			addBuilding("LakeSide1", 0, 435, 37, 28);
 			addBuilding("LakeSide2", 0, 255, 37, 28);
 			addBuilding("LakeSide3", 0, 0, 37, 28);
-			if(player.touchPowerUp(redVK)) {
+			//if(player.touchPowerUp(redVK)) {
 				//if the powerup is consumed, apply its effect and remove it from the scene. 
-				redVK.applyEffect(player);
-				this.redVK = null; 
-			}
+				//redVK.applyEffect(player);
+				//this.redVK = null; 
+			//}
 			if (start) {
 				newRoom(new Point(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), 0, false);
 				start = false;
