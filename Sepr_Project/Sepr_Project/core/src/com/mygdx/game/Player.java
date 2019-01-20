@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Characters {
+	
+	private static final int FRAME_COLS = 6, FRAME_ROWS = 5;
 	
 	private final Weapon weapon;
 
@@ -16,28 +19,22 @@ public class Player extends Characters {
 	private boolean orientationUp; // If mouse is above = True
 	private final int INITIALHEALTH = 100;
 	
-	
-	public Player(final Sprite img, String type) {
-		super(img, type);
-		this.weapon = null;
-		initialize();
-	}
 
-	public Player(final Sprite sprite, String type, final Weapon weapon) {
+	public Player(final Sprite sprite, String type, final Weapon weapon, Texture walkSheet, Animation<TextureRegion> walkAnimation) {
 		super(sprite, type);
 
 		this.weapon = weapon;
 		
 		
-		initialize();
+		initialize(walkSheet, walkAnimation);
 	}
 
 	/**
 	 * set default value of player attributes
 	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
+	//@Override
+	protected void initialize(Texture walkSheet, Animation<TextureRegion> walkAnimation) {
+		//super.initialize();
 		this.hitBoxDim = new int[] { 31, 62, 16, 81 };
 		this.speed = 2;
 		this.health = 100;
@@ -49,7 +46,30 @@ public class Player extends Characters {
 			this.spdMod = 1.5f;
 			this.injMod = 1f;
 		}
+		
+		// Load the sprite sheet as a Texture
+		walkSheet = new Texture(Gdx.files.internal(".png"));
 
+		// Use the split utility method to create a 2D array of TextureRegions. This is 
+		// possible because this sprite sheet contains frames of equal size and they are 
+		// all aligned.
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, 
+				walkSheet.getWidth() / FRAME_COLS,
+				walkSheet.getHeight() / FRAME_ROWS);
+
+		// Place the regions into a 1D array in the correct order, starting from the top 
+		// left, going across first. The Animation constructor requires a 1D array.
+		TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index = 0;
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			for (int j = 0; j < FRAME_COLS; j++) {
+				walkFrames[index++] = tmp[i][j];
+			}
+		}
+
+		// Initialize the Animation with the frame interval and array of frames
+		walkAnimation = new Animation<TextureRegion>(0.025f, walkFrames);
+		
 	}
 
 	/**
