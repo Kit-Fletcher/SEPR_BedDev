@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Characters {
 	
-	private static final int FRAME_COLS = 5, FRAME_ROWS = 2;
+	private static final int FRAME_COLS = 4, FRAME_ROWS = 2;
 	
 	private final Weapon weapon;
 
@@ -52,7 +52,7 @@ public class Player extends Characters {
 		}
 		
 		// Load the sprite sheet as a Texture
-		walkSheet = new Texture(Gdx.files.internal("SesherWalkLeft.png"));
+		walkSheet = new Texture(Gdx.files.internal("FresherWalkLeft.png"));
 
 		// Use the split utility method to create a 2D array of TextureRegions. This is 
 		// possible because this sprite sheet contains frames of equal size and they are 
@@ -72,7 +72,7 @@ public class Player extends Characters {
 		}
 
 		// Initialize the Animation with the frame interval and array of frames
-		walkAnimation = new Animation<TextureRegion>(0.05f, walkFrames);
+		walkAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
 		
 		
 		
@@ -263,9 +263,8 @@ public class Player extends Characters {
 		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		//currentFrame.setRegionWidth(100);
 		//currentFrame.setRegionHeight(100);
-		batch.draw(currentFrame, this.getX(), this.getY());
-		System.out.println(this.getX());
-		System.out.println(this.getY());
+		batch.draw(currentFrame, this.getX() + 30, this.getY() + 17);
+		System.out.println(stateTime);
 	}
 
 	

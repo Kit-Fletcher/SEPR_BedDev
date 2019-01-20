@@ -275,7 +275,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(.235f, .245f, 0.2f, .1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+		
 		// tell the camera to update its matrices.
 		camera.update();
 		player.getMovement();
@@ -314,7 +315,7 @@ public class GameScreen implements Screen {
 		game.batch.begin();
 		game.batch.draw(bckgImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		player.drawAnimation(game.batch, stateTime);
-		player.draw(game.batch);
+		//player.draw(game.batch);
 		mike.draw(game.batch);
 		for (Zombies zombie : zombies) {
 			zombie.draw(game.batch);
